@@ -42,6 +42,7 @@ pose.onResults(onResults);
 var sentResizedMessage = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
+        alert("got a frame!!!!")
         await pose.send({ image: videoElement });
         if(!sentResizedMessage){
             console.log("Message: resize video");

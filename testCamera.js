@@ -45,11 +45,15 @@ pose.onResults(onResults);
 var sentResizedMessage = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-       
-        //canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        //canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        await pose.send({ image: videoElement });
         
+        try{
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            //await pose.send({ image: videoElement });
+        }
+        catch(error){
+            alert("error")
+        }
         if(!sentResizedMessage){
             console.log("Message: resize video");
             sentResizedMessage = true;

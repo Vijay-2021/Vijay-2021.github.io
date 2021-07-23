@@ -1,5 +1,5 @@
-alert("apple is using updated code 1")
-const videoElement = document.getElementsByClassName('input_video')[0];
+alert("apple is using updated code 2")
+const video = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
@@ -53,23 +53,15 @@ const camera = new Camera(videoElement, {
 });
 camera.start()*/
 
-$(function () {
-    video = document.getElementById('vid');
-    video.style.width = document.width + 'px';
-    video.style.height = document.height + 'px';
-    video.setAttribute('autoplay', '');
-    video.setAttribute('muted', '');
-    video.setAttribute('playsinline', '');
+navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: false
+  })
+  .then(function (stream) {
+    video.srcObject = stream;
 
-    var constraints = {
-         audio: false,
-         video: {
-             facingMode: 'user'
-         }
-    }
-
-    navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
-        video.srcObject = stream;
-        video.play();
-    });
-});
+    video.play();
+  })
+  .catch(function (err) {
+    console.log("An error occurred: " + err);
+  });

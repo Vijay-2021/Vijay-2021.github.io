@@ -1,9 +1,7 @@
-alert("apple is using updated code 4")
-//const video = document.getElementsByClassName('input_video')[0];
-//const canvasElement = document.getElementsByClassName('output_canvas')[0];
-//const canvasCtx = canvasElement.getContext('2d');
-//const FPSElement = document.getElementById('fps');
-/** 
+const videoElement = document.getElementsByClassName('input_video')[0];
+const canvasElement = document.getElementsByClassName('output_canvas')[0];
+const canvasCtx = canvasElement.getContext('2d');
+const FPSElement = document.getElementById('fps');
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 
@@ -43,7 +41,6 @@ pose.onResults(onResults);
 var sentResizedMessage = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        alert("got a frame!!!!")
         await pose.send({ image: videoElement });
         if(!sentResizedMessage){
             console.log("Message: resize video");
@@ -51,15 +48,23 @@ const camera = new Camera(videoElement, {
         }
     }
 });
-camera.start()*/
-var video = document.querySelector("#videoElement");
-
-if (navigator.mediaDevices.getUserMedia) {
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(function (stream) {
-      video.srcObject = stream;
-    })
-    .catch(function (err0r) {
-      console.log("Something went wrong!");
-    });
-}
+//camera.start()
+$('#startEst').click(function(){
+    //if this is pressed too much accidentally, it lags the app, so only let the camera be started if it is not playing
+    if(!videoState){
+        camera.start();
+        videoState=true;
+    }
+});
+$('#stopEst').click(function(){
+    if(videoState){
+        const stream = videoElement.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach(function(track) {
+            track.stop();
+        });
+        videoElement.srcObject = null;
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        videoState = false;
+    }
+});

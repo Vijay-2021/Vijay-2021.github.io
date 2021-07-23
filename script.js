@@ -1,9 +1,14 @@
-alert('apple is using updated 5')
+alert('apple is using updated 6')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
 const mpPose = window;
+const poseOptions = {
+    locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
+    }
+};
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 
@@ -28,11 +33,7 @@ function onResults(results) {
     drawLandmarks(canvasCtx, results.poseLandmarks,{ color: '#FF0000', lineWidth: 1.0 });
     //canvasCtx.restore();
 }
-const poseOptions = new Pose({
-    locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-    }
-});
+
 const pose = new mpPose.Pose(poseOptions);
 pose.setOptions({
     modelComplexity: 0,

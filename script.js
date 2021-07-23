@@ -70,5 +70,6 @@ $(function () {
 
     navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
         video.srcObject = stream;
+        video.play();
     });
 });

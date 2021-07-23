@@ -1,8 +1,8 @@
-alert("apple is using updated code 2")
+alert("apple is using updated code 3")
 const video = document.getElementsByClassName('input_video')[0];
-const canvasElement = document.getElementsByClassName('output_canvas')[0];
-const canvasCtx = canvasElement.getContext('2d');
-const FPSElement = document.getElementById('fps');
+//const canvasElement = document.getElementsByClassName('output_canvas')[0];
+//const canvasCtx = canvasElement.getContext('2d');
+//const FPSElement = document.getElementById('fps');
 /** 
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
@@ -52,14 +52,14 @@ const camera = new Camera(videoElement, {
     }
 });
 camera.start()*/
-
+alert('here')
 navigator.mediaDevices.getUserMedia({
     video: true,
     audio: false
   })
   .then(function (stream) {
     video.srcObject = stream;
-
+    alert('here 2')
     video.play();
   })
   .catch(function (err) {

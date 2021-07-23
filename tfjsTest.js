@@ -1,5 +1,5 @@
 
-alert('apple is using tfjs test 3')
+alert('tfjs test numberr four')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
@@ -45,6 +45,8 @@ async function loadModel(){
     }catch{
         alert("error?")
     }
+    //start the camera after we have confitured the backend and loaded the detector 
+    camera.start()
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
@@ -61,6 +63,5 @@ const camera = new Camera(videoElement, {
         
     }
 });
-camera.start()
 
 

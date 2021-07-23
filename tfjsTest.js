@@ -9,7 +9,9 @@ const model = poseDetection.SupportedModels.BlazePose;
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
-  modelType: 'lite'
+  modelType: 'lite',
+  WEBGL_FORCE_F16_TEXTURES: true,
+  WEBGL_VERSION: 1
 };
 async function loadModel(){
     detector = await poseDetection.createDetector(model, detectorConfig);
@@ -26,7 +28,7 @@ const camera = new Camera(videoElement, {
         canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         var poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
         console.log(poses.poseLandmarks)
-        alert("yay we are running :) ")
+        //alert("yay we are running :) ")
         
     }
 });

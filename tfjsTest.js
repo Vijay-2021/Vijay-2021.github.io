@@ -1,3 +1,4 @@
+
 alert('apple is using tfjs test 3')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -11,9 +12,39 @@ const detectorConfig = {
   enableSmoothing: true,
   modelType: 'full'
 };
+const flagConfig = {
+    WEBGL_VERSION: 1,
+    WASM_HAS_SIMD_SUPPORT: false,
+    WASM_HAS_MULTITHREAD_SUPPORT: false,
+    WEBGL_CPU_FORWARD:true,
+    WEBGL_PACK: true,
+    WEBGL_FORCE_F16_TEXTURES: true,
+    WEBGL_RENDER_FLOAT32_CAPABLE: false,
+    WEBGL_FLUSH_THRESHOLD: -1,
+    CHECK_COMPUTATION_FOR_ERRORS: false,
+  }
+async function setBackendAndEnvFlags(flagConfig) {
+    if (flagConfig == null) {
+      return;
+    } else if (typeof flagConfig !== 'object') {
+      throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
+    } // Check the validation of flags and values.
+    try{
+        tf.env().setFlags(flagConfig);
+    }catch(error){
+        alert("set flags broke");
+    }
+}
+
+
 async function loadModel(){
+    await setBackendAndEnvFlags(flagConfig)
+    try{
     detector = await poseDetection.createDetector(model, detectorConfig);
     alert("model built sucessfulLY? ")
+    }catch{
+        alert("error?")
+    }
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();

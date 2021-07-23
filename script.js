@@ -49,23 +49,5 @@ const camera = new Camera(videoElement, {
         }
     }
 });
-//camera.start()
-$('#startEst').click(function(){
-    //if this is pressed too much accidentally, it lags the app, so only let the camera be started if it is not playing
-    if(!videoState){
-        camera.start();
-        videoState=true;
-    }
-});
-$('#stopEst').click(function(){
-    if(videoState){
-        const stream = videoElement.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach(function(track) {
-            track.stop();
-        });
-        videoElement.srcObject = null;
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        videoState = false;
-    }
-});
+camera.start()
+

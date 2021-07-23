@@ -1,3 +1,5 @@
+const { load } = require("@tensorflow-models/pose-detection/dist/blazepose_tfjs/detector");
+
 alert('apple is using tfjs test')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
@@ -11,13 +13,13 @@ const detectorConfig = {
   enableSmoothing: true,
   modelType: 'lite'
 };
-
-detector = await poseDetection.createDetector(model, detectorConfig);
-alert("model built sucessfulLY? ")
-
+async function loadModel(){
+    detector = await poseDetection.createDetector(model, detectorConfig);
+    alert("model built sucessfulLY? ")
+}
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
-
+loadModel()
 
 const camera = new Camera(videoElement, {
     onFrame: async () => {

@@ -1,5 +1,5 @@
-alert("apple is using updated code 3")
-const video = document.getElementsByClassName('input_video')[0];
+alert("apple is using updated code 4")
+//const video = document.getElementsByClassName('input_video')[0];
 //const canvasElement = document.getElementsByClassName('output_canvas')[0];
 //const canvasCtx = canvasElement.getContext('2d');
 //const FPSElement = document.getElementById('fps');
@@ -52,16 +52,14 @@ const camera = new Camera(videoElement, {
     }
 });
 camera.start()*/
-alert('here')
-navigator.mediaDevices.getUserMedia({
-    video: true,
-    audio: false
-  })
-  .then(function (stream) {
-    video.srcObject = stream;
-    alert('here 2')
-    video.play();
-  })
-  .catch(function (err) {
-    console.log("An error occurred: " + err);
-  });
+var video = document.querySelector("#videoElement");
+
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}

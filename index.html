@@ -1,60 +1,19 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-                crossorigin="anonymous"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    .input_video {
-      display: none
-    }
-    .output_canvas {
-      width: 1280px;
-      height: 720px;
-    }
-    /* Extra small devices (phones, 600px and down) */
-    @media only screen and (max-width: 750px) and (orientation: landscape) {
-      .input_video {
-        display: none
-      }
-
-      .output_canvas {
-        width: 90vw;
-        height: 90vh;
-      }
-    }
-
-    @media only screen and (max-width: 500px) and (orientation: portrait) {
-      .input_video {
-        display: none
-      }
-
-      .output_canvas {
-        width: 90vw;
-        height: 90vh;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
 
 </head>
-
+ 
 <body>
-  <div class="container" style="text-align:center;">
-    <p id="fps"> FPS: Average FPS:</p>
-    <video playsinline autoplay='true' class="input_video" id='vid'></video>
-    <canvas class="output_canvas"></canvas>
-  </div>
-  <script src="./drawing_utilities.js" type="text/javascript"></script>
-  <script src="./script.js" type="text/javascript"></script>
-</body>
+<div id="container">
+	<video autoplay="true" id="videoElement" playsinline>
+	
+	</video>
+</div>
+<script>
 
+</script>
+</body>
 </html>

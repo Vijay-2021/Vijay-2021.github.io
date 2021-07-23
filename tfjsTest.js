@@ -1,4 +1,4 @@
-alert('apple is using tfjs test 2')
+alert('apple is using tfjs test 3')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
@@ -9,9 +9,7 @@ const model = poseDetection.SupportedModels.BlazePose;
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
-  modelType: 'lite',
-  WEBGL_FORCE_F16_TEXTURES: true,
-  WEBGL_VERSION: 1
+  modelType: 'full'
 };
 async function loadModel(){
     detector = await poseDetection.createDetector(model, detectorConfig);
@@ -27,7 +25,7 @@ const camera = new Camera(videoElement, {
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
         var poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        console.log(poses.poseLandmarks)
+        
         //alert("yay we are running :) ")
         
     }

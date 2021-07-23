@@ -1,5 +1,3 @@
-const { load } = require("@tensorflow-models/pose-detection/dist/blazepose_tfjs/detector");
-
 alert('apple is using tfjs test')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];

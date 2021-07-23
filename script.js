@@ -45,7 +45,7 @@ pose.onResults(onResults);
 var sentResizedMessage = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        alert("frames are sending") //<- so this runs once, on apple phone, but only once. Guessing webgl is breaking. 
+        
         try{
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);

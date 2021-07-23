@@ -3,6 +3,7 @@ const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
+/** 
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 
@@ -50,5 +51,24 @@ const camera = new Camera(videoElement, {
         }
     }
 });
-camera.start()
+camera.start()*/
 
+$(function () {
+    video = document.getElementById('vid');
+    video.style.width = document.width + 'px';
+    video.style.height = document.height + 'px';
+    video.setAttribute('autoplay', '');
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    var constraints = {
+         audio: false,
+         video: {
+             facingMode: 'user'
+         }
+    }
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
+        video.srcObject = stream;
+    });
+});

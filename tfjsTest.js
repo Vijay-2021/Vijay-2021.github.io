@@ -21,20 +21,13 @@ loadModel()
 
 const camera = new Camera(videoElement, {
     onFrame: async () => {
+
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        var poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        console.log(poses.poseLandmarks)
+        alert("yay we are running :) ")
         
-        try{
-            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-            var poses = await detector.estimatePoses(image, estimationConfig, timestamp);
-            alert("yay we are running :) ")
-        }
-        catch(error){
-            alert("error")
-        }
-        if(!sentResizedMessage){
-            console.log("Message: resize video");
-            sentResizedMessage = true;
-        }
     }
 });
 camera.start()

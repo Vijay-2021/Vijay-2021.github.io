@@ -1,4 +1,4 @@
-alert('apple is using updated 6')
+alert('apple is using updated 7')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
@@ -45,7 +45,7 @@ pose.onResults(onResults);
 var sentResizedMessage = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        //alert("frames are sending") <- so this runs once, on apple phone, but only once. Guessing webgl is breaking. 
+        alert("frames are sending") //<- so this runs once, on apple phone, but only once. Guessing webgl is breaking. 
         try{await pose.send({ image: videoElement });}
         catch(error){
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);

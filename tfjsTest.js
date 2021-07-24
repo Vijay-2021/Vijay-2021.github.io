@@ -15,17 +15,6 @@ const detectorConfig = {
   modelType: 'full'
 };
 
-const flagConfig = {
-    WEBGL_VERSION: 1,
-    WASM_HAS_SIMD_SUPPORT: false,
-    WASM_HAS_MULTITHREAD_SUPPORT: false,
-    WEBGL_CPU_FORWARD:true,
-    WEBGL_PACK: true,
-    WEBGL_FORCE_F16_TEXTURES: true,
-    WEBGL_RENDER_FLOAT32_CAPABLE: false,
-    WEBGL_FLUSH_THRESHOLD: -1,
-    CHECK_COMPUTATION_FOR_ERRORS: false,
-}
 
 const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
 
@@ -41,37 +30,19 @@ function resizeCanvasToDisplaySize(canvas) {
     }
  
     return false;
- }
-
-
-async function setEnvFlags() {
-    
-    if (flagConfig == null) {
-      return;
-    } else if (typeof flagConfig !== 'object') {
-      throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
-    } // Check the validation of flags and values.
-    
-    tf.env().setFlags(flagConfig);
-
 }
-
 
 function drawResults(poses) {
-    drawResult(poses[0]);
-}
-
-/**
-* Draw the keypoints and skeleton on the videoElement.
-* @param pose A pose with keypoints to render.
-*/
-function drawResult(pose) {
-    if (pose['keypoints'] != null) {
-        drawKeypoints(pose['keypoints']);
-        drawSkeleton(pose['keypoints']);
-    }
-    else{
-        //alert("no keypoints")
+    if(poses != null && poses[0] != null){
+        if (poses[0]['keypoints'] != null ) {
+            drawKeypoints(poses[0]['keypoints']);
+            drawSkeleton(poses[0]['keypoints']);
+        }
+        else{
+            //alert("no keypoints")
+        }
+    }else{
+        return;
     }
 }
 
@@ -79,6 +50,7 @@ function drawResult(pose) {
 * Draw the keypoints on the videoElement.
 * @param keypoints A list of keypoints.
 */
+
 function drawKeypoints(keypoints) {
     
     const keypointInd = poseDetection.util.getKeypointIndexBySide(model);
@@ -129,17 +101,6 @@ function drawSkeleton(keypoints) {
     });
 }
 
-async function loadModel(){  
-    await setEnvFlags();
-    detector = await poseDetection.createDetector(model, detectorConfig);
-    alert("model built sucessfully? ")
-    //start the camera after we have loaded the model
-    //camera.start()
-}
-const estimationConfig = {flipHorizontal: true};
-const timestamp = performance.now();
-
-   
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 
@@ -160,12 +121,7 @@ function updateScreen(poses){
     
     drawResults(poses)
 
-}/** 
-const camera = new Camera(videoElement, {
-    
-});*/
-
-
+}
 
 var lastFrameTime = -1;
 
@@ -199,6 +155,28 @@ async function checkFrame(){
     }
 }
 
+async function loadModel(flagConfig){  
+    await setFlags(flagConfig);
+    detector = await poseDetection.createDetector(model, detectorConfig);
+    alert("model built sucessfully? ")
+    //start the camera after we have loaded the model
+    //camera.start()
+}
+
+async function setEnvFlags(flagConfig) {
+    
+    if (flagConfig == null) {
+      return;
+    } else if (typeof flagConfig !== 'object') {
+      throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
+    } // Check the validation of flags and values.
+    
+    tf.env().setFlags(flagConfig);
+
+}
+
+const estimationConfig = {flipHorizontal: true};
+const timestamp = performance.now();
 
 async function loadCamera(){
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -244,7 +222,98 @@ async function loadCamera(){
     }
 }
 
-async function loadApp(){
+function getOS() {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+  
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      os = 'Mac OS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+      os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+      os = 'Linux';
+    }
+  
+    return os;
+}
+
+function setFlags(){
+
+    var WEBGL_VERSION = 2
+    var WASM_HAS_SIMD_SUPPORT = false
+    var WASM_HAS_MULTITHREAD_SUPPORT= false
+    var WEBGL_CPU_FORWARD=true
+    var WEBGL_PACK= true
+    var WEBGL_FORCE_F16_TEXTURES= false
+    var WEBGL_RENDER_FLOAT32_CAPABLE= true
+    var WEBGL_FLUSH_THRESHOLD= -1
+    var CHECK_COMPUTATION_FOR_ERRORS= false
+
+    wasmFeatureDetect.simd().then(simdSupported=>{
+        if(simdSupported){
+            alert("yay simd supported")
+            WASM_HAS_SIMD_SUPPORT = true
+        }else{
+            alert("aww no simd")
+        }
+    });
+    wasmFeatureDetect.threads().then(threadsSupported=>{
+        if(threadsSupported){
+            alert("yay multi thread support")
+            WASM_HAS_MULTITHREAD_SUPPORT = true;
+        }else{
+            alert("aww no multi thread")
+        }
+    });
+    switch(getOS()){
+        case 'Mac OS':
+            alert('Macky mack')
+            WEBGL_VERSION = 1
+            break;
+        case 'Linux': 
+            alert('best platform')
+            break;
+        case 'iOS': 
+            alert('ew ios detected, u should switch to android')
+            WEBGL_VERSION = 1
+            WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
+            WEBGL_RENDER_FLOAT32_CAPABLE = false
+            break;
+        case 'Android': 
+            WEBGL_FORCE_F16_TEXTURES = true
+            WEBGL_RENDER_FLOAT32_CAPABLE = false
+            alert('android good choice')
+            break;
+        default: 
+            alert('windows')
+            break;
+
+    }
+
+    var flagConfig = {
+        WEBGL_VERSION: WEBGL_VERSION,
+        WASM_HAS_SIMD_SUPPORT: WASM_HAS_SIMD_SUPPORT,
+        WASM_HAS_MULTITHREAD_SUPPORT: WASM_HAS_MULTITHREAD_SUPPORT,
+        WEBGL_CPU_FORWARD: WEBGL_CPU_FORWARD,
+        WEBGL_PACK: WEBGL_PACK,
+        WEBGL_FORCE_F16_TEXTURES: WEBGL_FORCE_F16_TEXTURES,
+        WEBGL_RENDER_FLOAT32_CAPABLE: WEBGL_RENDER_FLOAT32_CAPABLE,
+        WEBGL_FLUSH_THRESHOLD: WEBGL_FLUSH_THRESHOLD,
+        CHECK_COMPUTATION_FOR_ERRORS: CHECK_COMPUTATION_FOR_ERRORS,
+    }
+    
+    setEnvFlags(flagConfig)
+
+}
+async function loadApp(){    
     await loadModel();
     loadCamera();
 }

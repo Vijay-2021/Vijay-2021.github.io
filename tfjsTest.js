@@ -24,7 +24,7 @@ const flagConfig = {
     WEBGL_FORCE_F16_TEXTURES: true,
     WEBGL_RENDER_FLOAT32_CAPABLE: false,
     WEBGL_FLUSH_THRESHOLD: -1,
-    CHECK_COMPUTATION_FOR_ERRORS: false,
+    CHECK_COMPUTATION_FOR_ERRORS: true,
 }
 
 const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
@@ -129,7 +129,7 @@ function drawSkeleton(keypoints) {
 async function loadModel(){  
     await setEnvFlags();
     detector = await poseDetection.createDetector(model, detectorConfig);
-    //alert("model built sucessfulLY? ")
+    alert("model built sucessfully? ")
     //start the camera after we have loaded the model
     camera.start()
 }

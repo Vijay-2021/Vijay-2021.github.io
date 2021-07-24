@@ -122,34 +122,18 @@ function updateScreen(poses){
 
 var lastFrameTime = -1;
 
-function updateVideo(){
+async function updateVideo(){
     //checkFrame //requestAnimationFrame makes the transition between poses alot smoother
-    window.requestAnimationFrame(onFrame);
-}
+    const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+    await updateScreen(poses)
+    console.log(poses)
 
-var onFrame = async () => {
-    if(videoElement.currentTime!=lastFrameTime){
-        lastFrameTime=videoElement.currentTime;
-
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        updateScreen(poses)
-        updateVideo()
-    }else {
-        updateVideo()
-    }
+    window.requestAnimationFrame(updateVideo);
 }
 
 async function checkFrame(){
-    if(videoElement.currentTime!=lastFrameTime){
-        lastFrameTime=videoElement.currentTime;
-        
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        updateScreen(poses)
-        
-        updateVideo()
-    }else {
-        updateVideo()
-    }
+    
+    
 }
 
 async function loadModel(flagConfig){  
@@ -211,11 +195,7 @@ async function loadCamera(){
     videoElement.width = videoWidth;
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        
-        updateScreen(poses)
         updateVideo()
-
     }
 }
 
@@ -313,6 +293,7 @@ function setFlags(){
 async function loadApp(){    
     await loadModel();
     loadCamera();
+    
 }
 
 loadApp();

@@ -130,7 +130,7 @@ function drawSkeleton(keypoints) {
 }
 
 async function loadModel(){  
-   // await setEnvFlags();
+    await setEnvFlags();
     detector = await poseDetection.createDetector(model, detectorConfig);
     alert("model built sucessfully? ")
     //start the camera after we have loaded the model

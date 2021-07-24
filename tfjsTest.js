@@ -14,6 +14,7 @@ const detectorConfig = {
   enableSmoothing: true,
   modelType: 'lite'
 };
+/** 
 const flagConfig = {
     WEBGL_VERSION: 1,
     WASM_HAS_SIMD_SUPPORT: false,
@@ -37,40 +38,32 @@ async function setBackendAndEnvFlags(flagConfig) {
         alert("set flags broke");
     }
 }
-
+*/
 
 async function loadModel(){
-    await setBackendAndEnvFlags(flagConfig)
-    try{
+    //await setBackendAndEnvFlags(flagConfig)
+    
     detector = await poseDetection.createDetector(model, detectorConfig);
-    alert("model built sucessfulLY? ")
-    }catch{
-        alert("error?")
-    }
+    //alert("model built sucessfulLY? ")
+    
     //start the camera after we have confitured the backend and loaded the detector 
     camera.start()
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
 loadModel();
-/**
-   * Draw the keypoints and skeleton on the video.
-   * @param poses A list of poses to render.
-   */
-  function drawResults(poses) {
-    for (const pose of poses) {
-      drawResult(pose);
-    }
-  }
-
   
-
+var one = false;
 const camera = new Camera(videoElement, {
     onFrame: async () => {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        const poses = await detector.estimatePoses(videoElement.video, estimationConfig, timestamp);
+        if (!one){
+            console.log(videoElement)
+            one = true;
+        }
+        const poses = await detector.estimatePoses(canvasElement);
         console.log(poses)
         if(poses.keypoints != null){
             console.log(poses.keypoints[0].x)

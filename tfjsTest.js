@@ -6,9 +6,9 @@ const FPSElement = document.getElementById('fps');
 
 const model = poseDetection.SupportedModels.BlazePose;
 const line_width = 1
-const score_threshold = 0.4
-const default_radius = 1
-
+const score_threshold = 0.5
+const default_radius = 2
+var updateFPS = false
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
@@ -27,7 +27,22 @@ const flagConfig = {
     CHECK_COMPUTATION_FOR_ERRORS: false,
 }
 
-const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
+const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
+
+function resizeCanvasToDisplaySize(canvas) {
+    // look up the size the canvas is being displayed
+    const width = canvas.width;
+    const height = canvas.height;
+    // If it's resolution does not match change it
+    if (videoElement.width !== width || videoElement.height !== height) {
+      canvas.width = videoElement.videoWidth;
+      canvas.height = videoElement.videoHeight;
+      return true;
+    }
+ 
+    return false;
+ }
+
 
 async function setEnvFlags(flagConfig) {
     
@@ -43,9 +58,7 @@ if (flagConfig == null) {
 
 
 function drawResults(poses) {
-    for (const pose of poses) {
-        drawResult(pose);
-    }
+    drawResult(poses[0]);
 }
 
 /**
@@ -58,7 +71,7 @@ function drawResult(pose) {
         drawSkeleton(pose['keypoints']);
     }
     else{
-        alert("ugh")
+        //alert("no keypoints")
     }
 }
 
@@ -67,23 +80,14 @@ function drawResult(pose) {
 * @param keypoints A list of keypoints.
 */
 function drawKeypoints(keypoints) {
+    
     const keypointInd = poseDetection.util.getKeypointIndexBySide(model);
-    canvasCtx.fillStyle = 'White';
+    canvasCtx.fillStyle = 'Green';
     canvasCtx.strokeStyle = 'White';
     canvasCtx.lineWidth = line_width;
 
-    for (const i of keypointInd.middle) {
-        drawKeypoint(keypoints[i]);
-    }
-
-    canvasCtx.fillStyle = 'Green';
-    for (const i of keypointInd.left) {
-        drawKeypoint(keypoints[i]);
-    }   
-
-    canvasCtx.fillStyle = 'Orange';
-    for (const i of keypointInd.right) {
-        drawKeypoint(keypoints[i]);
+    for (var i =0; i < keypoints.length;i++){
+        drawKeypoint(keypoints[i])
     }
 }
 
@@ -91,7 +95,6 @@ function drawKeypoint(keypoint) {
     // If score is null, just show the keypoint.
     const score = keypoint.score != null ? keypoint.score : 1;
     const scoreThreshold = score_threshold || 0;
-
     if (score >= scoreThreshold) {
         const circle = new Path2D();
         circle.arc(keypoint.x, keypoint.y, default_radius, 0, 2 * Math.PI);
@@ -135,7 +138,7 @@ async function loadModel(){
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
-loadModel();
+
    
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
@@ -143,7 +146,6 @@ var timesOnResultsRan = 0;
 var FPSTotal =0;
 
 function updateScreen(poses){
-
     currentTime = performance.now();
     FPS = Math.round(1000*(1/(currentTime-lastTime)));
     timesOnResultsRan++; 
@@ -153,21 +155,51 @@ function updateScreen(poses){
         FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
     }
     lastTime = currentTime;
+    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     
-    const estimationConfig = {flipHorizontal: true};
-    const timestamp = performance.now();
-    console.log(poses)
     drawResults(poses)
 
 }/** 
 const camera = new Camera(videoElement, {
-    onFrame: async () => {
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        await updateScreen(poses)
-    }
+    
 });*/
+
+
+
+var lastFrameTime = -1;
+
+function updateVideo(){
+    //checkFrame //requestAnimationFrame makes the transition between poses alot smoother
+    window.requestAnimationFrame(onFrame);
+}
+
+var onFrame = async () => {
+    if(videoElement.currentTime!=lastFrameTime){
+        lastFrameTime=videoElement.currentTime;
+
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        updateScreen(poses)
+        updateVideo()
+    }else {
+        updateVideo()
+    }
+}
+
+async function checkFrame(){
+    if(videoElement.currentTime!=lastFrameTime){
+        lastFrameTime=videoElement.currentTime;
+        
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        updateScreen(poses)
+        
+        updateVideo()
+    }else {
+        updateVideo()
+    }
+}
+
+
 async function loadCamera(){
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       throw new Error(
@@ -177,8 +209,6 @@ async function loadCamera(){
       'audio': false,
       'video': {
         facingMode: 'user',
-        // Only setting the video to a specified size for large screen, on
-        // mobile devices accept the default size.
         width: 640,
         height: 480,
         frameRate: {
@@ -198,6 +228,7 @@ async function loadCamera(){
     });
 
     videoElement.play();
+    resizeCanvasToDisplaySize(canvasElement)
 
     const videoWidth = videoElement.videoWidth;
     const videoHeight = videoElement.videoHeight;
@@ -206,10 +237,17 @@ async function loadCamera(){
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        console.log(poses)
+        
         updateScreen(poses)
+        updateVideo()
 
     }
 }
-loadCamera()
+
+async function loadApp(){
+    await loadModel();
+    loadCamera();
+}
+
+loadApp();
 

@@ -1,5 +1,4 @@
 
-alert('tfjs test numberr four')
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
@@ -14,7 +13,7 @@ const detectorConfig = {
   enableSmoothing: true,
   modelType: 'lite'
 };
-/** 
+
 const flagConfig = {
     WEBGL_VERSION: 1,
     WASM_HAS_SIMD_SUPPORT: false,
@@ -26,27 +25,27 @@ const flagConfig = {
     WEBGL_FLUSH_THRESHOLD: -1,
     CHECK_COMPUTATION_FOR_ERRORS: false,
   }
-async function setBackendAndEnvFlags(flagConfig) {
-    if (flagConfig == null) {
+async function setEnvFlags(flagConfig) {
+    
+if (flagConfig == null) {
       return;
     } else if (typeof flagConfig !== 'object') {
       throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
     } // Check the validation of flags and values.
-    try{
-        tf.env().setFlags(flagConfig);
-    }catch(error){
-        alert("set flags broke");
-    }
+    
+    tf.env().setFlags(flagConfig);
+
 }
-*/
+
 
 async function loadModel(){
-    //await setBackendAndEnvFlags(flagConfig)
+    
+    await setEnvFlags(flagConfig)
     
     detector = await poseDetection.createDetector(model, detectorConfig);
     //alert("model built sucessfulLY? ")
     
-    //start the camera after we have confitured the backend and loaded the detector 
+    //start the camera after we have configured the backend 
     camera.start()
 }
 const estimationConfig = {flipHorizontal: true};
@@ -59,20 +58,8 @@ const camera = new Camera(videoElement, {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        if (!one){
-            console.log(videoElement)
-            one = true;
-        }
-        const poses = await detector.estimatePoses(canvasElement);
+        const poses = await detector.estimatePoses(canvasElement); 
         console.log(poses)
-        if(poses.keypoints != null){
-            console.log(poses.keypoints[0].x)
-        }else{
-            console.log('keypoints are null')
-        }
-        //alert("yay we are running :) ")
-        
     }
 });
-
 

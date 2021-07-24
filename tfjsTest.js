@@ -44,9 +44,9 @@ function resizeCanvasToDisplaySize(canvas) {
  }
 
 
-async function setEnvFlags(flagConfig) {
+async function setEnvFlags() {
     
-if (flagConfig == null) {
+    if (flagConfig == null) {
       return;
     } else if (typeof flagConfig !== 'object') {
       throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);

@@ -24,7 +24,7 @@ const flagConfig = {
     WEBGL_FORCE_F16_TEXTURES: true,
     WEBGL_RENDER_FLOAT32_CAPABLE: false,
     WEBGL_FLUSH_THRESHOLD: -1,
-    CHECK_COMPUTATION_FOR_ERRORS: true,
+    CHECK_COMPUTATION_FOR_ERRORS: false,
 }
 
 const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
@@ -49,7 +49,7 @@ function drawResults(poses) {
 }
 
 /**
-* Draw the keypoints and skeleton on the video.
+* Draw the keypoints and skeleton on the videoElement.
 * @param pose A pose with keypoints to render.
 */
 function drawResult(pose) {
@@ -63,7 +63,7 @@ function drawResult(pose) {
 }
 
 /**
-* Draw the keypoints on the video.
+* Draw the keypoints on the videoElement.
 * @param keypoints A list of keypoints.
 */
 function drawKeypoints(keypoints) {
@@ -100,7 +100,7 @@ function drawKeypoint(keypoint) {
     }
 }
 /**
-* Draw the skeleton of a body on the video.
+* Draw the skeleton of a body on the videoElement.
 * @param keypoints A list of keypoints.
 */
 function drawSkeleton(keypoints) {
@@ -127,16 +127,16 @@ function drawSkeleton(keypoints) {
 }
 
 async function loadModel(){  
-    await setEnvFlags();
+   // await setEnvFlags();
     detector = await poseDetection.createDetector(model, detectorConfig);
     alert("model built sucessfully? ")
     //start the camera after we have loaded the model
-    camera.start()
+    //camera.start()
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
 loadModel();
-  
+   
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 
@@ -153,17 +153,63 @@ function updateScreen(poses){
         FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
     }
     lastTime = currentTime;
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+    
     const estimationConfig = {flipHorizontal: true};
     const timestamp = performance.now();
-    
+    console.log(poses)
     drawResults(poses)
 
-}
+}/** 
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        const poses = await detector.estimatePoses(canvasElement, estimationConfig, timestamp);
-        updateScreen(poses)
+        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        await updateScreen(poses)
     }
-});
+});*/
+async function loadCamera(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error(
+          'Browser API navigator.mediaDevices.getUserMedia not available');
+    }
+    const videoConfig = {
+      'audio': false,
+      'video': {
+        facingMode: 'user',
+        // Only setting the video to a specified size for large screen, on
+        // mobile devices accept the default size.
+        width: 640,
+        height: 480,
+        frameRate: {
+          ideal: 30,
+        }
+      }
+    };
+
+    const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+
+    videoElement.srcObject = stream;
+
+    await new Promise((resolve) => {
+      videoElement.onloadedmetadata = () => {
+        resolve(videoElement);
+      };
+    });
+
+    videoElement.play();
+
+    const videoWidth = videoElement.videoWidth;
+    const videoHeight = videoElement.videoHeight;
+    // Must set below two lines, otherwise video element doesn't show.
+    videoElement.width = videoWidth;
+    videoElement.height = videoHeight;
+    videoElement.onloadeddata = async function() {
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        console.log(poses)
+        updateScreen(poses)
+
+    }
+}
+loadCamera()
+

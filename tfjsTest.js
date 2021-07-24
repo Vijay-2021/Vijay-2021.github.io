@@ -7,10 +7,12 @@ const FPSElement = document.getElementById('fps');
 
 
 const model = poseDetection.SupportedModels.BlazePose;
+
+
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
-  modelType: 'full'
+  modelType: 'lite'
 };
 const flagConfig = {
     WEBGL_VERSION: 1,
@@ -50,15 +52,31 @@ async function loadModel(){
 }
 const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
-loadModel()
+loadModel();
+/**
+   * Draw the keypoints and skeleton on the video.
+   * @param poses A list of poses to render.
+   */
+  function drawResults(poses) {
+    for (const pose of poses) {
+      drawResult(pose);
+    }
+  }
+
+  
 
 const camera = new Camera(videoElement, {
     onFrame: async () => {
 
         canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
         canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-        var poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        
+        const poses = await detector.estimatePoses(videoElement.video, estimationConfig, timestamp);
+        console.log(poses)
+        if(poses.keypoints != null){
+            console.log(poses.keypoints[0].x)
+        }else{
+            console.log('keypoints are null')
+        }
         //alert("yay we are running :) ")
         
     }

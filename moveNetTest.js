@@ -4,16 +4,16 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
 
-
 const model = poseDetection.SupportedModels.MoveNet;
 const line_width = 1
 const score_threshold = 0.5
 const default_radius = 2
 var updateFPS = false
-const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING};
-
+const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING, enableSmoothing: true};
 
 const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
+
+tf.enableProdMode()
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -184,10 +184,10 @@ async function loadCamera(){
       'audio': false,
       'video': {
         facingMode: 'user',
-        width: 640,
-        height: 480,
+        width: 320,
+        height: 240,
         frameRate: {
-          ideal: 30,
+          ideal: 60,
         }
       }
     };

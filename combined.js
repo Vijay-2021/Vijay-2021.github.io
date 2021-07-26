@@ -11,6 +11,8 @@ const default_radius = 2
 
 var updateFPS = false
 
+var sentResizedMessage = false;
+
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
@@ -30,6 +32,8 @@ const poseOptions = {
 };
 
 const pose = new mpPose.Pose(poseOptions);
+
+var landmarks = {}
 
 pose.setOptions({
     modelComplexity: 1,
@@ -53,27 +57,11 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 
-function drawResults(poses) {
-    if(poses != null && poses[0] != null){
-        if (poses[0]['keypoints'] != null ) {
-            
-            console.log("poses below:")
-            console.log(poses[0]['keypoints'])
-            drawResult(poses[0]['keypoints'])
-        }
-        else{
-            //alert("no keypoints")
-        }
-    }else{
-        return;
-    }
-}
 
-function drawResult(pose){
-    if(pose != null){
-        drawKeypoints(pose)
-        drawSkeleton(pose)
-    }
+function drawResult(){
+    console.log(landmarks)
+    drawKeypoints(landmarks)
+    drawSkeleton(landmarks)
 }
 
 /**
@@ -136,7 +124,7 @@ var updateFPS = false;
 var timesOnResultsRan = 0; 
 var FPSTotal =0;
 
-function updateScreen(poses){
+function updateScreen(results){
     currentTime = performance.now();
     FPS = Math.round(1000*(1/(currentTime-lastTime)));
     timesOnResultsRan++; 
@@ -148,29 +136,31 @@ function updateScreen(poses){
     lastTime = currentTime;
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    
-    drawResults(poses)
+    if(using_mediapipe){
+        drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
+        drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    }else{
+        drawResult(results)
+    }
+}
 
+function mpSetLandmarks(results){
+    if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
+        updateScreen(results.poseLandmarks)
+    }
+}
+
+function tfjsSetLandmarks(poses){
+    if(poses != null && poses[0] != null){
+        if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length>0) {
+            updateScreen(poses[0]['keypoints'])
+        }
+    }
+    return false;
 }
 
 function mpResults(results){
-    currentTime = performance.now();
-    FPS = Math.round(1000*(1/(currentTime-lastTime)));
-    timesOnResultsRan++; 
-    FPSTotal += FPS; 
-    avgFPS = Math.round(FPSTotal/timesOnResultsRan);
-    if(updateFPS){
-        FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
-    }
-    lastTime = currentTime;
-    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
-    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    for(var i =0; i < results.poseLandmarks.length;i++){
-        results.poseLandmarks[i].x = results.poseLandmarks[i].x * videoElement.width;
-        results.poseLandmarks[i].y = results.poseLandmarks[i].y * videoElement.height;
-    }
-    drawResult(results.poseLandmarks)
-    console.log(results.poseLandmarks)
+    mpSetLandmarks(results)
 }
 
 
@@ -179,7 +169,7 @@ async function updateVideo(){
         await pose.send({ image: videoElement });
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        await updateScreen(poses)
+        tfjsSetLandmarks(poses)
     }
 
     window.requestAnimationFrame(updateVideo);
@@ -230,7 +220,10 @@ async function loadCamera(){
       'video': {
         facingMode: 'user',
         width: 640,
-        height: 480
+        height: 480,
+        frameRate: {
+          ideal: 30,
+        }
       }
     };
 
@@ -253,6 +246,10 @@ async function loadCamera(){
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
         updateVideo()
+        if(!sentResizedMessage){
+            console.log("Message: resize video");
+            sentResizedMessage = true;
+        }
     }
 }
 
@@ -357,3 +354,4 @@ async function loadApp(){
 }
 
 loadApp();
+

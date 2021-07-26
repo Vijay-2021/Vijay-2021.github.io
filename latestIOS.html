@@ -10,15 +10,18 @@
                 crossorigin="anonymous"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.5/control_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/pose.js" crossorigin="anonymous"></script>
-  
+    
   <!-- Require the peer dependencies of pose-detection. -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
 
-<!-- You must explicitly require a TF.js backend if you're not using the TF.js union bundle. -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+  <!-- You must explicitly require a TF.js backend if you're not using the TF.js union bundle. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+  <!--Using this to test if multi thread and SIMD support are available for WASM-->
+  <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
@@ -30,7 +33,7 @@
       height: 720px;
     }
     /* Extra small devices (phones, 600px and down) */
-    @media only screen and (max-width: 650px) and (orientation: landscape) {
+    @media only screen and (max-width: 900px) and (orientation: landscape) {
       .input_video {
         display: none
       }
@@ -41,7 +44,7 @@
       }
     }
 
-    @media only screen and (max-width: 400px) and (orientation: portrait) {
+    @media only screen and (max-width: 500px) and (orientation: portrait) {
       .input_video {
         display: none
       }
@@ -58,7 +61,7 @@
 <body>
   <div class="container" style="text-align:center;">
     <p id="fps"> FPS: Average FPS:</p>
-    <video playsinline autoplay class="input_video"></video>
+    <video playsinline autoplay class="input_video" id="video"></video>
     <canvas class="output_canvas"></canvas>
     <button id="startEst">Start Pose Est.</button>
     <button id="stopEst">Stop Pose Est.</button>

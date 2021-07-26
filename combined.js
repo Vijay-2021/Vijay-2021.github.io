@@ -260,7 +260,7 @@ async function loadCamera(){
 
     videoElement.play();
     resizeCanvasToDisplaySize(canvasElement)
-
+    alert("got here")
     const videoWidth = videoElement.videoWidth;
     const videoHeight = videoElement.videoHeight;
     // Must set below two lines, otherwise video element doesn't show.
@@ -294,7 +294,7 @@ function getOS() {
     return os;
 }
 
-function setFlags(){
+async function setFlags(){
 
     var WEBGL_VERSION = 2
     var WASM_HAS_SIMD_SUPPORT = false
@@ -361,9 +361,9 @@ function setFlags(){
     }
     
     if(using_mediapipe){
-        loadMediapipe()
+        await loadMediapipe()
     }else{
-        loadModel(flagConfig)
+        await loadModel(flagConfig)
     }
 }
 async function loadApp(){    

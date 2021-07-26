@@ -56,7 +56,7 @@ function resizeCanvasToDisplaySize(canvas) {
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
-            alert("got here")
+            
             console.log("poses below:")
             console.log(poses[0]['keypoints'])
             drawResult(poses[0]['keypoints'])
@@ -179,17 +179,6 @@ async function updateVideo(){
         await pose.send({ image: videoElement });
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        alert("reached here")
-        if(poses!=null){
-            alert("poses is not null")
-            if(poses[0]!=null){
-                alert("first pose is not null")
-                if(poses[0]['keypoints']!=null){
-                    alert("there are keypoints")
-                    alert(poses[0]['keypoints'].length)
-                }
-            }
-        }
         await updateScreen(poses)
     }
 
@@ -260,7 +249,6 @@ async function loadCamera(){
 
     videoElement.play();
     resizeCanvasToDisplaySize(canvasElement)
-    alert("got here")
     const videoWidth = videoElement.videoWidth;
     const videoHeight = videoElement.videoHeight;
     // Must set below two lines, otherwise video element doesn't show.

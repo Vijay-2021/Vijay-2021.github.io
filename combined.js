@@ -52,10 +52,9 @@ function resizeCanvasToDisplaySize(canvas) {
 
 
 
-function drawResult(){
-    console.log(landmarks)
-    drawKeypoints(landmarks)
-    drawSkeleton(landmarks)
+function drawResult(results){
+    drawKeypoints(results)
+    drawSkeleton(results)
 }
 
 /**

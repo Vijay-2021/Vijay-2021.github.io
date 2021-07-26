@@ -25,6 +25,7 @@ var using_mediapipe = false
 
 const mpPose = window;
 
+
 const poseOptions = {
     locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
@@ -319,14 +320,13 @@ async function setFlags(){
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
             break;
-        case 'Android': 
-            using_mediapipe = true
-            alert('android detected')
-            break;
         default: 
             using_mediapipe = true
-            alert('windows detected')
-            break;
+            alert('android detected')
+            loadCamera()
+            loadAndroid()
+            return;
+        
 
     }
 
@@ -344,13 +344,15 @@ async function setFlags(){
     
     if(using_mediapipe){
         await loadMediapipe()
+        loadCamera();
     }else{
         await loadModel(flagConfig)
+        loadCamera();
     }
 }
 async function loadApp(){    
     await setFlags();
-    loadCamera();
+    
 }
 
 loadApp();

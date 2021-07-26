@@ -166,7 +166,7 @@ function mpResults(results){
 
 async function updateVideo(){
     if(using_mediapipe){
-        await pose.send({ image: videoElement });
+        await pose.send({image: videoElement});
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
         tfjsSetLandmarks(poses)
@@ -186,7 +186,7 @@ async function loadModel(flagConfig){
 async function loadMediapipe(){
     
     pose.setOptions({
-        modelComplexity: 0,
+        modelComplexity: 1,
         smoothLandmarks: true,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5

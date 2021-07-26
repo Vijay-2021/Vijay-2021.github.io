@@ -123,23 +123,15 @@ function updateScreen(poses){
 var lastFrameTime = -1;
 
 async function updateVideo(){
-    //checkFrame //requestAnimationFrame makes the transition between poses alot smoother
     const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
     await updateScreen(poses)
-    console.log(poses)
-
     window.requestAnimationFrame(updateVideo);
-}
-
-async function checkFrame(){
-    
-    
 }
 
 async function loadModel(flagConfig){  
     await setFlags(flagConfig);
     detector = await poseDetection.createDetector(model, detectorConfig);
-    alert("model built sucessfully? ")
+    alert("model built sucessfully")
     //start the camera after we have loaded the model
     //camera.start()
 }
@@ -236,30 +228,32 @@ function setFlags(){
 
     wasmFeatureDetect.simd().then(simdSupported=>{
         if(simdSupported){
-            alert("yay simd supported")
+            alert("simd is supported")
             WASM_HAS_SIMD_SUPPORT = true
         }else{
-            alert("aww no simd")
+            alert("no simd")
         }
     });
+    
     wasmFeatureDetect.threads().then(threadsSupported=>{
         if(threadsSupported){
-            alert("yay multi thread support")
+            alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         }else{
-            alert("aww no multi thread")
+            alert("no multi thread support")
         }
     });
+
     switch(getOS()){
         case 'Mac OS':
-            alert('Macky mack')
+            alert('Mac detected')
             WEBGL_VERSION = 1
             break;
         case 'Linux': 
-            alert('best platform')
+            alert('linux detected')
             break;
         case 'iOS': 
-            alert('ew ios detected, u should switch to android')
+            alert('ios detected')
             WEBGL_VERSION = 1
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
@@ -267,7 +261,7 @@ function setFlags(){
         case 'Android': 
             WEBGL_FORCE_F16_TEXTURES = true
             WEBGL_RENDER_FLOAT32_CAPABLE = false
-            alert('android good choice')
+            alert('android detected')
             break;
         default: 
             alert('windows')

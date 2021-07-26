@@ -151,20 +151,20 @@ function mpSetLandmarks(results){
     return false;
 }
 
-async function tfjsSetLandmarks(poses){
+function tfjsSetLandmarks(poses){
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
             landmarks = poses[0]['keypoints']
-            await updateScreen()
+            updateScreen()
             return true;
         }
     }
     return false;
 }
 
-async function mpResults(results){
+function mpResults(results){
     if(mpSetLandmarks(results)){
-        await updateScreen();
+        updateScreen();
         return;
     }else{
         return;
@@ -177,7 +177,7 @@ async function updateVideo(){
         await pose.send({ image: videoElement });
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        await tfjsSetLandmarks(poses)
+        tfjsSetLandmarks(poses)
     }
 
     window.requestAnimationFrame(updateVideo);

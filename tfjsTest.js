@@ -35,6 +35,7 @@ function resizeCanvasToDisplaySize(canvas) {
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
+            console.log(poses[0]['keypoints'])
             drawKeypoints(poses[0]['keypoints']);
             drawSkeleton(poses[0]['keypoints']);
         }

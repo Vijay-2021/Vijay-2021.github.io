@@ -230,10 +230,7 @@ async function loadCamera(){
       'video': {
         facingMode: 'user',
         width: 640,
-        height: 480,
-        frameRate: {
-          ideal: 30,
-        }
+        height: 480
       }
     };
 

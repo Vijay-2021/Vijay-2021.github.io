@@ -164,13 +164,16 @@ function mpResults(results){
     mpSetLandmarks(results)
 }
 
-
+lastFrameTime =0
 async function updateVideo(){
-    if(using_mediapipe){
-        await pose.send({image: videoElement});
-    }else{
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        tfjsSetLandmarks(poses)
+    if(videoElement.currentTime!=lastFrameTime){
+        lastFrameTime=videoElement.currentTime;
+        if(using_mediapipe){
+            await pose.send({image: videoElement});
+        }else{
+            const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+            tfjsSetLandmarks(poses)
+        }
     }
 
     window.requestAnimationFrame(updateVideo);
@@ -311,7 +314,7 @@ async function setFlags(){
             WEBGL_VERSION = 1
             break;
         case 'Linux': 
-            should_use_mediapipe = true
+            using_mediapipe = true
             alert('linux detected')
             break;
         case 'iOS': 
@@ -322,10 +325,8 @@ async function setFlags(){
             break;
         default: 
             using_mediapipe = true
-            alert('android detected')
-            loadCamera()
-            loadAndroid()
-            return;
+            //alert('android detected')
+            
         
 
     }
@@ -343,8 +344,10 @@ async function setFlags(){
     }
     
     if(using_mediapipe){
+        alert("here")
         await loadMediapipe()
         loadCamera();
+        
     }else{
         await loadModel(flagConfig)
         loadCamera();

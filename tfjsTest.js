@@ -15,8 +15,9 @@ const detectorConfig = {
   modelType: 'full'
 };
 
+var sentResizedMessage = false;
 
-const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
+const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -35,8 +36,6 @@ function resizeCanvasToDisplaySize(canvas) {
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
-            console.log("poses below:")
-            console.log(poses[0]['keypoints'])
             drawKeypoints(poses[0]['keypoints']);
             drawSkeleton(poses[0]['keypoints']);
         }
@@ -120,41 +119,18 @@ function updateScreen(poses){
     lastTime = currentTime;
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    
+    if(poses != null && poses[0] != null){
+        if (poses[0]['keypoints'] != null ) {
+            console.log(JSON.stringify(poses[0]['keypoints']))
+        }
+    }
     drawResults(poses)
-
 }
 
-var lastFrameTime = -1;
-
-function updateVideo(){
-    //checkFrame //requestAnimationFrame makes the transition between poses alot smoother
-    window.requestAnimationFrame(onFrame);
-}
-
-var onFrame = async () => {
-    if(videoElement.currentTime!=lastFrameTime){
-        lastFrameTime=videoElement.currentTime;
-
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        updateScreen(poses)
-        updateVideo()
-    }else {
-        updateVideo()
-    }
-}
-
-async function checkFrame(){
-    if(videoElement.currentTime!=lastFrameTime){
-        lastFrameTime=videoElement.currentTime;
-        
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        updateScreen(poses)
-        
-        updateVideo()
-    }else {
-        updateVideo()
-    }
+async function updateVideo(){
+    const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+    updateScreen(poses)
+    window.requestAnimationFrame(updateVideo);
 }
 
 async function loadModel(flagConfig){  
@@ -216,9 +192,10 @@ async function loadCamera(){
     videoElement.width = videoWidth;
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
-        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        
-        updateScreen(poses)
+        if(!sentResizedMessage){
+            console.log("Message: resize video");
+            sentResizedMessage = true;
+        }
         updateVideo()
 
     }

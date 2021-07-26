@@ -144,10 +144,10 @@ function mpSetLandmarks(results){
     }
 }
 
-function tfjsSetLandmarks(poses){
+async function tfjsSetLandmarks(poses){
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length>0) {
-            updateScreen(poses[0]['keypoints'])
+            await updateScreen(poses[0]['keypoints'])
         }
     }
     return false;

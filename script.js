@@ -32,6 +32,7 @@ function onResults(results) {
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     drawLandmarks(canvasCtx, results.poseLandmarks,{ color: '#FF0000', lineWidth: 1.0 });
     //canvasCtx.restore();
+    console.log(results.poseLandmarks)
 }
 
 const pose = new mpPose.Pose(poseOptions);

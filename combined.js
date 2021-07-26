@@ -11,8 +11,6 @@ const default_radius = 2
 
 var updateFPS = false
 
-var sentResizedMessage = false;
-
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
@@ -32,8 +30,6 @@ const poseOptions = {
 };
 
 const pose = new mpPose.Pose(poseOptions);
-
-var landmarks = {}
 
 pose.setOptions({
     modelComplexity: 1,
@@ -57,11 +53,27 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 
+function drawResults(poses) {
+    if(poses != null && poses[0] != null){
+        if (poses[0]['keypoints'] != null ) {
+            
+            console.log("poses below:")
+            console.log(poses[0]['keypoints'])
+            drawResult(poses[0]['keypoints'])
+        }
+        else{
+            //alert("no keypoints")
+        }
+    }else{
+        return;
+    }
+}
 
-function drawResult(){
-    console.log(landmarks)
-    drawKeypoints(landmarks)
-    drawSkeleton(landmarks)
+function drawResult(pose){
+    if(pose != null){
+        drawKeypoints(pose)
+        drawSkeleton(pose)
+    }
 }
 
 /**
@@ -124,7 +136,7 @@ var updateFPS = false;
 var timesOnResultsRan = 0; 
 var FPSTotal =0;
 
-function updateScreen(){
+function updateScreen(poses){
     currentTime = performance.now();
     FPS = Math.round(1000*(1/(currentTime-lastTime)));
     timesOnResultsRan++; 
@@ -136,39 +148,29 @@ function updateScreen(){
     lastTime = currentTime;
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    drawResult()
-}
+    
+    drawResults(poses)
 
-function mpSetLandmarks(results){
-    if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
-        for(var i =0; i < results.poseLandmarks.length;i++){
-            results.poseLandmarks[i].x = results.poseLandmarks[i].x * videoElement.width;
-            results.poseLandmarks[i].y = results.poseLandmarks[i].y * videoElement.height;
-        }
-        landmarks=results.poseLandmarks
-        return true;
-    }
-    return false;
-}
-
-function tfjsSetLandmarks(poses){
-    if(poses != null && poses[0] != null){
-        if (poses[0]['keypoints'] != null ) {
-            landmarks = poses[0]['keypoints']
-            updateScreen()
-            return true;
-        }
-    }
-    return false;
 }
 
 function mpResults(results){
-    if(mpSetLandmarks(results)){
-        updateScreen();
-        return;
-    }else{
-        return;
+    currentTime = performance.now();
+    FPS = Math.round(1000*(1/(currentTime-lastTime)));
+    timesOnResultsRan++; 
+    FPSTotal += FPS; 
+    avgFPS = Math.round(FPSTotal/timesOnResultsRan);
+    if(updateFPS){
+        FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
     }
+    lastTime = currentTime;
+    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+    for(var i =0; i < results.poseLandmarks.length;i++){
+        results.poseLandmarks[i].x = results.poseLandmarks[i].x * videoElement.width;
+        results.poseLandmarks[i].y = results.poseLandmarks[i].y * videoElement.height;
+    }
+    drawResult(results.poseLandmarks)
+    console.log(results.poseLandmarks)
 }
 
 
@@ -177,7 +179,7 @@ async function updateVideo(){
         await pose.send({ image: videoElement });
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-        tfjsSetLandmarks(poses)
+        await updateScreen(poses)
     }
 
     window.requestAnimationFrame(updateVideo);
@@ -254,10 +256,6 @@ async function loadCamera(){
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
         updateVideo()
-        if(!sentResizedMessage){
-            console.log("Message: resize video");
-            sentResizedMessage = true;
-        }
     }
 }
 
@@ -362,4 +360,3 @@ async function loadApp(){
 }
 
 loadApp();
-

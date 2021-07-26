@@ -238,30 +238,30 @@ function setFlags(){
 
     wasmFeatureDetect.simd().then(simdSupported=>{
         if(simdSupported){
-            alert("simd supported")
+          //  alert("simd supported")
             WASM_HAS_SIMD_SUPPORT = true
         }else{
-            alert("no simd")
+           // alert("no simd")
         }
     });
     wasmFeatureDetect.threads().then(threadsSupported=>{
         if(threadsSupported){
-            alert("multi thread supported")
+           // alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         }else{
-            alert("no multi thread")
+           // alert("no multi thread")
         }
     });
     switch(getOS()){
         case 'Mac OS':
-            alert('Mac detected')
+           // alert('Mac detected')
             WEBGL_VERSION = 1
             break;
         case 'Linux': 
-            alert('linux detected')
+           // alert('linux detected')
             break;
         case 'iOS': 
-            alert('ios detected')
+           // alert('ios detected')
             WEBGL_VERSION = 1
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
@@ -269,10 +269,10 @@ function setFlags(){
         case 'Android': 
             WEBGL_FORCE_F16_TEXTURES = true
             WEBGL_RENDER_FLOAT32_CAPABLE = false
-            alert('android detected')
+           // alert('android detected')
             break;
         default: 
-            alert('windows detected')
+           // alert('windows detected')
             break;
 
     }

@@ -3,16 +3,40 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
 
-const model = poseDetection.SupportedModels.MoveNet;
+
+const model = poseDetection.SupportedModels.BlazePose;
 const line_width = 1
 const score_threshold = 0.5
 const default_radius = 2
+
 var updateFPS = false
-const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING, enableSmoothing: true};
+
+const detectorConfig = {
+  runtime: 'tfjs',
+  enableSmoothing: true,
+  modelType: 'full'
+};
 
 const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
 
-tf.enableProdMode()
+var using_mediapipe = false
+
+const mpPose = window;
+
+const poseOptions = {
+    locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
+    }
+};
+
+const pose = new mpPose.Pose(poseOptions);
+
+pose.setOptions({
+    modelComplexity: 1,
+    smoothLandmarks: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+});
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -28,17 +52,26 @@ function resizeCanvasToDisplaySize(canvas) {
     return false;
 }
 
+
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
-            drawKeypoints(poses[0]['keypoints']);
-            drawSkeleton(poses[0]['keypoints']);
+            console.log("poses below:")
+            console.log(poses[0]['keypoints'])
+            drawResult(poses[0]['keypoints'])
         }
         else{
             //alert("no keypoints")
         }
     }else{
         return;
+    }
+}
+
+function drawResult(pose){
+    if(pose != null){
+        drawKeypoints(pose)
+        drawSkeleton(pose)
     }
 }
 
@@ -119,20 +152,56 @@ function updateScreen(poses){
 
 }
 
-var lastFrameTime = -1;
+function mpResults(results){
+    currentTime = performance.now();
+    FPS = Math.round(1000*(1/(currentTime-lastTime)));
+    timesOnResultsRan++; 
+    FPSTotal += FPS; 
+    avgFPS = Math.round(FPSTotal/timesOnResultsRan);
+    if(updateFPS){
+        FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
+    }
+    lastTime = currentTime;
+    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+    for(var i =0; i < results.poseLandmarks.length;i++){
+        results.poseLandmarks[i].x = results.poseLandmarks[i].x * videoElement.width;
+        results.poseLandmarks[i].y = results.poseLandmarks[i].y * videoElement.height;
+    }
+    drawResult(results.poseLandmarks)
+    console.log(results.poseLandmarks)
+}
+
 
 async function updateVideo(){
-    const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-    await updateScreen(poses)
+    if(using_mediapipe){
+        await pose.send({ image: videoElement });
+    }else{
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        await updateScreen(poses)
+    }
+
     window.requestAnimationFrame(updateVideo);
 }
 
 async function loadModel(flagConfig){  
-    await setFlags(flagConfig);
+    await setEnvFlags(flagConfig)
     detector = await poseDetection.createDetector(model, detectorConfig);
     alert("model built sucessfully")
     //start the camera after we have loaded the model
     //camera.start()
+}
+
+async function loadMediapipe(){
+    
+    pose.setOptions({
+        modelComplexity: 0,
+        smoothLandmarks: true,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+    });
+
+    pose.onResults(mpResults);
 }
 
 async function setEnvFlags(flagConfig) {
@@ -159,10 +228,10 @@ async function loadCamera(){
       'audio': false,
       'video': {
         facingMode: 'user',
-        width: 320,
-        height: 240,
+        width: 640,
+        height: 480,
         frameRate: {
-          ideal: 60,
+          ideal: 30,
         }
       }
     };
@@ -227,28 +296,27 @@ function setFlags(){
 
     wasmFeatureDetect.simd().then(simdSupported=>{
         if(simdSupported){
-            alert("simd is supported")
+            alert("simd supported")
             WASM_HAS_SIMD_SUPPORT = true
         }else{
             alert("no simd")
         }
     });
-    
     wasmFeatureDetect.threads().then(threadsSupported=>{
         if(threadsSupported){
             alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         }else{
-            alert("no multi thread support")
+            alert("no multi thread")
         }
     });
-
     switch(getOS()){
         case 'Mac OS':
             alert('Mac detected')
             WEBGL_VERSION = 1
             break;
         case 'Linux': 
+            should_use_mediapipe = true
             alert('linux detected')
             break;
         case 'iOS': 
@@ -258,12 +326,12 @@ function setFlags(){
             WEBGL_RENDER_FLOAT32_CAPABLE = false
             break;
         case 'Android': 
-            WEBGL_FORCE_F16_TEXTURES = true
-            WEBGL_RENDER_FLOAT32_CAPABLE = false
+            using_mediapipe = true
             alert('android detected')
             break;
         default: 
-            alert('windows')
+            using_mediapipe = true
+            alert('windows detected')
             break;
 
     }
@@ -280,13 +348,15 @@ function setFlags(){
         CHECK_COMPUTATION_FOR_ERRORS: CHECK_COMPUTATION_FOR_ERRORS,
     }
     
-    setEnvFlags(flagConfig)
-
+    if(using_mediapipe){
+        loadMediapipe()
+    }else{
+        loadModel(flagConfig)
+    }
 }
 async function loadApp(){    
-    await loadModel();
+    await setFlags();
     loadCamera();
-    
 }
 
 loadApp();

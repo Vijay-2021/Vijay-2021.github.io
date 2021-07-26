@@ -36,13 +36,6 @@ const pose = new mpPose.Pose(poseOptions);
 
 var landmarks = {}
 
-pose.setOptions({
-    modelComplexity: 1,
-    smoothLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
-});
-
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
     const width = canvas.width;
@@ -163,7 +156,6 @@ function tfjsSetLandmarks(poses){
 function mpResults(results){
     mpSetLandmarks(results)
 }
-
 
 async function updateVideo(){
     if(using_mediapipe){
@@ -310,24 +302,22 @@ async function setFlags(){
             alert('Mac detected')
             WEBGL_VERSION = 1
             break;
-        case 'Linux': 
-            should_use_mediapipe = true
-            alert('linux detected')
-            break;
-        case 'iOS': 
-            alert('ios detected')
-            WEBGL_VERSION = 1
-            WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
-            WEBGL_RENDER_FLOAT32_CAPABLE = false
-            break;
-        default: 
+        case 'Windows':
+        case 'Linux':
             using_mediapipe = true
+            alert("windows or linux")
+            break;
+        case 'Android': 
             alert('android detected')
             loadCamera()
             loadAndroid()
             return;
-        
-
+        default: 
+            alert('ios or no type detected')
+            WEBGL_VERSION = 1
+            WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
+            WEBGL_RENDER_FLOAT32_CAPABLE = false
+            break;
     }
 
     var flagConfig = {
@@ -351,9 +341,7 @@ async function setFlags(){
     }
 }
 async function loadApp(){    
-    await setFlags();
-    
+    await setFlags();    
 }
-
 loadApp();
 

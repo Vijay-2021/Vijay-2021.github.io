@@ -96,7 +96,7 @@
     var w = {
         color: "white",
         lineWidth: 2,
-        radius: 3.5,
+        radius: 2.5,
         visibilityMin: .5
     };
     function x(a) {

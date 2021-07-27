@@ -44,8 +44,8 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 function updateScreen(results){
-    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
-    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
     drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     console.log(results)

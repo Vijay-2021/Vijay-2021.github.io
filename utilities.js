@@ -47,8 +47,8 @@ async function setupCamera(){
         'audio': false,
         'video': {
           facingMode: 'user',
-          width: 640,
-          height: 480
+          width: {ideal: 320},
+          height: {ideal: 240}
         }
       };
   

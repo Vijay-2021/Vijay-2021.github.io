@@ -62,24 +62,15 @@ async function tfjsSetLandmarks(poses){
     }
     return false;
 }
-var lastFrameTime = 0
 
-function updateVideo(){
-    window.requestAnimationFrame(function(){r()})
-}
-function r(){
-    videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime);
-    onFrame().then(function(){updateVideo()}) //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
-}
-
-async function onFrame(){
+async function updateVideo(){
     if(using_mediapipe){
         await pose.send({image: videoElement});
     }else{
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
         tfjsSetLandmarks(poses)
     }
-    
+    window.requestAnimationFrame(updateVideo);
 }
 
 const estimationConfig = {flipHorizontal: true};
@@ -138,7 +129,7 @@ async function setupApp(){
             using_mediapipe = true
             break;
         case 'Android': 
-            await loadAndroid()
+            using_mediapipe = true
             return;
         default: 
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase

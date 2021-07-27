@@ -101,37 +101,29 @@ async function setupApp(){
 
     wasmFeatureDetect.simd().then(simdSupported=>{
         if(simdSupported){
-            alert("simd supported")
             WASM_HAS_SIMD_SUPPORT = true
         }else{
-            alert("no simd")
         }
     });
     wasmFeatureDetect.threads().then(threadsSupported=>{
         if(threadsSupported){
-            alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         }else{
-            alert("no multi thread")
         }
     });
     switch(getOS()){
         case 'Mac OS':
-            alert('Mac detected')
             WEBGL_VERSION = 1
             break;
         case 'Windows':
         case 'Linux':
             using_mediapipe = true
-            alert("windows or linux")
             break;
         case 'Android': 
-            alert('android detected')
             setupCamera()
             await loadAndroid()
             return;
         default: 
-            alert('ios or no type detected')
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false

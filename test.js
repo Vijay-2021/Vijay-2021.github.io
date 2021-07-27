@@ -126,8 +126,6 @@ async function setupApp(){
             break;
         case 'Windows':
         case 'Linux':
-            using_mediapipe = true
-            break;
         case 'Android': 
             using_mediapipe = true
             break;

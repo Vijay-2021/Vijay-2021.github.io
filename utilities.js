@@ -64,7 +64,7 @@ async function setupCamera(){
           resolve(videoElement);
         };
       });
-  
+      alert("5 bucks it doesn't play this alert because onloadedmetadata has already happened")
       videoElement.play();
       resizeCanvasToDisplaySize(canvasElement)
       const videoWidth = videoElement.videoWidth;

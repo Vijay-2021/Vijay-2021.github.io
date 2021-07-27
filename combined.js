@@ -167,10 +167,9 @@ async function setupApp(){
             break;
         case 'Android': 
             alert('android detected')
-            using_mediapipe = true
             loadCamera()
             loadAndroid()
-            return;//we don't want to run the windows setup
+            break;
         default: 
             alert('ios or no type detected')
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase

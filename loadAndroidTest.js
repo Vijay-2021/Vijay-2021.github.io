@@ -1,16 +1,9 @@
 var lastFrameTime = 0 
 
 function setLandMarksAndroid(results){
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-    
-    if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
-        for(var i=0; i < results.poseLandmarks.length;i++){
-            results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
-            results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
-        }
-        updateScreen(results.poseLandmarks)
-    }
+    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
+    updateScreen(results.poseLandmarks)
 }
 
 function updateVideoAndroid(){
@@ -42,5 +35,6 @@ function loadAndroid(){
             sentResizedMessage = true;
         }
     }
+    pose.onResults(setLandMarksAndroid);
 
 }

@@ -45,6 +45,7 @@ function resizeCanvasToDisplaySize(canvas) {
 
 function updateScreen(results){
     //landmarks = results; <- use this in case we want to do more stuff on the website side
+
     drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     console.log(JSON.stringify(results))
@@ -126,8 +127,8 @@ async function setupApp(){
             break;
         case 'Windows':
         case 'Linux':
-            using_mediapipe = true
-            break;
+            await loadAndroid()
+            return;
         case 'Android': 
             await loadAndroid()
             return;

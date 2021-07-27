@@ -44,9 +44,9 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 function updateScreen(results){
-    landmarks = results;
-    drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
-    drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    //landmarks = results; <- use this in case we want to do more stuff on the website side
+    //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
+    //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     console.log(results)
     runFPSUpdate()
 }
@@ -87,6 +87,15 @@ async function loadCamera(){
     }
 }
 
+/***
+ * Main function of the app. Loads specific versions of the model for Windows/Linux, Android, Mac, and IoS respectively
+ * IOS/Mac are the two platforms that use the flags. The flags are part of setting up the tfjs environment. IoS and Mac must use tfjs
+ * (although it is slower) as tfjs allows us to toggle WEBGL_1 on, whereas windows/linux/android can use webgl2 so they all use mediapipe
+ * IoS also uses float_16 textures incase float 32 operations are not supported. 
+ * Both Android and Windows use the mediapipe version of the code. However, Android runs the code through the Mediapipe camera class, 
+ * the reason I did this is because I found that android detected poses extremely poorly using the loop that I setup to run the 
+ * video code(updateVideo) even though it was getting 9-10fps on average. The med
+ */
 async function setupApp(){
 
     var WEBGL_VERSION = 2

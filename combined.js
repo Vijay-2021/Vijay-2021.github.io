@@ -129,7 +129,6 @@ async function setupApp(){
             using_mediapipe = true
             break;
         case 'Android': 
-            setupCamera()
             await loadAndroid()
             return;
         default: 

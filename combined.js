@@ -167,9 +167,8 @@ async function setupApp(){
             break;
         case 'Android': 
             alert('android detected')
-            loadCamera()
             loadAndroid()
-            break;
+            return;
         default: 
             alert('ios or no type detected')
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase

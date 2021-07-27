@@ -38,7 +38,7 @@ function runFPSUpdate(){
     lastTime = currentTime;
 }
 
-function setupCamera(){
+async function setupCamera(){
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error(
             'Browser API navigator.mediaDevices.getUserMedia not available');

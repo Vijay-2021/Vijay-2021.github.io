@@ -6,24 +6,26 @@ function setLandMarksAndroid(results){
     updateScreen(results.poseLandmarks)
 }
 
-function updateVideoAndroid(){
-    window.requestAnimationFrame(function(){nextFrame()})
+async function updateVideoAndroid(){
+    await pose.send({image: videoElement});
+    window.requestAnimationFrame(updateVideoAndroid)
 }
+
 function nextFrame(){
     videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime);
     onFrameAndroid().then(function(){updateVideoAndroid()}) //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
 }
 
 async function onFrameAndroid(){
-    await pose.send({image: videoElement});
+    
 }
 function loadAndroid(){
 
     pose.setOptions({
-        modelComplexity: 1,
+        modelComplexity: 0,
         smoothLandmarks: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
+        minDetectionConfidence: 0.6,
+        minTrackingConfidence: 0.75
     });
 
     setupCamera()

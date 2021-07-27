@@ -123,9 +123,10 @@ function updateScreen(poses){
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
             console.log(JSON.stringify(poses[0]['keypoints']))
+            drawResults(poses)
         }
     }
-    drawResults(poses)
+   
 }
 
 async function updateVideo(){

@@ -96,7 +96,7 @@
     var w = {
         color: "white",
         lineWidth: 2,
-        radius: 3.5,
+        radius: 2.5,
         visibilityMin: .5
     };
     function x(a) {
@@ -134,7 +134,7 @@
                         from: f
                     });
                     var g = new Path2D;
-                    g.arc(f.x * d.width, f.y * d.height, y(b.radius, {
+                    g.arc(f.x , f.y , y(b.radius, {
                         index: e,
                         from: f
                     }), 0, 2 * Math.PI);
@@ -164,7 +164,7 @@
                     index: f,
                     from: g,
                     to: k
-                }), a.moveTo(g.x * e.width, g.y * e.height), a.lineTo(k.x * e.width, k.y * e.height));
+                }), a.moveTo(g.x , g.y), a.lineTo(k.x , k.y));
                 ++f;
                 a.stroke()
             }

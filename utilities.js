@@ -72,4 +72,5 @@ async function setupCamera(){
       // Must set below two lines, otherwise video element doesn't show.
       videoElement.width = videoWidth;
       videoElement.height = videoHeight;
+      alert("we are here")
 }

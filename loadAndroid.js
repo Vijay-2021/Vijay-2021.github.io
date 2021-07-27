@@ -30,5 +30,5 @@ function loadAndroid(){
     });
     camera.start()
     setupCamera()
-    resizeCanvasToDisplaySize(canvasElement)
+    alert("finished setup camera, shoot")
 }

@@ -44,8 +44,8 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 function updateScreen(results){
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     console.log(results)
@@ -85,39 +85,7 @@ const estimationConfig = {flipHorizontal: true};
 const timestamp = performance.now();
 
 async function loadCamera(){
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error(
-          'Browser API navigator.mediaDevices.getUserMedia not available');
-    }
-    const videoConfig = {
-      'audio': false,
-      'video': {
-        facingMode: 'user',
-        width: 640,
-        height: 480,
-        frameRate: {
-          ideal: 30,
-        }
-      }
-    };
-
-    const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
-
-    videoElement.srcObject = stream;
-
-    await new Promise((resolve) => {
-      videoElement.onloadedmetadata = () => {
-        resolve(videoElement);
-      };
-    });
-
-    videoElement.play();
-    resizeCanvasToDisplaySize(canvasElement)
-    const videoWidth = videoElement.videoWidth;
-    const videoHeight = videoElement.videoHeight;
-    // Must set below two lines, otherwise video element doesn't show.
-    videoElement.width = videoWidth;
-    videoElement.height = videoHeight;
+    setupCamera()
     videoElement.onloadeddata = async function() {
         updateVideo()
         if(!sentResizedMessage){

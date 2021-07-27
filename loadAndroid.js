@@ -9,9 +9,8 @@ function loadAndroid(){
     });
 
     pose.onResults(mpSetLandmarks);
-    var sentResizedMessage = false;
     
-    resizeCanvasToDisplaySize(canvasElement)
+    var sentResizedMessage = false;
 
     const camera = new Camera(videoElement, {
         onFrame: async () => {
@@ -25,4 +24,5 @@ function loadAndroid(){
         }
     });
     camera.start()
+    setupCamera()
 }

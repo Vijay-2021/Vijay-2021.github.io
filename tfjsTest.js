@@ -10,6 +10,7 @@ const line_width = 1
 const score_threshold = 0.5
 const default_radius = 2
 var updateFPS = false
+
 const detectorConfig = {
   runtime: 'tfjs',
   enableSmoothing: true,
@@ -20,6 +21,9 @@ var sentResizedMessage = false;
 
 const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
 
+/***
+ * Fixes canvas size, without the mediapipe utils the canvas is not sized correctly(either that or I implemented canvas wrong)
+ */
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
     const width = canvas.width;
@@ -34,6 +38,10 @@ function resizeCanvasToDisplaySize(canvas) {
     return false;
 }
 
+/***
+ * Poses is a 2d array of json keypoint objects for tfjs(we only need to worry about the first index though as blazepose only 
+ * detects a single person)
+ */
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {

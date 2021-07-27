@@ -1,4 +1,4 @@
-function setLandMarksAndroid(){
+function setLandMarksAndroid(results){
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
     

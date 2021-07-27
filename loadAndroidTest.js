@@ -7,7 +7,7 @@ function setLandMarksAndroid(results){
 }
 
 async function updateVideoAndroid(){
-    window.requestAnimationFrame(nextFrame)
+    window.requestAnimationFrame(function(){nextFrame()})
 }
 
 function nextFrame(){
@@ -21,10 +21,10 @@ async function onFrameAndroid(){
 function loadAndroid(){
 
     pose.setOptions({
-        modelComplexity: 0,
+        modelComplexity: 1,
         smoothLandmarks: true,
-        minDetectionConfidence: 0.75,
-        minTrackingConfidence: 0.85
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.75
     });
 
     setupCamera()

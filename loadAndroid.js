@@ -20,7 +20,7 @@ function loadAndroid(){
         minTrackingConfidence: 0.5
     });
 
-    pose.onResults(mpSetLandmarks);
+    pose.onResults(setLandMarksAndroid);
     
     var sentResizedMessage = false;
 

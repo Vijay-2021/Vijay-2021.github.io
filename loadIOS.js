@@ -10,7 +10,7 @@ async function loadIOS(flagConfig){
 }
 async function loadModel(){  
     detector = await poseDetection.createDetector(model, detectorConfig);
-    alert("model built sucessfully")
+    //alert("model built sucessfully")
     //start the camera after we have loaded the model
     //camera.start()
 }

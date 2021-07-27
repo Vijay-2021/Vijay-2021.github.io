@@ -1,6 +1,6 @@
 
 function loadAndroid(){
-    
+
     pose.setOptions({
         modelComplexity: 1,
         smoothLandmarks: true,
@@ -10,6 +10,8 @@ function loadAndroid(){
 
     pose.onResults(mpSetLandmarks);
     var sentResizedMessage = false;
+    
+    resizeCanvasToDisplaySize(canvasElement)
 
     const camera = new Camera(videoElement, {
         onFrame: async () => {

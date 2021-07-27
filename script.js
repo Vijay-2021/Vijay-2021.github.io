@@ -38,8 +38,8 @@ const pose = new mpPose.Pose(poseOptions);
 pose.setOptions({
     modelComplexity: 0,
     smoothLandmarks: true,
-    minDetectionConfidence: 0.75,
-    minTrackingConfidence: 0.85
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
 });
 pose.onResults(onResults);
 var sentResizedMessage = false;

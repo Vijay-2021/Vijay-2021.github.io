@@ -29,4 +29,6 @@ function loadAndroid(){
         }
     });
     camera.start()
+    setupCamera()
+    resizeCanvasToDisplaySize(canvasElement)
 }

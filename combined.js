@@ -135,8 +135,8 @@ async function setupApp(){
             break;
         case 'Android': 
             alert('android detected')
-            await loadAndroid()
             setupCamera()
+            await loadAndroid()
             return;
         default: 
             alert('ios or no type detected')

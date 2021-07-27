@@ -29,6 +29,4 @@ function loadAndroid(){
         }
     });
     camera.start()
-    setupCamera()
-    alert("finished setup camera, shoot")
 }

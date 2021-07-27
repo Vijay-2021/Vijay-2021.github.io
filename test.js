@@ -126,9 +126,11 @@ async function setupApp(){
             break;
         case 'Windows':
         case 'Linux':
-        case 'Android': 
             using_mediapipe = true
             break;
+        case 'Android': 
+            await loadAndroid()
+            return;
         default: 
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 

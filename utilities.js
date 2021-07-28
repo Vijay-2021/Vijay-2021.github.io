@@ -285,7 +285,7 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
       canvasCtx.fillStyle = "#01FD0C";
       canvasCtx.lineWidth = 0.5;
       var g = new Path2D();
-      g.arc(bodypart[i].x * width, bodypart[i].y * height, 1.0, 0, 2 * Math.PI);
+      g.arc(bodypart[i].x , bodypart[i].y , 1.0, 0, 2 * Math.PI);
       canvasCtx.fill(g);
       canvasCtx.stroke(g);
   }
@@ -314,41 +314,41 @@ function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
   canvasCtx.lineWidth = 0.85;
 
   //Shoulder Segment
-  canvasCtx.moveTo(shoulder[0].x * width, shoulder[0].y * height);
-  canvasCtx.lineTo(shoulder[1].x * width, shoulder[1].y * height);
-  canvasCtx.lineTo(shoulder[2].x * width, shoulder[2].y * height);
+  canvasCtx.moveTo(shoulder[0].x , shoulder[0].y );
+  canvasCtx.lineTo(shoulder[1].x , shoulder[1].y );
+  canvasCtx.lineTo(shoulder[2].x , shoulder[2].y );
 
   //Right Hand Segment
-  canvasCtx.moveTo(righthand[0].x * width, righthand[0].y * height);
-  canvasCtx.lineTo(righthand[1].x * width, righthand[1].y * height);
-  canvasCtx.lineTo(righthand[2].x * width, righthand[2].y * height);
+  canvasCtx.moveTo(righthand[0].x , righthand[0].y );
+  canvasCtx.lineTo(righthand[1].x , righthand[1].y );
+  canvasCtx.lineTo(righthand[2].x , righthand[2].y );
 
   //Left Hand Segment
-  canvasCtx.moveTo(lefthand[0].x * width, lefthand[0].y * height);
-  canvasCtx.lineTo(lefthand[1].x * width, lefthand[1].y * height);
-  canvasCtx.lineTo(lefthand[2].x * width, lefthand[2].y * height);
+  canvasCtx.moveTo(lefthand[0].x , lefthand[0].y );
+  canvasCtx.lineTo(lefthand[1].x , lefthand[1].y );
+  canvasCtx.lineTo(lefthand[2].x , lefthand[2].y );
 
   //Middle Torso Segment
-  canvasCtx.moveTo(middletorso[0].x * width, middletorso[0].y * height);
-  canvasCtx.lineTo(middletorso[1].x * width, middletorso[1].y * height);
-  canvasCtx.lineTo(middletorso[2].x * width, middletorso[2].y * height);
+  canvasCtx.moveTo(middletorso[0].x , middletorso[0].y );
+  canvasCtx.lineTo(middletorso[1].x , middletorso[1].y );
+  canvasCtx.lineTo(middletorso[2].x , middletorso[2].y );
 
   //Hip Segment
-  canvasCtx.moveTo(hip[0].x * width, hip[0].y * height);
-  canvasCtx.lineTo(hip[1].x * width, hip[1].y * height);
-  canvasCtx.lineTo(hip[2].x * width, hip[2].y * height);
+  canvasCtx.moveTo(hip[0].x , hip[0].y );
+  canvasCtx.lineTo(hip[1].x , hip[1].y );
+  canvasCtx.lineTo(hip[2].x , hip[2].y );
 
   //Left Foot Segment
-  canvasCtx.moveTo(leftLeg[0].x * width, leftLeg[0].y * height);
-  canvasCtx.lineTo(leftLeg[1].x * width, leftLeg[1].y * height);
-  canvasCtx.lineTo(leftLeg[2].x * width, leftLeg[2].y * height);
-  canvasCtx.lineTo(leftLeg[3].x * width, leftLeg[3].y * height);
+  canvasCtx.moveTo(leftLeg[0].x , leftLeg[0].y );
+  canvasCtx.lineTo(leftLeg[1].x , leftLeg[1].y );
+  canvasCtx.lineTo(leftLeg[2].x , leftLeg[2].y );
+  canvasCtx.lineTo(leftLeg[3].x , leftLeg[3].y );
 
   //Right Foot Segment
-  canvasCtx.moveTo(rightLeg[0].x * width, rightLeg[0].y * height);
-  canvasCtx.lineTo(rightLeg[1].x * width, rightLeg[1].y * height);
-  canvasCtx.lineTo(rightLeg[2].x * width, rightLeg[2].y * height);
-  canvasCtx.lineTo(rightLeg[3].x * width, rightLeg[3].y * height);
+  canvasCtx.moveTo(rightLeg[0].x , rightLeg[0].y );
+  canvasCtx.lineTo(rightLeg[1].x , rightLeg[1].y );
+  canvasCtx.lineTo(rightLeg[2].x , rightLeg[2].y );
+  canvasCtx.lineTo(rightLeg[3].x , rightLeg[3].y );
 
   canvasCtx.stroke();
   canvasCtx.restore();

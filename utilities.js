@@ -187,6 +187,173 @@ function createAdditionalJoints(poselandmarks) {
   return poselandmarks;
 }
 
+function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
+  let width = ctxwidth;
+  let height = ctxheight;
+
+
+  let fullbody = [
+      poses[11],
+      poses[12],
+      poses[13],
+      poses[14],
+      poses[15],
+      poses[16],
+      poses[23],
+      poses[24],
+      poses[25],
+      poses[26],
+      poses[27],
+      poses[28],
+      poses[32],
+      poses[31],
+      poses[33],
+      poses[34],
+      poses[35],
+  ];
+
+  let bodyjoints = [
+      poses[40],
+      poses[11],
+      poses[12],
+      poses[13],
+      poses[14],
+      poses[15],
+      poses[16],
+      poses[23],
+      poses[24],
+      poses[25],
+      poses[26],
+      poses[27],
+      poses[28],
+      poses[31],
+      poses[32],
+      poses[33],
+      poses[34],
+      poses[35],
+      poses[36],
+      poses[37],
+      poses[38],
+      poses[39],
+  ];
+
+  let upperbody = [
+      poses[11],
+      poses[12],
+      poses[13],
+      poses[14],
+      poses[15],
+      poses[16],
+      poses[23],
+      poses[24],
+      poses[33],
+      poses[34],
+      poses[35],
+  ];
+
+  let lowerbody = [
+      poses[23],
+      poses[24],
+      poses[25],
+      poses[26],
+      poses[27],
+      poses[28],
+      poses[31],
+      poses[32],
+      poses[35],
+  ];
+
+  let sidebody = [
+      poses[23],
+      poses[24],
+      poses[25],
+      poses[26],
+      poses[27],
+      poses[28],
+      poses[31],
+      poses[32],
+      poses[33],
+      poses[34],
+      poses[35],
+  ];
+
+  let bodypart = fullbody;
+
+  for (var i = 0; i < bodypart.length; i++) {
+      canvasCtx.beginPath();
+      canvasCtx.strokeStyle = "#01FD0C";
+      canvasCtx.fillStyle = "#01FD0C";
+      canvasCtx.lineWidth = 0.5;
+      var g = new Path2D();
+      g.arc(bodypart[i].x * width, bodypart[i].y * height, 1.0, 0, 2 * Math.PI);
+      canvasCtx.fill(g);
+      canvasCtx.stroke(g);
+  }
+  canvasCtx.restore();
+}
+
+//33-mid-shoulder, 34: mid-torse, 35: mid-hip, 36: mid_knee, 
+//37: mid_ankle, 38: mid_left_torse, 39: mid_right_torso
+function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
+  let width = ctxwidth;
+  let height = ctxheight;
+
+  let shoulder = [poses[12], poses[33], poses[11]];
+  let righthand = [poses[16], poses[14], poses[12]];
+  let middletorso = [poses[33], poses[34], poses[35]];
+  let lefthand = [poses[11], poses[13], poses[15]];
+
+  let hip = [poses[24], poses[35], poses[23]];
+  let rightLeg = [poses[24], poses[26], poses[28], poses[32]];
+  let leftLeg = [poses[23], poses[25], poses[27], poses[31]];
+
+
+  canvasCtx.beginPath();
+  canvasCtx.strokeStyle = "#00C0F0";
+  //canvasCtx.strokeStyle = "white";
+  canvasCtx.lineWidth = 0.85;
+
+  //Shoulder Segment
+  canvasCtx.moveTo(shoulder[0].x * width, shoulder[0].y * height);
+  canvasCtx.lineTo(shoulder[1].x * width, shoulder[1].y * height);
+  canvasCtx.lineTo(shoulder[2].x * width, shoulder[2].y * height);
+
+  //Right Hand Segment
+  canvasCtx.moveTo(righthand[0].x * width, righthand[0].y * height);
+  canvasCtx.lineTo(righthand[1].x * width, righthand[1].y * height);
+  canvasCtx.lineTo(righthand[2].x * width, righthand[2].y * height);
+
+  //Left Hand Segment
+  canvasCtx.moveTo(lefthand[0].x * width, lefthand[0].y * height);
+  canvasCtx.lineTo(lefthand[1].x * width, lefthand[1].y * height);
+  canvasCtx.lineTo(lefthand[2].x * width, lefthand[2].y * height);
+
+  //Middle Torso Segment
+  canvasCtx.moveTo(middletorso[0].x * width, middletorso[0].y * height);
+  canvasCtx.lineTo(middletorso[1].x * width, middletorso[1].y * height);
+  canvasCtx.lineTo(middletorso[2].x * width, middletorso[2].y * height);
+
+  //Hip Segment
+  canvasCtx.moveTo(hip[0].x * width, hip[0].y * height);
+  canvasCtx.lineTo(hip[1].x * width, hip[1].y * height);
+  canvasCtx.lineTo(hip[2].x * width, hip[2].y * height);
+
+  //Left Foot Segment
+  canvasCtx.moveTo(leftLeg[0].x * width, leftLeg[0].y * height);
+  canvasCtx.lineTo(leftLeg[1].x * width, leftLeg[1].y * height);
+  canvasCtx.lineTo(leftLeg[2].x * width, leftLeg[2].y * height);
+  canvasCtx.lineTo(leftLeg[3].x * width, leftLeg[3].y * height);
+
+  //Right Foot Segment
+  canvasCtx.moveTo(rightLeg[0].x * width, rightLeg[0].y * height);
+  canvasCtx.lineTo(rightLeg[1].x * width, rightLeg[1].y * height);
+  canvasCtx.lineTo(rightLeg[2].x * width, rightLeg[2].y * height);
+  canvasCtx.lineTo(rightLeg[3].x * width, rightLeg[3].y * height);
+
+  canvasCtx.stroke();
+  canvasCtx.restore();
+}
+
 async function setupCamera(){
       
 /**

@@ -1,5 +1,5 @@
 function windowsSetLandmarks(results){
-    
+
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     
@@ -17,7 +17,7 @@ async function loadWindows(){
     
     pose.setOptions({
         modelComplexity: 1,
-        smoothLandmarks: true,
+        smoothLandmarks: false,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });

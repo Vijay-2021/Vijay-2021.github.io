@@ -45,9 +45,11 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 function updateScreen(results){
-    //landmarks = results; <- use this in case we want to do more stuff on the website side
-    drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
-    drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    //landmarks = results; //if we need a results variable
+    //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
+    //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
+    drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
     console.log(JSON.stringify(results))
     runFPSUpdate()
 }

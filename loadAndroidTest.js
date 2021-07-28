@@ -24,7 +24,7 @@ function loadAndroid(){
         modelComplexity: 1,
         smoothLandmarks: true,
         minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.75
+        minTrackingConfidence: 0.65
     });
 
     setupCamera()

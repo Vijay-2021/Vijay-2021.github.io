@@ -4,6 +4,7 @@ const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
 
 
+
 const model = poseDetection.SupportedModels.BlazePose;
 const line_width = 1
 const score_threshold = 0.5

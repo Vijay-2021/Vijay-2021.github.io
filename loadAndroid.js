@@ -4,10 +4,10 @@ function setLandMarksAndroid(results){
     
     if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
         results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
-        for(var i=0; i < results.poseLandmarks.length;i++){
+        /**for(var i=0; i < results.poseLandmarks.length;i++){
             results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
             results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
-        }
+        }*/
         updateScreen(results.poseLandmarks)
     }
 }

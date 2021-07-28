@@ -16,9 +16,9 @@ function loadAndroid(){
 
     pose.setOptions({
         modelComplexity: 1,
-        smoothLandmarks: true,
+        smoothLandmarks: false,
         minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.85
+        minTrackingConfidence: 0.5
     });
 
     pose.onResults(setLandMarksAndroid);

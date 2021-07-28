@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/pose.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+            .btn-space{
+                margin-top:5%;
+                margin-bottom:5%;
+            }
+            #canvas{
+                position: absolute;
+                left:0%;
+                right:0%;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            
+            let leftElbowAngClicked = false;
+            let rightElbowAngClicked = false;
+            let leftTorsoAngClicked = false;
+            let rightTorsoAngClicked = false; 
+
+            const videoElement = document.getElementById('video'); 
+            const canvasElement = document.getElementById('canvas');
+            const canvasCtx = canvasElement.getContext('2d');
+            
+            function setAllClickBooleansFalse(){
+                leftElbowAngClicked = false;
+                rightElbowAngClicked = false;
+                leftTorsoAngClicked = false;
+                rightTorsoAngClicked = false;
+            }
+            
+            $('#leftElbowAng').click(function(){
+                setAllClickBooleansFalse();
+                leftElbowAngClicked= true;
+               
+            });
+
+            $('#rightElbowAng').click(function(){
+                setAllClickBooleansFalse();
+                rightElbowAngClicked= true;
+               
+            });
+            $('#leftTorsoAng').click(function(){
+                setAllClickBooleansFalse();
+                leftTorsoAngClicked= true;
+            });
+            $('#rightTorsoAng').click(function(){
+                setAllClickBooleansFalse();
+                rightTorsoAngClicked= true;
+            });
+          
+
+
+            /** 
+             * @poseResults: the pose keypoints from the last frame
+             * This function takes in the pose results and outputs angles 
+            */
+            function onResults(poseResults){
+                canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                canvasCtx.drawImage(
+                    poseResults.image, 0, 0, canvasElement.width, canvasElement.height);//not sure how to make this appear over the video
+                drawConnectors(canvasCtx, poseResults.poseLandmarks, POSE_CONNECTIONS,
+                { color: '#00FF00', lineWidth: 4 }); //
+                drawLandmarks(canvasCtx, poseResults.poseLandmarks,
+                { color: '#FF0000', lineWidth: 2 }); // so this is the mediapipe function? 
+                 
+                
+            }
+            
+            /**
+             * Calculate the angle C w/ Law of Cosines based on this picture https://images.app.goo.gl/AWhopMcNj85L4de77
+            */
+            function calcAngles(a, b, c){
+                
+                let aX = a['x'];
+                let aY = (3/4)*a['y']; //not sure if this is needed, but I figured it would make sense to scale the Y coords b/c x and y are normalized to [0,1] yet Y represents less distance/points then x?
+                let bX = b['x'];
+                let bY = (3/4)*b['y'];
+                let cX = c['x'];
+                let cY = (3/4)*c['y'];
+
+                let sideA = Math.sqrt(Math.pow(Math.abs(aX-bX),2) + Math.pow(Math.abs(aY-bY),2)); //use distance formula to get sides for Law of Cosines
+                let sideB = Math.sqrt(Math.pow(Math.abs(bX-cX),2) + Math.pow(Math.abs(bY-cY),2));
+                let sideC = Math.sqrt(Math.pow(Math.abs(aX-cX),2) + Math.pow(Math.abs(aY-cY),2)); 
+                console.log("aX: " + aX + " aY: " + aY + " bX: " + bX + " bY: " + bY + " cX: " + cX + " cY: " + cY + " sideA: " + sideA + " sideB: " + sideB + " sideC: " + sideC);
+                
+                let angle = Math.acos((Math.pow(sideA,2)+Math.pow(sideB,2) - Math.pow(sideC,2))/(2*sideA*sideB)); // Law of Cosines
+                let angleDeg = (180*angle)/Math.PI;
+                return angleDeg; 
+               
+            }
+
+            
+            const pose = new Pose({locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
+            }});
+
+            pose.setOptions({
+                upperBodyOnly: false,
+                smoothLandmarks: true,
+                minDetectionConfidence: 0.5,
+                minTrackingConfidence: 0.5
+            });
+            
+            //when there are updated results, the onResults function will be ran 
+            pose.onResults(onResults);
+
+            const camera = new Camera(videoElement, {
+                onFrame: async () => {
+                    await pose.send({image: videoElement});
+                },
+                width: 640,
+                height: 360
+              });
+              camera.start();
+        
+        </script>
+        <div>
+                <video id="video" width="640" height="360" autoplay> test</video>
+                <canvas id="canvas" width="640" height="360"></canvas>
+            
+        </div>
+    </body>
+</html>

@@ -20,9 +20,15 @@ var using_mediapipe = false
 
 var landmarks = {}
 
-const pose = new Pose({locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
-  }});
+const mpPose = window;
+    
+const poseOptions = {
+    locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
+    }
+};
+
+const pose = new mpPose.Pose(poseOptions);
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed

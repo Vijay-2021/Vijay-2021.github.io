@@ -50,7 +50,6 @@ function updateScreen(results){
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
-    alert("drew connectors and joints")
     console.log(JSON.stringify(results))
     runFPSUpdate()
 }

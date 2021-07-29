@@ -24,7 +24,7 @@ async function loadAndroid(){
 
     pose.setOptions({
         modelComplexity: 1,
-        smoothLandmarks: true,
+        static_image_mode: true,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.75
     });

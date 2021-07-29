@@ -18,7 +18,7 @@ function loadAndroid(){
         modelComplexity: 1,
         static_image_mode: true,
         minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
+        minTrackingConfidence: 0.75
     });
 
     pose.onResults(setLandMarksAndroid);

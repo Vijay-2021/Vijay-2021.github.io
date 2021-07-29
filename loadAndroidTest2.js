@@ -17,7 +17,7 @@ function loadAndroid(){
     pose.setOptions({
         modelComplexity: 1,
         static_image_mode: true,
-        minDetectionConfidence: 0.95,
+        minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.95
     });
 

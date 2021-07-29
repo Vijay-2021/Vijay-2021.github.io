@@ -3,12 +3,10 @@ var lastFrameTime = 0
 function setLandMarksAndroid(results){
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    alert(results.poseLandmarks.length)
     updateScreen(results.poseLandmarks)
 }
 
 async function updateVideoAndroid(){
-    alert("frames are being processed")
     window.requestAnimationFrame(function(){nextFrame()})
 }
 
@@ -28,9 +26,7 @@ async function loadAndroid(){
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.75
     });
-    alert("pose has been loaded")
     await setupCamera()
-    alert("camera has been setup")
     videoElement.onloadeddata = async function() {
         updateVideoAndroid()
         if(!sentResizedMessage){

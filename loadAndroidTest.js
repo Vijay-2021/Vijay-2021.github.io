@@ -6,7 +6,7 @@ function setLandMarksAndroid(results){
     console.log("pose landmarks below: ")
     console.log(results.poseLandmarks)
     alert(results.poseLandmarks.length)
-    //updateScreen(results.poseLandmarks)
+    //updateScreen(results)
 }
 
 async function updateVideoAndroid(){

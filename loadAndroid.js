@@ -4,6 +4,8 @@ function setLandMarksAndroid(results){
     
     if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
         results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
+        var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;
+        console.log(pixelData)
         for(var i=0; i < results.poseLandmarks.length;i++){
             results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
             results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;

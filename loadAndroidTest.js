@@ -1,6 +1,7 @@
 function setLandMarksAndroid(results){
    // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
    // canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+    alert("if this shows up then the pose estimation is running")
     console.log(JSON.stringify(results))
     var canvas = document.getElementById('canvas');
     var dataURL = canvas.toDataURL();
@@ -35,7 +36,6 @@ function loadAndroid(){
         onFrame: async () => {
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-            
             await pose.send({ image: canvasElement });
             if(!sentResizedMessage){
                 console.log("Message: resize video");

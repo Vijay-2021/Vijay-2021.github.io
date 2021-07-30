@@ -9,7 +9,7 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
                 crossorigin="anonymous"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.5/control_utils.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/pose.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/pose.js" crossorigin="anonymous"></script>
     
   <!-- Require the peer dependencies of pose-detection. -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
@@ -48,7 +48,6 @@
       .input_video {
         display: none
       }
-
       .output_canvas {
         width: 90vw;
         height: 90vh;
@@ -65,7 +64,7 @@
     <canvas class="output_canvas"></canvas>
   </div>
   <script src ="./utilities.js" crossorigin="anonymous"></script>
-  <script src="./drawing_utilities.js" crossorigin="anonymous"></script>
+  <script src="./drawing_utilities_un_normalized.js" crossorigin="anonymous"></script>
   <script src="./loadAndroidTest.js" crossorigin="anonymous"></script>
   <script src="./loadIOS.js" crossorigin="anonymous"></script>
   <script src="./loadWindows.js" crossorigin="anonymous"></script>

@@ -5,7 +5,7 @@ function setLandMarksAndroid(results){
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     console.log("pose landmarks below: ")
     console.log(results.poseLandmarks)
-    updateScreen(results.poseLandmarks)
+    //updateScreen(results.poseLandmarks)
 }
 
 async function updateVideoAndroid(){
@@ -15,7 +15,8 @@ async function updateVideoAndroid(){
 
 function nextFrame(){
     videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime);
-    onFrameAndroid().then(function(){updateVideoAndroid()}) //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
+    await onFrameAndroid()
+     //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
 }
 
 async function onFrameAndroid(){
@@ -24,6 +25,7 @@ async function onFrameAndroid(){
 async function loadAndroid(){
 
     pose.setOptions({
+        upperBodyOnly: false,
         modelComplexity: 1,
         smoothLandmarks: true,
         minDetectionConfidence: 0.5,

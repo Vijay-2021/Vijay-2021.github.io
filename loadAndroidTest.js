@@ -5,6 +5,8 @@ function setLandMarksAndroid(results){
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     console.log("pose landmarks below: ")
     console.log(results.poseLandmarks)
+    var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;
+    console.log(pixelData)
     alert(results.poseLandmarks.length)
     //updateScreen(results)
 }

@@ -3,8 +3,12 @@ var lastFrameTime = 0
 function setLandMarksAndroid(results){
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    alert("set landmarks android is running")
-    updateScreen(results.poseLandmarks)
+    console.log("pose landmarks below: ")
+    console.log(results.poseLandmarks)
+    var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;
+    console.log(pixelData)
+    alert(results.poseLandmarks.length)
+    //updateScreen(results)
 }
 
 async function updateVideoAndroid(){

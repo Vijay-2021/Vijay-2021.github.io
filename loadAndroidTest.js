@@ -1,5 +1,5 @@
+
 function setLandMarksAndroid(results){
-    alert("frames are being processed")
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(results.image, 0, 0, videoElement.width, videoElement.height);
     console.log("pose landmarks below: ")
@@ -15,6 +15,8 @@ function clearAndRedrawScreen(){
 }
 
 async function updateVideoAndroid(){
+    alert("frames are being processed")
+    
     await pose.send({image: videoElement});
     window.requestAnimationFrame(updateVideoAndroid())
 }

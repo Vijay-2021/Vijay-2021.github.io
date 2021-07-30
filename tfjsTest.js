@@ -130,7 +130,6 @@ function updateScreen(poses){
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
-            drawResults(poses)
             console.log(JSON.stringify(poses[0]['keypoints']))
         }
     }

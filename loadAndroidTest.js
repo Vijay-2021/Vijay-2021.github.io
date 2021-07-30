@@ -1,7 +1,7 @@
 function setLandMarksAndroid(results){
    // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
    // canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-    
+    console.log(results.image)
     if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
         results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
         var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;

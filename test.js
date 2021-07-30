@@ -150,7 +150,7 @@ async function setupApp(){
     
     if(using_mediapipe){
         await loadAndroid()
-        loadCamera();
+        //loadCamera();
     }else{
         await loadIOS(flagConfig)
         loadCamera();

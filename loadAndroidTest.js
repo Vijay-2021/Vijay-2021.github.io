@@ -1,7 +1,7 @@
 function setLandMarksAndroid(results){
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
-    console.log(results)
+    console.log(JSON.stringify(results))
     var canvas = document.getElementById('canvas');
     var dataURL = canvas.toDataURL();
     console.log(dataURL);

@@ -20,15 +20,9 @@ var using_mediapipe = false
 
 var landmarks = {}
 
-const mpPose = window;
-    
-const poseOptions = {
-    locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
-    }
-};
-
-const pose = new mpPose.Pose(poseOptions);
+const pose = new Pose({locateFile: (file) => {
+    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
+  }});
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -50,6 +44,7 @@ function updateScreen(results){
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
+    alert("drew connectors and joints")
     console.log(JSON.stringify(results))
     runFPSUpdate()
 }

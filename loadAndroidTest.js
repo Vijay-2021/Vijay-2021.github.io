@@ -2,7 +2,9 @@ function setLandMarksAndroid(results){
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
     console.log(results)
-    console.log(videoElement)
+    var canvas = document.getElementById('canvas');
+    var dataURL = canvas.toDataURL();
+    console.log(dataURL);
     if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
         results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
         var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;
@@ -30,8 +32,9 @@ function loadAndroid(){
 
     const camera = new Camera(videoElement, {
         onFrame: async () => {
-           // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-           // canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            // canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            // canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+            
             await pose.send({ image: videoElement });
             if(!sentResizedMessage){
                 console.log("Message: resize video");

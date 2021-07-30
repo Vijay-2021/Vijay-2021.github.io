@@ -31,7 +31,7 @@ function loadAndroid(){
         onFrame: async () => {
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
             canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-            await pose.send({ image: canvasElement });
+            await pose.send({ image: canvasCtx });
             if(!sentResizedMessage){
                 console.log("Message: resize video");
                 sentResizedMessage = true;

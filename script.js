@@ -3,11 +3,14 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
 const mpPose = window;
+
 const poseOptions = {
     locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
     }
 };
+
+
 var FPS, avgFPS, currentTime,lastTime =0;
 var updateFPS = false;
 var timesOnResultsRan = 0; 

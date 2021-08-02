@@ -355,7 +355,7 @@ function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
 }
 
 async function setupCamera(){
-      
+  console.log("setting up camera")
 /**
  * @license
  * Copyright 2021 Google LLC. All Rights Reserved.
@@ -394,6 +394,7 @@ async function setupCamera(){
           resolve(videoElement);
         };
       });
+      console.log("hello?")
       videoElement.play();
       resizeCanvasToDisplaySize(canvasElement)
       const videoWidth = videoElement.videoWidth;

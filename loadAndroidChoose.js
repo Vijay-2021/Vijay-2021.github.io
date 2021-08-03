@@ -1,17 +1,28 @@
 function setLandMarksAndroid(results){
     console.log("on results is running")
-    console.log(`Image: ${JSON.stringify(results.image)}`)
+    //console.log(`Image: ${JSON.stringify(results.image)}`)
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
     
-    if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
-        results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
-        for(var i=0; i < results.poseLandmarks.length;i++){
-            results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
-            results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
+    if(results!=null){
+        console.log("results object is not null")
+        if(results.poseLandmarks!=null){
+            console.log("results pose landmarks is not null")
+            if(results.poseLandmarks.length>0){
+                console.log("there are more than zero land marks")
+                results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
+                for(var i=0; i < results.poseLandmarks.length;i++){
+                    results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
+                    results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
+                }
+            }
         }
-        updateScreen(results.poseLandmarks)
+        if(results.image!=null){
+            console.log("results image is not null")
+        }
+        //updateScreen(results.poseLandmarks)
     }
+    
 }
 
 function loadAndroid(){

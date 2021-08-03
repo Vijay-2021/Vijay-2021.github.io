@@ -89,7 +89,10 @@ async function loadAndroidTimestamp(){
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
-    setupCamera()
+    
+    pose.onResults(setLandMarksAndroid);
+
+    setupCamera();
     console.log("camera setup")
     videoElement.onloadeddata = async function() {
         updateVideoAndroid()
@@ -99,6 +102,6 @@ async function loadAndroidTimestamp(){
             sentResizedMessage = true;
         }
     }
-    pose.onResults(setLandMarksAndroid);
+    
 
 }

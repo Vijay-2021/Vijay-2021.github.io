@@ -1,7 +1,8 @@
 function setLandMarksAndroid(results){
     console.log("on results is running")
+    console.log(JSON.stringify(results))
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
+    canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
     
     if(results!=null&&results.poseLandmarks!=null&&results.poseLandmarks.length>0){
         results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);

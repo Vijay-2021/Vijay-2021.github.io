@@ -73,9 +73,9 @@ async function onFrameAndroid(){
 }*/
 
 
-async function updateVideo(){
+async function updateVideoAndroid(){
     await pose.send({image: videoElement});
-    window.requestAnimationFrame(updateVideo);
+    window.requestAnimationFrame(updateVideoAndroid);
 }
 
 /**

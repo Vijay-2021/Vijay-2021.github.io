@@ -49,9 +49,11 @@ function updateScreen(results){
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    console.log("update screen is being called")
+    console.log(`Pose Landmarks: ${JSON.stringify(results)}`)
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
-    console.log(`Pose Landmarks: ${JSON.stringify(results)}`)
+    
     runFPSUpdate()
 }
 

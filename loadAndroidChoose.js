@@ -54,7 +54,7 @@ function loadAndroid(){
 
 var lastFrameTime = 0 
 
-async function updateVideoAndroid(){
+/**async function updateVideoAndroid(){
     console.log("update video android is running")
     window.requestAnimationFrame(function(){nextFrame()})
 }
@@ -70,7 +70,14 @@ function nextFrame(){
 async function onFrameAndroid(){
     console.log("on frame android is running")
     await pose.send({image: videoElement});
+}*/
+
+
+async function updateVideo(){
+    await pose.send({image: videoElement});
+    window.requestAnimationFrame(updateVideo);
 }
+
 /**
  * Uses request animation frame and timestamping
  */

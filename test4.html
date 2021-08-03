@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/pose.js" crossorigin="anonymous"></script>
+
+  <!-- Require the peer dependencies of pose-detection. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+
+  <!-- You must explicitly require a TF.js backend if you're not using the TF.js union bundle. -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+
+  <!--Using this to test if multi thread and SIMD support are available for WASM-->
+  <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js"></script>
+ 
+  <script src ="./utilities.js" crossorigin="anonymous"></script>
+  <script src="./drawing_utilities_un_normalized.js" crossorigin="anonymous"></script>
+  <script src="./loadAndroidChoose.js" crossorigin="anonymous"></script>
+  <script src="./loadIOS.js" crossorigin="anonymous"></script>
+  <script src="./loadWindows.js" crossorigin="anonymous"></script>
+  
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    .input_video {
+      display: none
+    }
+
+    .output_canvas {
+      width: 1280px;
+      height: 720px;
+    }
+
+
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 750px) and (orientation: landscape) {
+      .input_video {
+        display: none
+      }
+
+      .output_canvas {
+        width: 640px;
+        height: 360px;
+      }
+    }
+
+    @media only screen and (max-width: 450px) and (orientation: portrait) {
+      .input_video {
+        display: none
+      }
+
+      .output_canvas {
+        width: 360px;
+        height: 640px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <p id="fps"> FPS: Just updated code Average FPS:</p>
+    <video playsinline autoplay class="input_video"></video>
+    <canvas class="output_canvas"></canvas>
+    
+    <form onsubmit="event.preventDefault();">                                   
+        <div class="form-group">
+            <label>Use MP Camera</label>
+            <input id = "mpCamera"  type="text">
+        </div>
+        <div class="form-group">
+            <label>Change Video</label>
+            <input id = "changeVideo"  type="text">
+        </div>
+        <div class="form-group">
+            <label>Use Timestamp check</label>
+            <input id = "timestampCheck"  type="text">
+        </div>
+        <div class="form-group">
+            
+        </div>
+    </form>
+    <button id="submitRegistrationData" class="btn btn-primary btn-block">Submit Choices</button>
+    
+  </div>
+  <script src="./test4.js" crossorigin="anonymous"></script>
+  <script>
+      
+      $(document).ready(function(){
+          let useMPCamera = true
+          let useChangeVideo = true
+          let useTimestampCheck = true
+          
+          $('#submitRegistrationData').on('click', function() {
+                     
+              if($('#mpCamera').val() == "" || $('#mpCamera').val().toLowerCase()=='no'){
+                  console.log("don't use mp camera")
+                  useMPCamera = false
+              }
+              if($('#changeVideo').val() == "" || $('#changeVideo').val().toLowerCase()=='no'){
+                  console.log("don't use change video")
+                  useChangeVideo = false
+              }
+              if($('#timestampCheck').val() == "" || $('#timestampCheck').val().toLowerCase()=='no'){
+                  useTimestampCheck = false
+                  console.log("don't use time stamp check")
+              }
+              setupApp(useMPCamera,useChangeVideo,useTimestampCheck)
+              
+          });
+      });
+      
+  </script>
+</body>
+
+</html>

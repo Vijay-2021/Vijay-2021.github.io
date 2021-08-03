@@ -97,6 +97,8 @@ function filterKnees(results){
         let totalRightLegLength = calcDistance(rightHip,rightKnee) + calcDistance(rightKnee,rightAnkle)
         let leftShoulderToHip = calcDistance(leftShoulder,leftHip)
         let rightShoulderToHip = calcDistance(rightShoulder,rightHip)
+
+        
         
     }
     return results;//change this later obviously
@@ -143,6 +145,6 @@ async function loadWindowsFilter(){
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
-
+3
     pose.onResults(windowsSetLandmarksFiltered);
 }

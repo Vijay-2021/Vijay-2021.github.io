@@ -42,6 +42,14 @@
             <button style="margin-top: 5vh" class= "btn btn-primary btn-block" id="useCombined">Use Combined</button>
         </div>
     </div>
+    <div class = "row">
+        <div class = "col-6 d-flex justify-content-center">
+            <button style="margin-top: 5vh" class = "btn btn-primary btn-block" id="useTestFilter">Use Test Filter</button>
+        </div>
+        <div class = "col-6 d-flex justify-content-center ">
+            <button style="margin-top: 5vh" class= "btn btn-primary btn-block" id="useTest4">Use Test 4</button>
+        </div>
+    </div>
     <script>
         $(document).ready(function(){
             $('#usePose04').click(function(){
@@ -67,6 +75,12 @@
             });
             $('#useCombined').click(function(){
                 window.location.href = './combined.html';
+            });
+            $('#useTestFilter').click(function(){
+                window.location.href = './testFilter.html';
+            });
+            $('#useTest4').click(function(){
+                window.location.href = './test4.html';
             });
         })
     </script>

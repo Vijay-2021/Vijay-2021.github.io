@@ -30,6 +30,9 @@ const poseOptions = {
 
 const pose = new mpPose.Pose(poseOptions);
 
+console.log(calculateAverageElements(2,3,7,8))
+    console.log(calculateAverageArray([2,5,6,8]))
+
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
     const width = canvas.width;

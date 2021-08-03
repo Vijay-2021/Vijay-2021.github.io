@@ -426,10 +426,35 @@ function calcAngles(a, b, c){
   let angleDeg = (180*angle)/Math.PI;
   return angleDeg; 
 }
+/***
+ * Calculates distance between two keypoints
+ */
 function calcDistance(a,b){
   let aX = a['x'];
   let aY = a['y']; 
   let bX = b['x'];
   let bY = b['y'];
   return Math.sqrt(Math.pow((aX-bX),2) + Math.pow((aY-bY),2));
+}
+
+/***
+ * Calculates the average value of an array 
+ */
+function calculateAverageArray(array){
+  let total = 0;
+  for(let i =0; i < array.length;i++){
+    total += array[i]
+  }
+  return total/array.length; 
+}
+
+/***
+ * Calculates the average value of elements 
+ */
+ function calculateAverageElements(...array){
+  let total = 0;
+  for(let i =0; i < array.length;i++){
+    total += array[i]
+  }
+  return total/array.length; 
 }

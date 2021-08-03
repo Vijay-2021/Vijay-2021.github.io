@@ -13,9 +13,12 @@ function windowsSetLandmarks(results){
     }
 }
 
-function calcRatioDifferential(lastPoses){
-
+function calcRatioDifferential(lastPoses,currentPose){
+    let totalDifferential = 0;
+    let differentialFromAverage =0;
+    //for loop? 
 }
+
 /***
  * using v = (xf -xi)/t
  * perhaps with world coordinates this can be further advanced. World coordinates give us the approximate position of each body 
@@ -25,7 +28,6 @@ function calcRatioDifferential(lastPoses){
  * will be velocities over 1m/s, so we could cap it there, and ignore 
  */
 function calcVelocityInPixelsPerSecond(lastPoses, lastTimestamps){
-
 
 }
 
@@ -77,16 +79,16 @@ function filterKnees(results){
     let leftShoulder = results.poseLandmarks[11]
     let rightShoulder = results.poseLandmarks[12]
     
-    let currentPoses = []
+    let currentPose = []
     
-    currentPoses.push(leftHip)
-    currentPoses.push(leftKnee)
-    currentPoses.push(leftAnkle)
-    currentPoses.push(rightHip)
-    currentPoses.push(rightKnee)
-    currentPoses.push(rightAnkle)
-    currentPoses.push(leftShoulder)
-    currentPoses.push(rightShoulder)
+    currentPose.push(leftHip)
+    currentPose.push(leftKnee)
+    currentPose.push(leftAnkle)
+    currentPose.push(rightHip)
+    currentPose.push(rightKnee)
+    currentPose.push(rightAnkle)
+    currentPose.push(leftShoulder)
+    currentPose.push(rightShoulder)
     
     if(updateFPS&&(leftHip.visibility>0.5||rightHip.visibility>0.5)&&(leftKnee.visibility>0.5||rightKnee.visibility>0.5)&&(leftAnkle.visibility>0.5||rightAnkle.visibility>0.5)){
         //console.log("left angles below, then right after")

@@ -42,6 +42,7 @@ function loadAndroid(){
 var lastFrameTime = 0 
 
 async function updateVideoAndroid(){
+    console.log("update video android is running")
     window.requestAnimationFrame(function(){nextFrame()})
 }
 
@@ -51,11 +52,12 @@ function nextFrame(){
     console.log(`last frame time: ${lastFrameTime}`)
     if(videoElement.currentTime!=lastFrameTime){
         lastFrameTime=videoElement.currentTime
-        onFrameAndroid().then(function(){updateVideoAndroid()})
+        onFrameAndroid().then(function(){updateVideoAndroid()});
     } //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
 }
 
 async function onFrameAndroid(){
+    console.log("on frame android is running")
     await pose.send({image: videoElement});
 }
 /**

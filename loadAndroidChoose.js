@@ -1,6 +1,6 @@
 function setLandMarksAndroid(results){
     console.log("on results is running")
-    console.log(JSON.stringify(results))
+    console.log(JSON.stringify(results.image))
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
     

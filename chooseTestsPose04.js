@@ -51,7 +51,7 @@ function updateScreen(results){
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
-    console.log(JSON.stringify(results.poseLandmarks))
+    console.log(`Pose Landmarks: ${JSON.stringify(results.poseLandmarks)}`)
     runFPSUpdate()
 }
 

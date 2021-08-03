@@ -67,11 +67,13 @@ async function loadAndroidTimestamp(){
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
-    await setupCamera()
+    setupCamera()
+    console.log("camera setup")
     videoElement.onloadeddata = async function() {
         updateVideoAndroid()
         if(!sentResizedMessage){
             console.log("Message: resize video");
+            console.log(videoElement.currentTime)
             sentResizedMessage = true;
         }
     }

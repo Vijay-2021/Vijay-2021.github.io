@@ -133,9 +133,10 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
             break;
         case 'Windows':
         case 'Linux':
-            using_mediapipe = true
+            
             //break;
         case 'Android': 
+            using_mediapipe = true
             if(useMPCamera){
                 alert("using mp camera")
                 await loadAndroid()
@@ -149,7 +150,7 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
             else if(useTimestampCheck){
                 alert("using timestamp check")
                 await loadAndroidTimestamp()
-                return;
+                break;
             }else{
                 alert("using req. animation frame")
                 await loadWindows();

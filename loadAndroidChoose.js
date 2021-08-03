@@ -70,9 +70,7 @@ function nextFrame(){
 async function onFrameAndroid(){
     console.log("on frame android is running")
     await pose.send({image: videoElement});
-}*/
-
-
+} 
 async function updateVideoAndroid(){
     await pose.send({image: videoElement});
     window.requestAnimationFrame(updateVideoAndroid);
@@ -80,7 +78,7 @@ async function updateVideoAndroid(){
 
 /**
  * Uses request animation frame and timestamping
- */
+
 async function loadAndroidTimestamp(){
 
     pose.setOptions({
@@ -102,5 +100,40 @@ async function loadAndroidTimestamp(){
         }
     }
     
+
+}*/
+
+async function updateVideoAndroid(){
+    if(using_mediapipe){
+        await pose.send({image: videoElement});
+    }else{
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        tfjsSetLandmarks(poses)
+    }
+    window.requestAnimationFrame(updateVideoAndroid);
+}
+
+async function loadCameraAndroid(){
+    setupCamera()
+    videoElement.onloadeddata = async function() {
+        updateVideoAndroid()
+        if(!sentResizedMessage){
+            console.log("Message: resize video");
+            sentResizedMessage = true;
+        }
+    }
+}
+
+async function loadAndroidTimestamp(){
+    
+    pose.setOptions({
+        modelComplexity: 1,
+        smoothLandmarks: false,
+        minDetectionConfidence: 0.5,
+        minTrackingConfidence: 0.5
+    });
+
+    pose.onResults(windowsSetLandmarks);
+    loadCameraAndroid()
 
 }

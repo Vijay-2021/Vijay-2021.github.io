@@ -46,7 +46,9 @@ async function updateVideoAndroid(){
 }
 
 function nextFrame(){
-    console.log(videoElement.currentTime)
+    
+    console.log(`current time: ${videoElement.currentTime}`)
+    console.log(`last frame time: ${lastFrameTime}`)
     if(videoElement.currentTime!=lastFrameTime){
         lastFrameTime=videoElement.currentTime
         onFrameAndroid().then(function(){updateVideoAndroid()})

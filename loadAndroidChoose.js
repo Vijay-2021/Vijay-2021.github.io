@@ -63,10 +63,8 @@ function nextFrame(){
     
     console.log(`current time: ${videoElement.currentTime}`)
     console.log(`last frame time: ${lastFrameTime}`)
-    if(videoElement.currentTime!=lastFrameTime){
-        lastFrameTime=videoElement.currentTime
-        onFrameAndroid().then(function(){updateVideoAndroid()});
-    } //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
+    onFrameAndroid().then(function(){updateVideoAndroid()});
+     //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
 }
 
 async function onFrameAndroid(){

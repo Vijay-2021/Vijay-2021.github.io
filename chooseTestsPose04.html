@@ -74,35 +74,7 @@
     <p id="fps"> FPS: Just updated code Average FPS:</p>
     <video playsinline autoplay class="input_video"></video>
     <canvas class="output_canvas"></canvas>
-    <script>
-        
-        $(document).ready(function(){
-            let useMPCamera = true
-            let useChangeVideo = true
-            let useTimestampCheck = true
-            
-            $('#submitRegistrationData').on('click', function() {
-                
-                
-                if($('#mpCamera').val() == "" || $('#mpCamera').val().toLowerCase()=='no'){
-                    console.log("don't use mp camera")
-                    useMPCamera = false
-                }
-                if($('#changeVideo').val() == "" || $('#changeVideo').val().toLowerCase()=='no'){
-                    console.log("don't use change video")
-                    useChangeVideo = false
-                }
-                if($('#timestampCheck').val() == "" || $('#timestampCheck').val().toLowerCase()=='no'){
-                    useTimestampCheck = false
-                    console.log("don't use time stamp check")
-                }
-                setupApp(useMPCamera,useChangeVideo,useTimestampCheck)
-                
-
-            });
-        });
-        
-    </script>
+    
     <form onsubmit="event.preventDefault();">                                   
         <div class="form-group">
             <label>Use MP Camera</label>
@@ -121,8 +93,38 @@
         </div>
     </form>
     <button id="submitRegistrationData" class="btn btn-primary btn-block">Submit Choices</button>
-    <script src="./chooseTestsPose04.js" crossorigin="anonymous"></script>
+    
   </div>
+  <script src="./chooseTestsPose04.js" crossorigin="anonymous"></script>
+  <script>
+      
+      $(document).ready(function(){
+          let useMPCamera = true
+          let useChangeVideo = true
+          let useTimestampCheck = true
+          
+          $('#submitRegistrationData').on('click', function() {
+              
+              
+              if($('#mpCamera').val() == "" || $('#mpCamera').val().toLowerCase()=='no'){
+                  console.log("don't use mp camera")
+                  useMPCamera = false
+              }
+              if($('#changeVideo').val() == "" || $('#changeVideo').val().toLowerCase()=='no'){
+                  console.log("don't use change video")
+                  useChangeVideo = false
+              }
+              if($('#timestampCheck').val() == "" || $('#timestampCheck').val().toLowerCase()=='no'){
+                  useTimestampCheck = false
+                  console.log("don't use time stamp check")
+              }
+              setupApp(useMPCamera,useChangeVideo,useTimestampCheck)
+              
+
+          });
+      });
+      
+  </script>
 </body>
 
 </html>

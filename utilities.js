@@ -1,5 +1,5 @@
 function getOS() {
-    var userAgent = window.navigator.userAgent,
+    let userAgent = window.navigator.userAgent,
         platform = window.navigator.platform,
         macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
         windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
@@ -279,12 +279,12 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
 
   let bodypart = fullbody;
 
-  for (var i = 0; i < bodypart.length; i++) {
+  for (let i = 0; i < bodypart.length; i++) {
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = "#01FD0C";
       canvasCtx.fillStyle = "#01FD0C";
       canvasCtx.lineWidth = 0.5;
-      var g = new Path2D();
+      let g = new Path2D();
       g.arc(bodypart[i].x , bodypart[i].y , 1.0, 0, 2 * Math.PI);
       canvasCtx.fill(g);
       canvasCtx.stroke(g);
@@ -402,4 +402,34 @@ async function setupCamera(){
       // Must set below two lines, otherwise video element doesn't show.
       videoElement.width = videoWidth;
       videoElement.height = videoHeight;
+}
+
+/**
+ * Calculate the angle C w/ Law of Cosines based on this picture https://images.app.goo.gl/AWhopMcNj85L4de77 and where a,b,c correspond to the points, not the lines
+*/
+
+function calcAngles(a, b, c){
+                
+  let aX = a['x'];
+  let aY = a['y']; 
+  let bX = b['x'];
+  let bY = b['y'];
+  let cX = c['x'];
+  let cY = c['y'];
+
+  let sideC = Math.sqrt(Math.pow((aX-bX),2) + Math.pow((aY-bY),2)); //use distance formula to get sides for Law of Cosines
+  let sideA = Math.sqrt(Math.pow((bX-cX),2) + Math.pow((bY-cY),2));
+  let sideB = Math.sqrt(Math.pow((aX-cX),2) + Math.pow((aY-cY),2)); 
+  console.log("aX: " + aX + " aY: " + aY + " bX: " + bX + " bY: " + bY + " cX: " + cX + " cY: " + cY + " sideA: " + sideA + " sideB: " + sideB + " sideC: " + sideC);
+  
+  let angle = Math.acos((Math.pow(sideA,2)+Math.pow(sideB,2) - Math.pow(sideC,2))/(2*sideA*sideB)); // Law of Cosines
+  let angleDeg = (180*angle)/Math.PI;
+  return angleDeg; 
+}
+function calcDistance(a,b){
+  let aX = a['x'];
+  let aY = a['y']; 
+  let bX = b['x'];
+  let bY = b['y'];
+  return Math.sqrt(Math.pow((aX-bX),2) + Math.pow((aY-bY),2));
 }

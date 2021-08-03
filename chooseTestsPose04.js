@@ -49,11 +49,9 @@ function updateScreen(results){
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
-    console.log("update screen is being called")
-    console.log(`Pose Landmarks: ${JSON.stringify(results)}`)
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
-    
+    console.log(JSON.stringify(results))
     runFPSUpdate()
 }
 
@@ -133,10 +131,9 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
             break;
         case 'Windows':
         case 'Linux':
-            
+            using_mediapipe = true
             //break;
         case 'Android': 
-            using_mediapipe = true
             if(useMPCamera){
                 alert("using mp camera")
                 await loadAndroid()
@@ -150,7 +147,7 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
             else if(useTimestampCheck){
                 alert("using timestamp check")
                 await loadAndroidTimestamp()
-                break;
+                return;
             }else{
                 alert("using req. animation frame")
                 await loadWindows();
@@ -184,4 +181,3 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
         loadCamera();
     }
 }
-

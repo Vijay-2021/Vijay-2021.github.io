@@ -3,7 +3,7 @@ function setLandMarksAndroid(results){
     //console.log(`Image: ${JSON.stringify(results.image)}`)
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-    
+    console.log(results)
     if(results!=null){
         console.log("results object is not null")
         if(results.poseLandmarks!=null){

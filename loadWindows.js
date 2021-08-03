@@ -68,33 +68,33 @@ var lastPoses = []
 var lastTimestamps = []
 function filterKnees(results){
 
-    let lefthip =  results.poseLandmarks[23]
-    let leftknee = results.poseLandmarks[25]
-    let leftankle =  results.poseLandmarks[27]
-    let righthip = results.poseLandmarks[24]
-    let rightknee = results.poseLandmarks[26]
-    let rightankle =  results.poseLandmarks[28]
+    let leftHip =  results.poseLandmarks[23]
+    let leftKnee = results.poseLandmarks[25]
+    let leftAnkle =  results.poseLandmarks[27]
+    let rightHip = results.poseLandmarks[24]
+    let rightKnee = results.poseLandmarks[26]
+    let rightAnkle =  results.poseLandmarks[28]
     let leftShoulder = results.poseLandmarks[11]
     let rightShoulder = results.poseLandmarks[12]
     
     let currentPoses = []
     
-    currentPoses.push(lefthip)
-    currentPoses.push(leftknee)
-    currentPoses.push(leftankle)
-    currentPoses.push(righthip)
-    currentPoses.push(rightknee)
-    currentPoses.push(rightankle)
-    currentPoses.push(leftshoulder)
-    currentPoses.push(rightshoulder)
+    currentPoses.push(leftHip)
+    currentPoses.push(leftKnee)
+    currentPoses.push(leftAnkle)
+    currentPoses.push(rightHip)
+    currentPoses.push(rightKnee)
+    currentPoses.push(rightAnkle)
+    currentPoses.push(leftShoulder)
+    currentPoses.push(rightShoulder)
     
-    if(updateFPS&&(lefthip.visibility>0.5||righthip.visibility>0.5)&&(leftknee.visibility>0.5||rightknee.visibility>0.5)&&(leftankle.visibility>0.5||rightankle.visibility>0.5)){
+    if(updateFPS&&(leftHip.visibility>0.5||rightHip.visibility>0.5)&&(leftKnee.visibility>0.5||rightKnee.visibility>0.5)&&(leftAnkle.visibility>0.5||rightAnkle.visibility>0.5)){
         //console.log("left angles below, then right after")
-        //console.log(calcAngles(leftankle,lefthip,leftknee))
-        //console.log(calcAngles(rightankle,righthip,rightknee))
-        console.log(calcDistance(lefthip,leftknee)/calcDistance(leftknee,leftankle))
-        let totalLeftLegLength = calcDistance(lefthip,leftknee) + calcDistance(leftknee,leftankle)
-        let totalRightLegLength = calcDistance(righthip,rightknee) + calcDistance(rightknee,rightankle)
+        //console.log(calcAngles(leftAnkle,leftHip,leftKnee))
+        //console.log(calcAngles(rightAnkle,rightHip,rightKnee))
+        //console.log(calcDistance(leftHip,leftKnee)/calcDistance(leftKnee,leftAnkle))
+        let totalLeftLegLength = calcDistance(leftHip,leftKnee) + calcDistance(leftKnee,leftAnkle)
+        let totalRightLegLength = calcDistance(rightHip,rightKnee) + calcDistance(rightKnee,rightAnkle)
         let leftShoulderToHip = calcDistance(leftShoulder,leftHip)
         let rightShoulderToHip = calcDistance(rightShoulder,rightHip)
         

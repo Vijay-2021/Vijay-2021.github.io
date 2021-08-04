@@ -283,9 +283,9 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = "#01FD0C";
       canvasCtx.fillStyle = "#01FD0C";
-      canvasCtx.lineWidth = 0.5;
+      canvasCtx.lineWidth = 2;
       let g = new Path2D();
-      g.arc(bodypart[i].x , bodypart[i].y , 1.0, 0, 2 * Math.PI);
+      g.arc(bodypart[i].x , bodypart[i].y , 2.0, 0, 2 * Math.PI);
       canvasCtx.fill(g);
       canvasCtx.stroke(g);
   }
@@ -311,7 +311,7 @@ function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
   canvasCtx.beginPath();
   canvasCtx.strokeStyle = "#00C0F0";
   //canvasCtx.strokeStyle = "white";
-  canvasCtx.lineWidth = 0.85;
+  canvasCtx.lineWidth = 3;
 
   //Shoulder Segment
   canvasCtx.moveTo(shoulder[0].x , shoulder[0].y );

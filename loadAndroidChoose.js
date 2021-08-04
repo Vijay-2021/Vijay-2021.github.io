@@ -41,6 +41,18 @@ function loadAndroid(){
 
 var lastFrameTime = 0 
 var counter = 0 
+
+function q(a){
+    window.requestAnimationFrame(function(){r(a)})
+}
+function t(a,b){
+    a.video.srcObject=b;a.video.onloadedmetadata=function(){a.video.play();q(a)}
+}
+
+function r(a){
+    var b=null;a.video.paused||a.video.currentTime===a.h||(a.h=a.video.currentTime,b=a.g.onFrame());b?b.then(function(){q(a)}):q(a)
+}
+
 async function updateVideoAndroid(){
     if(counter==0){
         await pose.send({image: videoElement})
@@ -50,8 +62,9 @@ async function updateVideoAndroid(){
 }
 
 function nextFrame(){
-    videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime);
-    onFrameAndroid().then(function(){updateVideoAndroid()}) //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
+    var frameUpdate = null;
+    videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime,frameUpdate=onFrameAndroid());
+    frameUpdate?frameUpdate.then(function(){updateVideoAndroid()}):updateVideoAndroid()
 }
 
 async function onFrameAndroid(){

@@ -66,7 +66,7 @@ async function tfjsSetLandmarks(poses) {
     }
     return false;
 }
-
+/** 
 var lastFrameT = 0
 async function updateVideo() {
     if (videoElement.currentTime != lastFrameT) {
@@ -80,6 +80,26 @@ async function updateVideo() {
     }
     window.requestAnimationFrame(updateVideo);
 }
+*/
+
+async function updateVideo(){
+    if(counter==0){
+        await pose.send({image: videoElement})
+        counter++
+    }
+    window.requestAnimationFrame(function(){nextFrame()})
+}
+
+function nextFrame(){
+    var frameUpdate = null;
+    videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime,frameUpdate=onFrame());
+    frameUpdate?frameUpdate.then(function(){updateVideo()}):updateVideo()
+}
+
+async function onFrame(){
+    await pose.send({image: videoElement});
+}
+
 
 const estimationConfig = { flipHorizontal: true };
 const timestamp = performance.now();

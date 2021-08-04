@@ -51,7 +51,7 @@ function updateScreen(results) {
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
     drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
     drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
-    console.log(JSON.stringify(results))
+    console.log(`pose landmarks: ${JSON.stringify(results)}`)
     runFPSUpdate()
 }
 
@@ -91,7 +91,7 @@ async function updateVideo(){
         await pose.send({image: videoElement})
         console.log("testing order, this should be sent second")
         counter++;
-        window.requestAnimationFrame(function(){nextFrame()})
+        window.requestAnimationFrame(updateVideo)
         console.log("this should be sent third")
     }else{
         window.requestAnimationFrame(function(){nextFrame()})
@@ -101,7 +101,7 @@ async function updateVideo(){
 function nextFrame(){
     var frameUpdate = null;
     videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime,frameUpdate=onFrame());
-    updateVideo()
+    frameUpdate?frameUpdate.then(function(){updateVideo()}):updateVideo()
 }
 
 async function onFrame(){

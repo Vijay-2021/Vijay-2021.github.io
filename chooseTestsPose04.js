@@ -16,7 +16,7 @@ var sentResizedMessage = false;
 
 const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
-var using_mediapipe = false
+var using_mediapipe = true
 
 var landmarks = {}
 
@@ -163,7 +163,6 @@ async function setupApp(useMPCamera, useChangeVideo, useTimestampCheck) {
             break;
         case 'Windows':
         case 'Linux':
-            using_mediapipe = true
         //break;
         case 'Android':
             if (useMPCamera) {
@@ -190,6 +189,7 @@ async function setupApp(useMPCamera, useChangeVideo, useTimestampCheck) {
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
+            using_mediapipe = false
             break;
     }
 

@@ -67,17 +67,18 @@ async function tfjsSetLandmarks(poses) {
     return false;
 }
 
-var lastFrameT = 0
+//var lastFrameT = 0
+
 async function updateVideo() {
-    if (videoElement.currentTime != lastFrameT) {
-        lastFrameT = videoElement.currentTime
-        if (using_mediapipe) {
-            await pose.send({ image: videoElement });
-        } else {
-            const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-            tfjsSetLandmarks(poses)
-        }
+    
+    if (using_mediapipe) {
+        console.log("using mediapipe")
+        await pose.send({ image: videoElement });
+    } else {
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        tfjsSetLandmarks(poses)
     }
+
     window.requestAnimationFrame(updateVideo);
 }
 

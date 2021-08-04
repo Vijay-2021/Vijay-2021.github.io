@@ -66,7 +66,7 @@ async function tfjsSetLandmarks(poses) {
     }
     return false;
 }
-/** 
+
 var lastFrameT = 0
 async function updateVideo() {
     if (videoElement.currentTime != lastFrameT) {
@@ -80,8 +80,8 @@ async function updateVideo() {
     }
     window.requestAnimationFrame(updateVideo);
 }
-*/
 
+/** 
 var lastFrameTime = 0 
 var counter = 0 
 
@@ -108,6 +108,7 @@ async function onFrame(){
     await pose.send({image: videoElement});
 }
 
+*/
 
 const estimationConfig = { flipHorizontal: true };
 const timestamp = performance.now();

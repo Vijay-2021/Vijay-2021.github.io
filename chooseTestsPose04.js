@@ -93,7 +93,7 @@ async function updateVideo(){
 function nextFrame(){
     var frameUpdate = null;
     videoElement.paused||videoElement.currentTime===lastFrameTime||(lastFrameTime=videoElement.currentTime,frameUpdate=onFrame());
-    updateVideo().then(function(){onFrame()})
+    updateVideo()
 }
 
 async function onFrame(){

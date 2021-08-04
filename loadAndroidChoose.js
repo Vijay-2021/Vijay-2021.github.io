@@ -40,8 +40,12 @@ function loadAndroid(){
 }
 
 var lastFrameTime = 0 
-
+var counter = 0 
 async function updateVideoAndroid(){
+    if(counter==0){
+        await pose.send({image: videoElement})
+        counter++
+    }
     window.requestAnimationFrame(function(){nextFrame()})
 }
 
@@ -53,6 +57,18 @@ function nextFrame(){
 async function onFrameAndroid(){
     await pose.send({image: videoElement});
 }
+/***
+ * 
+async function updateVideo(){
+    if(using_mediapipe){
+        await pose.send({image: videoElement});
+    }else{
+        const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
+        tfjsSetLandmarks(poses)
+    }
+    window.requestAnimationFrame(updateVideo);
+}
+ */
 /**
  * Uses request animation frame and timestamping
  */
@@ -72,6 +88,7 @@ async function loadAndroidTimestamp(){
             sentResizedMessage = true;
         }
     }
-    pose.onResults(setLandMarksAndroid);
 
+    pose.onResults(setLandMarksAndroid);
+    
 }

@@ -39,9 +39,6 @@ function loadAndroid(){
     camera.start()
 }
 
-var lastFrameTime = 0 
-var counter = 0 
-
 function q(a){
     window.requestAnimationFrame(function(){r(a)})
 }

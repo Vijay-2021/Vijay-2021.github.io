@@ -1,3 +1,6 @@
+let MAX_ACCEL = 0
+let MAX_VEL = 0
+
 function windowsSetLandmarks(results){
 
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
@@ -13,7 +16,39 @@ function windowsSetLandmarks(results){
     }
 }
 
-function calcRatioDifferential(lastPoses){
+function calcRatioDifferential(lastPoses,lastTimestamps){
+    let lastLeftKnee = []
+    let lastRightKnee = []
+    let lastLeftAnkle = []
+    let lastRightAnkle = []
+    let shouldDraw = {
+        'shouldDrawLeftKnee': true,
+        'shouldDrawRightKnee': true,
+        'shouldDrawLeftAnkle': true,
+        'shouldDrawRightAnkle': true
+    }
+    for(let i =0; i < lastPoses.length;i++){
+        lastLeftKnee.push(lastPoses[i]['leftKnee'])
+        lastRightKnee.push(lastPoses[i]['rightKnee'])
+        lastLeftAnkle.push(lastPoses[i]['leftAnkle'])
+        lastRightAnkle.push(lastPoses[i]['rightAnkle'])
+    }
+    
+    if(!acceptableAccelerationAndVelocity(calcVelocityInPixelsPerSecond(lastLeftKnee,lastTimestamps),calcAccelerationInPixelsPerSecond(lastLeftKnee,lastTimestamps),lastPoses)){
+        //add check for hand/leg position comparison
+        //add angle check 
+        //add overall relative position check (y's of both legs should be similar, higher leg is more likely to be wrong)
+        //if any of these fail, use algorithm to determine how many frames to ignore and what to draw next 
+    }
+    if(!acceptableAccelerationAndVelocity(calcVelocityInPixelsPerSecond(lastRightKnee,lastTimestamps),calcAccelerationInPixelsPerSecond(lastRightKnee,lastTimestamps),lastPoses)){
+        
+    }
+    if(!acceptableAccelerationAndVelocity(calcVelocityInPixelsPerSecond(lastLeftAnkle,lastTimestamps),calcAccelerationInPixelsPerSecond(lastLeftAnkle,lastTimestamps),lastPoses)){
+        
+    }
+    if(!acceptableAccelerationAndVelocity(calcVelocityInPixelsPerSecond(lastRightAnkle,lastTimestamps),calcAccelerationInPixelsPerSecond(lastRightAnkle,lastTimestamps),lastPoses)){
+        
+    }
 
 }
 /***
@@ -25,7 +60,15 @@ function calcRatioDifferential(lastPoses){
  * will be velocities over 1m/s, so we could cap it there, and ignore 
  */
 function calcVelocityInPixelsPerSecond(partLastPoses, lastTimestamps){
-
+    let velocity = null
+    if(partLastPoses.length>1&&lastTimestamps.length>1){
+        let lastPos = partLastPoses[partLastPoses.length-2]
+        let currPos = partLastPoses[partLastPoses.length-1]
+        let lastTimestamp = lastTimestamps[lastTimestamps.length-2]
+        let currTimestamp = lastTimestamps[lastTimestamps.length-1]
+        velocity = (currPos-lastPos)/(currTimestamp-lastTimestamp)
+    }
+    return velocity
 
 }
 
@@ -37,8 +80,8 @@ function calcVelocityInPixelsPerSecond(partLastPoses, lastTimestamps){
 function calcAccelerationInPixelsPerSecond(partLastPoses, lastTimestamps){
     let lastVel = calcVelocityInPixelsPerSecond(partLastPoses.slice(0,-1),lastTimestamps)
     let currentVel = calcVelocityInPixelsPerSecond(partLastPoses,lastTimestamps)
-    let accel = 0
-    if(lastTimestamps.length>1){
+    let accel = null
+    if(lastTimestamps.length>2&&lastVel!=null&&currentVel!=null){ // we need three elements to run accel calcs(three positions)
         accel = (currentVel-lastVel)/(lastTimestamps[lastTimestamps.length-1]-lastTimestamps[lastTimestamps.length-2])
     }
     return accel//return 0 if the array is not large enough to calc acceleration 
@@ -56,10 +99,11 @@ function compareHandsAndLegs(leg, hand){
     return (legY > handY) //we want legY to be greater than handY
 }
 
+
 /***
  * Should return the number of frames to ignore, maybe even something about figuring out the last stable position 
  */
-function checkAcceptableAccelerationAndVelocity(accel, vel, lastPoses){
+function acceptableAccelerationAndVelocity(accel, vel, lastPoses){
     let viewHeight = window.innerHeight;
     let viewWidth = window.innerWidth;
     let lastIndex = lastPoses.length-1;
@@ -68,6 +112,13 @@ function checkAcceptableAccelerationAndVelocity(accel, vel, lastPoses){
     let bodyHeight = calculateAverageElements(bodyHeightLeft,bodyHeightRight)
     let bodyWidth = calcDistance(lastPoses[lastIndex]['leftShoulder'],lastPoses['rightShoulder'])
     let windowBodyRatio = calcAverateElements((viewHeight / bodyHeight), (viewWidth/bodyWidth)) 
+    if(accel/windowBodyRatio > MAX_ACCEL){
+        return false
+    }
+    if(vel/windowBodyRatio > MAX_VEL){
+        return false
+    }
+    return true
 }
 
 var lastPoses = []
@@ -80,7 +131,7 @@ function filterKnees(results){
     let rightHip = results.poseLandmarks[24]
     let rightKnee = results.poseLandmarks[26]
     let rightAnkle =  results.poseLandmarks[28]
-    let leftShoulder = results.poseLandmarks[11]
+    let leftShoulder = results.poseLandmarks[11]//use for calculating body ratios
     let rightShoulder = results.poseLandmarks[12]
     
     let currentPose = []
@@ -93,6 +144,14 @@ function filterKnees(results){
     currentPose.push(rightAnkle)
     currentPose.push(leftShoulder)
     currentPose.push(rightShoulder)
+
+    lastPoses.push(currentPose)
+    lastTimestamps.push(peformance.now()/1000) //we want this to be in seconds incase we use m/s later on
+
+    if(lastPoses.length>6){ //figured 6 elements is good, we can always change it, but 6 is the fps on my phone so this is about one second of data on the slowest devices
+        lastPoses.shift() 
+        lastTimestamps.shift()
+    }
     
     if(updateFPS&&(leftHip.visibility>0.5||rightHip.visibility>0.5)&&(leftKnee.visibility>0.5||rightKnee.visibility>0.5)&&(leftAnkle.visibility>0.5||rightAnkle.visibility>0.5)){
         //console.log("left angles below, then right after")
@@ -103,8 +162,6 @@ function filterKnees(results){
         let totalRightLegLength = calcDistance(rightHip,rightKnee) + calcDistance(rightKnee,rightAnkle)
         let leftShoulderToHip = calcDistance(leftShoulder,leftHip)
         let rightShoulderToHip = calcDistance(rightShoulder,rightHip)
-
-
         
     }
     return results;//change this later obviously

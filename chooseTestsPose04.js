@@ -82,12 +82,20 @@ async function updateVideo() {
 }
 */
 
+var lastFrameTime = 0 
+var counter = 0 
+
 async function updateVideo(){
     if(counter==0){
+        console.log("counter is zero an we are sending pose below")
         await pose.send({image: videoElement})
-        counter++
+        console.log("testing order, this should be sent second")
+        counter++;
+        window.requestAnimationFrame(function(){nextFrame()})
+        console.log("this should be sent third")
+    }else{
+        window.requestAnimationFrame(function(){nextFrame()})
     }
-    window.requestAnimationFrame(function(){nextFrame()})
 }
 
 function nextFrame(){

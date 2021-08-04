@@ -17,14 +17,14 @@ function calcRatioDifferential(lastPoses){
 
 }
 /***
- * using v = (xf -xi)/t
+ * gets velocity of single part using v = (xf -xi)/t
  * perhaps with world coordinates this can be further advanced. World coordinates give us the approximate position of each body 
  * part in meters with respect to the center of the hips, so if we can use something like that to determine the length of each limb
  * we may be able to approximate what the change in meters is(e.g a change of 30 pixels corresponds to a change in position corresponds
  * to a change of 1 meter) therefore we can approximate the velocity of the limb and constrain it much more easily. I doubt there
  * will be velocities over 1m/s, so we could cap it there, and ignore 
  */
-function calcVelocityInPixelsPerSecond(lastPoses, lastTimestamps){
+function calcVelocityInPixelsPerSecond(partLastPoses, lastTimestamps){
 
 
 }
@@ -34,8 +34,14 @@ function calcVelocityInPixelsPerSecond(lastPoses, lastTimestamps){
  * limiting we can do along with velocity limiting. Lets say the jitter moves at .5m/s(or some arbitrary but relative based 
  * pixel)
  */ 
-function calcAccelerationInPixelsPerSecond(lastPoses, lastTimestamps){
-
+function calcAccelerationInPixelsPerSecond(partLastPoses, lastTimestamps){
+    let lastVel = calcVelocityInPixelsPerSecond(partLastPoses.slice(0,-1),lastTimestamps)
+    let currentVel = calcVelocityInPixelsPerSecond(partLastPoses,lastTimestamps)
+    let accel = 0
+    if(lastTimestamps.length>1){
+        accel = (currentVel-lastVel)/(lastTimestamps[lastTimestamps.length-1]-lastTimestamps[lastTimestamps.length-2])
+    }
+    return accel//return 0 if the array is not large enough to calc acceleration 
 }
 
 /**
@@ -77,16 +83,16 @@ function filterKnees(results){
     let leftShoulder = results.poseLandmarks[11]
     let rightShoulder = results.poseLandmarks[12]
     
-    let currentPoses = []
+    let currentPose = []
     
-    currentPoses.push(leftHip)
-    currentPoses.push(leftKnee)
-    currentPoses.push(leftAnkle)
-    currentPoses.push(rightHip)
-    currentPoses.push(rightKnee)
-    currentPoses.push(rightAnkle)
-    currentPoses.push(leftShoulder)
-    currentPoses.push(rightShoulder)
+    currentPose.push(leftHip)
+    currentPose.push(leftKnee)
+    currentPose.push(leftAnkle)
+    currentPose.push(rightHip)
+    currentPose.push(rightKnee)
+    currentPose.push(rightAnkle)
+    currentPose.push(leftShoulder)
+    currentPose.push(rightShoulder)
     
     if(updateFPS&&(leftHip.visibility>0.5||rightHip.visibility>0.5)&&(leftKnee.visibility>0.5||rightKnee.visibility>0.5)&&(leftAnkle.visibility>0.5||rightAnkle.visibility>0.5)){
         //console.log("left angles below, then right after")
@@ -98,7 +104,7 @@ function filterKnees(results){
         let leftShoulderToHip = calcDistance(leftShoulder,leftHip)
         let rightShoulderToHip = calcDistance(rightShoulder,rightHip)
 
-        
+
         
     }
     return results;//change this later obviously

@@ -174,8 +174,8 @@ async function setupApp(useMPCamera,useChangeVideo,useTimestampCheck){
     }
     
     if(using_mediapipe){
-        await loadWindows()
-        loadCamera();
+    //    await loadWindows()
+    //    loadCamera();
     }else{
         await loadIOS(flagConfig)
         loadCamera();

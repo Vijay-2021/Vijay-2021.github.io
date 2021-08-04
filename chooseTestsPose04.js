@@ -78,7 +78,6 @@ async function updateVideo() {
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
         tfjsSetLandmarks(poses)
     }
-
     window.requestAnimationFrame(updateVideo);
 }
 
@@ -149,12 +148,14 @@ async function setupApp(useMPCamera, useChangeVideo, useTimestampCheck) {
 
     wasmFeatureDetect.simd().then(simdSupported => {
         if (simdSupported) {
+            alert("wasm simd support is available")
             WASM_HAS_SIMD_SUPPORT = true
         } else {
         }
     });
     wasmFeatureDetect.threads().then(threadsSupported => {
         if (threadsSupported) {
+            alert("wasm threads support is available")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         } else {
         }

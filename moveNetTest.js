@@ -12,6 +12,8 @@ const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LI
 
 const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
 
+var sentResizedMessage = false
+
 tf.enableProdMode()
 
 function resizeCanvasToDisplaySize(canvas) {
@@ -187,6 +189,10 @@ async function loadCamera(){
     videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
         updateVideo()
+        if (!sentResizedMessage) {
+            console.log("Message: resize video");
+            sentResizedMessage = true;
+        }
     }
 }
 

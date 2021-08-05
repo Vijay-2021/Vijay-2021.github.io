@@ -55,6 +55,14 @@ async function updateVideoAndroid(){
         await pose.send({image: videoElement})
         counter++
     }
+    /**let stream = videoElement.srcObject
+    let tracks= stream.getTracks()
+    let counter2 = 0 
+    for(let trackSetting in tracks[0].getSettings){
+        counter2 ++;
+        console.log(`Stream Tracks Setting ${counter2}: ${trackSetting}`)
+    }*/
+    
     window.requestAnimationFrame(function(){nextFrame()})
 }
 

@@ -394,7 +394,6 @@ async function setupCamera(){
           resolve(videoElement);
         };
       });
-      console.log("hello?")
       videoElement.play();
       resizeCanvasToDisplaySize(canvasElement)
       const videoWidth = videoElement.videoWidth;

@@ -92,6 +92,11 @@ async function loadAndroidTimestamp(){
     });
     await setupCamera()
     videoElement.onloadeddata = async function() {
+        console.log(`Video Element Native Width: ${videoElement.videoWidth}`)
+        console.log(`Video Element Native Height: ${videoElement.videoHeight}`)
+        console.log(`Video Element Client Width: ${videoElement.clientWidth}`)
+        console.log(`Video Element Client Height: ${videoElement.clientHeight}`)
+        alert("pausing output")
         updateVideoAndroid()
         if(!sentResizedMessage){
             console.log("Message: resize video");

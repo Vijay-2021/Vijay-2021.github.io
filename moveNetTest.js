@@ -180,14 +180,14 @@ async function loadCamera(){
     });
 
     videoElement.play();
-    resizeCanvasToDisplaySize(canvasElement)
 
-    const videoWidth = videoElement.videoWidth;
-    const videoHeight = videoElement.videoHeight;
-    // Must set below two lines, otherwise video element doesn't show.
-    videoElement.width = videoWidth;
-    videoElement.height = videoHeight;
     videoElement.onloadeddata = async function() {
+        const videoWidth = videoElement.videoWidth;
+        const videoHeight = videoElement.videoHeight;
+        // Must set below two lines, otherwise video element doesn't show.
+        videoElement.width = videoWidth;
+        videoElement.height = videoHeight;
+        resizeCanvasToDisplaySize(canvasElement)
         updateVideo()
         if (!sentResizedMessage) {
             console.log("Message: resize video");

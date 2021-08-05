@@ -1,21 +1,25 @@
+
 const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
+
 
 const model = poseDetection.SupportedModels.MoveNet;
 const line_width = 1
 const score_threshold = 0.5
 const default_radius = 2
 var updateFPS = false
+
 const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING, enableSmoothing: true};
 
-const intervalId = window.setInterval(function(){updateFPS = true;console.log("yeollo")}, 1000);
+var sentResizedMessage = false;
 
-var sentResizedMessage = false
+const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
 
-tf.enableProdMode()
-
+/***
+ * Fixes canvas size, without the mediapipe utils the canvas is not sized correctly(either that or I implemented canvas wrong)
+ */
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
     const width = canvas.width;
@@ -30,6 +34,10 @@ function resizeCanvasToDisplaySize(canvas) {
     return false;
 }
 
+/***
+ * Poses is a 2d array of json keypoint objects for tfjs(we only need to worry about the first index though as blazepose only 
+ * detects a single person)
+ */
 function drawResults(poses) {
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
@@ -117,22 +125,24 @@ function updateScreen(poses){
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     
-    drawResults(poses)
-
+    if(poses != null && poses[0] != null){
+        if (poses[0]['keypoints'] != null ) {
+            drawResults(poses)
+            console.log(JSON.stringify(poses[0]['keypoints']))
+        }
+    }
 }
-
-var lastFrameTime = -1;
 
 async function updateVideo(){
     const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
-    await updateScreen(poses)
+    updateScreen(poses)
     window.requestAnimationFrame(updateVideo);
 }
 
 async function loadModel(flagConfig){  
     await setFlags(flagConfig);
     detector = await poseDetection.createDetector(model, detectorConfig);
-    alert("model built sucessfully")
+    //alert("model built sucessfully")
     //start the camera after we have loaded the model
     //camera.start()
 }
@@ -161,10 +171,10 @@ async function loadCamera(){
       'audio': false,
       'video': {
         facingMode: 'user',
-        width: 320,
-        height: 240,
+        width: 640,
+        height: 480,
         frameRate: {
-          ideal: 60,
+          ideal: 30,
         }
       }
     };
@@ -180,19 +190,21 @@ async function loadCamera(){
     });
 
     videoElement.play();
+    resizeCanvasToDisplaySize(canvasElement)
+
+    const videoWidth = videoElement.videoWidth;
+    const videoHeight = videoElement.videoHeight;
+    // Must set below two lines, otherwise video element doesn't show.
+    videoElement.width = videoWidth;
+    videoElement.height = videoHeight;
 
     videoElement.onloadeddata = async function() {
-        const videoWidth = videoElement.videoWidth;
-        const videoHeight = videoElement.videoHeight;
-        // Must set below two lines, otherwise video element doesn't show.
-        videoElement.width = videoWidth;
-        videoElement.height = videoHeight;
-       // resizeCanvasToDisplaySize(canvasElement)
-        updateVideo()
-        if (!sentResizedMessage) {
+        if(!sentResizedMessage){
             console.log("Message: resize video");
             sentResizedMessage = true;
         }
+        updateVideo()
+
     }
 }
 
@@ -233,32 +245,30 @@ function setFlags(){
 
     wasmFeatureDetect.simd().then(simdSupported=>{
         if(simdSupported){
-            alert("simd is supported")
+          //  alert("simd supported")
             WASM_HAS_SIMD_SUPPORT = true
         }else{
-            alert("no simd")
+           // alert("no simd")
         }
     });
-    
     wasmFeatureDetect.threads().then(threadsSupported=>{
         if(threadsSupported){
-            alert("multi thread supported")
+           // alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         }else{
-            alert("no multi thread support")
+           // alert("no multi thread")
         }
     });
-
     switch(getOS()){
         case 'Mac OS':
-            alert('Mac detected')
+           // alert('Mac detected')
             WEBGL_VERSION = 1
             break;
         case 'Linux': 
-            alert('linux detected')
+           // alert('linux detected')
             break;
         case 'iOS': 
-            alert('ios detected')
+           // alert('ios detected')
             WEBGL_VERSION = 1
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
@@ -266,10 +276,10 @@ function setFlags(){
         case 'Android': 
             WEBGL_FORCE_F16_TEXTURES = true
             WEBGL_RENDER_FLOAT32_CAPABLE = false
-            alert('android detected')
+           // alert('android detected')
             break;
         default: 
-            alert('windows')
+           // alert('windows detected')
             break;
 
     }
@@ -292,7 +302,6 @@ function setFlags(){
 async function loadApp(){    
     await loadModel();
     loadCamera();
-    
 }
 
 loadApp();

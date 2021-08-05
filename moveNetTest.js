@@ -128,7 +128,11 @@ function updateScreen(poses){
     if(poses != null && poses[0] != null){
         if (poses[0]['keypoints'] != null ) {
             drawResults(poses)
-            console.log(JSON.stringify(poses[0]['keypoints']))
+            console.log(`Client height: ${canvasElement.clientHeight}`)
+            console.log(`Client width: ${canvasElement.clientWidth}`)
+            console.log(`height: ${canvasElement.height}`)
+            console.log(`width: ${canvasElement.width}`)
+            //console.log(JSON.stringify(poses[0]['keypoints']))
         }
     }
 }

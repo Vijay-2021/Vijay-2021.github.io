@@ -187,7 +187,7 @@ async function loadCamera(){
         // Must set below two lines, otherwise video element doesn't show.
         videoElement.width = videoWidth;
         videoElement.height = videoHeight;
-        resizeCanvasToDisplaySize(canvasElement)
+       // resizeCanvasToDisplaySize(canvasElement)
         updateVideo()
         if (!sentResizedMessage) {
             console.log("Message: resize video");

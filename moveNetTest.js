@@ -203,10 +203,10 @@ async function loadCamera(){
     videoElement.height = videoHeight;
 
     videoElement.onloadeddata = async function() {
-        if(!sentResizedMessage){
+        /**if(!sentResizedMessage){
             console.log("Message: resize video");
             sentResizedMessage = true;
-        }
+        }*/
         updateVideo()
 
     }

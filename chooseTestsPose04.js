@@ -22,6 +22,9 @@ var landmarks = {}
 
 const mpPose = window;
 
+var lastFrameTime = 0 
+var counter = 0 
+
 const poseOptions = {
     locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
@@ -82,8 +85,7 @@ async function updateVideo() {
 }
 
 /** 
-var lastFrameTime = 0 
-var counter = 0 
+
 
 async function updateVideo(){
     if(counter==0){

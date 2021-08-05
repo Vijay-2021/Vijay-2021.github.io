@@ -6,9 +6,10 @@ const FPSElement = document.getElementById('fps');
 
 
 const model = poseDetection.SupportedModels.MoveNet;
-const line_width = 1
+
 const score_threshold = 0.5
-const default_radius = 2
+var  line_width = 1
+var radius = 3
 var updateFPS = false
 
 const detectorConfig = {modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING, enableSmoothing: true};
@@ -75,7 +76,7 @@ function drawKeypoint(keypoint) {
     const scoreThreshold = score_threshold || 0;
     if (score >= scoreThreshold) {
         const circle = new Path2D();
-        circle.arc(keypoint.x, keypoint.y, default_radius, 0, 2 * Math.PI);
+        circle.arc(keypoint.x, keypoint.y, radius, 0, 2 * Math.PI);
         canvasCtx.fill(circle);
         canvasCtx.stroke(circle);
     }
@@ -280,6 +281,8 @@ function setFlags(){
         case 'Android': 
             WEBGL_FORCE_F16_TEXTURES = true
             WEBGL_RENDER_FLOAT32_CAPABLE = false
+            line_width = 3
+            radius = 4
            // alert('android detected')
             break;
         default: 

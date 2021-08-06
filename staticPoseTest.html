@@ -86,6 +86,8 @@
                     if(videoElement.width!=null&&videoElement.width>0&&videoElement.width!=htmlImageElement.width){
                         htmlImageElement.width=videoElement.width
                         htmlImageElement.height=videoElement.height
+                        alert(htmlImageElement.width)
+                        alert(htmlImageElement.height)
                     }
                     var strDataURI = canvasElement.toDataURL('image/jpeg', 0.5); 
                     htmlImageElement.src = strDataURI
@@ -97,7 +99,7 @@
             camera.start();
         
         </script>
-        <h5> Version: 3</h5> 
+        <h5> Version: 4</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

@@ -55,7 +55,7 @@
     <body>
         <div class="row">
             <div class="overlay">
-                <h5 class="overlay_contents"> Version: 10</h5> 
+                <h5 class="overlay_contents"> Version: 11</h5> 
                 <p class="overlay_contents" id="fps"> FPS: Just updated code Average FPS:</p>
             </div>
             <video class="input_video" playsinline autoplay></video>
@@ -74,7 +74,8 @@
             var skeleton_type = "full"
             
             window.addEventListener("changeSkeleton", (event) => {
-                alert("custon event listener ran")
+                console.log(`Event: ${event}`)
+                console.log(`Event Skeleton Type: ${event.skeleton_type}`)
                 setSkeletonType(event.skeleton_type)
             }, false);
 

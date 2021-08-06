@@ -58,9 +58,9 @@
                     results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
                     results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
                 }
-                drawJoints(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height);
-                drawConnections(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height); 
-                
+                //drawJoints(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height);
+                //drawConnections(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height); 
+                console.log(JSON.stringify(results.poseLandmarks))
                 
             }
 

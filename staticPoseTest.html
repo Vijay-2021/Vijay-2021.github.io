@@ -44,17 +44,7 @@
             const canvasElement = document.getElementsByClassName('output_canvas')[0];
             const canvasCtx = canvasElement.getContext('2d');
 
-            const windowWidth = window.innerWidth
-            const windowHeight = window.innerHeight
-
-            const viewPortScale = 0.8
-
-            const videoWidth = (windowWidth > 600) ? 640 : 360;
-            const videoHeight = (windowWidth > 600) ? 480 : 640;
-            alert(`Video Width: ${videoWidth}`)
-            alert(`Video Height: ${videoHeight}`)
-
-            const htmlImageElement = new Image(640, 480);
+            const htmlImageElement = new Image(canvasElement.width, canvasElement.height);
 
             const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
@@ -103,7 +93,7 @@
             camera.start();
         
         </script>
-        <h5> Version: 2</h5> 
+        <h5> Version: 3</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

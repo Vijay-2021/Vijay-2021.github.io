@@ -22,8 +22,8 @@
             }
 
             .output_canvas {
-                width: 90vw;
-                height: 90vh;
+                width: 100vw;
+                height: 100vh;
             }
             }
 
@@ -32,8 +32,8 @@
                 display: none
             }
             .output_canvas {
-                width: 90vw;
-                height: 90vh;
+                width: 100vw;
+                height: 100vh;
             }
             }
         </style>
@@ -76,26 +76,26 @@
             });
 
             
-            
+            let counter = 0
             //when there are updated results, the onResults function will be ran 
             pose.onResults(onResults);
             const camera = new Camera(videoElement, {
                 onFrame: async () => {
+                    if(counter==1){
+                        console.log("pose estimation has begun")
+                    }
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
                    
                     var strDataURI = canvasElement.toDataURL('image/jpeg', 0.9); 
                     htmlImageElement.src = strDataURI
                     if(videoElement.videoWidth!=null&&videoElement.videoWidth>0&&videoElement.videoWidth!=htmlImageElement.width){
-                        alert(`Old Image Width: ${htmlImageElement.width}`)
-                        alert(`Old Image Height: ${htmlImageElement.height}`)
                         htmlImageElement.width=videoElement.videoWidth
                         htmlImageElement.height=videoElement.videoHeight
                         resizeCanvasToDisplaySize(canvasElement,videoElement)
-                        alert(`New Image Width: ${htmlImageElement.width}`)
-                        alert(`New Image Height: ${htmlImageElement.height}`)
                     }
                     await pose.send({image: htmlImageElement});
+                    counter +=1
                 },
                 width: 640,
                 height: 360
@@ -103,7 +103,7 @@
             camera.start();
         
         </script>
-        <h5> Version: 6</h5> 
+        <h5> Version: 7</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

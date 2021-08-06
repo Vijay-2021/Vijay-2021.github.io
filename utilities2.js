@@ -28,7 +28,7 @@ var FPSTotal =0;
 const FPSElement = document.getElementById('fps');
 
 function runFPSUpdate(){
-  console.log("updating fps????")
+  
     currentTime = performance.now();
     FPS = Math.round(1000*(1/(currentTime-lastTime)));
     timesOnResultsRan++; 

@@ -55,7 +55,7 @@
     <body>
         <div class="row">
             <div class="overlay">
-                <h5 class="overlay_contents"> Version: 9</h5> 
+                <h5 class="overlay_contents"> Version: 10</h5> 
                 <p class="overlay_contents" id="fps"> FPS: Just updated code Average FPS:</p>
             </div>
             <video class="input_video" playsinline autoplay></video>
@@ -72,6 +72,11 @@
             const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
             var skeleton_type = "full"
+            
+            window.addEventListener("changeSkeleton", (event) => {
+                alert("custon event listener ran")
+                setSkeletonType(event.skeleton_type)
+            }, false);
 
             function setSkeletonType(type){
                 alert("here we")
@@ -104,7 +109,7 @@
                         break;
                 }
                 
-                console.log(JSON.stringify(results.poseLandmarks))
+                //console.log(JSON.stringify(results.poseLandmarks))
                 
             }
 
@@ -126,7 +131,7 @@
             const camera = new Camera(videoElement, {
                 onFrame: async () => {
                     if(counter==1){
-                        console.log("pose estimation has begun")
+                        //console.log("pose estimation has begun")
                     }
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);

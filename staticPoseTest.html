@@ -83,14 +83,15 @@
                 onFrame: async () => {
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
-                    if(videoElement.width!=null&&videoElement.width>0&&videoElement.width!=htmlImageElement.width){
-                        htmlImageElement.width=videoElement.width
-                        htmlImageElement.height=videoElement.height
+                   
+                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.5); 
+                    htmlImageElement.src = strDataURI
+                    if(videoElement.videoWidth!=null&&videoElement.videoWidth>0&&videoElement.videoWidth!=htmlImageElement.width){
+                        htmlImageElement.width=videoElement.videoWidth
+                        htmlImageElement.height=videoElement.videoHeight
                         alert(htmlImageElement.width)
                         alert(htmlImageElement.height)
                     }
-                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.5); 
-                    htmlImageElement.src = strDataURI
                     await pose.send({image: htmlImageElement});
                 },
                 width: 640,

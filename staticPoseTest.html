@@ -55,7 +55,7 @@
     <body>
         <div class="row">
             <div class="overlay">
-                <h5 class="overlay_contents"> Version: 12</h5> 
+                <h5 class="overlay_contents"> Version: 13</h5> 
                 <p class="overlay_contents" id="fps"> FPS: Just updated code Average FPS:</p>
             </div>
             <video class="input_video" playsinline autoplay></video>
@@ -90,6 +90,11 @@
                 alert("here we")
                 if(typeof type==='string'&&type.length>0){
                     skeleton_type=type
+                    alert(`type has been changed to ${skeleton_type}`)
+                }
+                else{
+                    skeleton_type = String(type)
+                    alert(`Skeleton type: ${skeleton_type}`)
                 }
             }
 

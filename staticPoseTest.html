@@ -84,13 +84,15 @@
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
                    
-                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.75); 
+                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.9); 
                     htmlImageElement.src = strDataURI
                     if(videoElement.videoWidth!=null&&videoElement.videoWidth>0&&videoElement.videoWidth!=htmlImageElement.width){
+                        alert(`Old Image Width: ${htmlImageElement.width}`)
+                        alert(`Old Image Height: ${htmlImageElement.height}`)
                         htmlImageElement.width=videoElement.videoWidth
                         htmlImageElement.height=videoElement.videoHeight
-                        alert(htmlImageElement.width)
-                        alert(htmlImageElement.height)
+                        alert(`New Image Width: ${htmlImageElement.width}`)
+                        alert(`New Image Height: ${htmlImageElement.height}`)
                     }
                     await pose.send({image: htmlImageElement});
                 },
@@ -100,7 +102,7 @@
             camera.start();
         
         </script>
-        <h5> Version: 5</h5> 
+        <h5> Version: 6</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

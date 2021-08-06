@@ -22,12 +22,9 @@
                 justify-content: center;
                 z-index:1;
             }
-            .overlay_contents{
-                color:white;
-            }
             .output_canvas {
-                width: 640px;
-                height: 360px;
+            width: 640px;
+            height: 360px;
             }
             /* Extra small devices (phones, 600px and down) */
             @media only screen and (max-width: 800px) and (orientation: landscape) {
@@ -72,9 +69,9 @@
                     results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
                     results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
                 }
-                //drawJoints(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height);
-                //drawConnections(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height); 
-                console.log(JSON.stringify(results.poseLandmarks))
+                drawJoints(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height);
+                drawConnections(canvasCtx, results.poseLandmarks, canvasElement.width, canvasElement.height); 
+                //console.log(JSON.stringify(results.poseLandmarks))
                 
             }
 
@@ -101,7 +98,7 @@
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
                    
-                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.9); 
+                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.85); 
                     htmlImageElement.src = strDataURI
                     if(videoElement.videoWidth!=null&&videoElement.videoWidth>0&&videoElement.videoWidth!=htmlImageElement.width){
                         htmlImageElement.width=videoElement.videoWidth
@@ -112,7 +109,7 @@
                     counter +=1
                 },
                 width: 640,
-                height: 360
+                height: 480
             });
             camera.start();
         
@@ -121,10 +118,7 @@
         
         
         <div class="row">
-            <div class="overlay">
-                <h5 class="overlay_contents"> Version: 8</h5> 
-                <p class="overlay_contents" id="fps"> FPS: Just updated code Average FPS:</p>
-            </div>
+            <p id="fps" class = "overlay"> FPS: Just updated code Average FPS:</p>
             <video class="input_video" playsinline autoplay></video>
             <canvas class="output_canvas" ></canvas>
         </div>

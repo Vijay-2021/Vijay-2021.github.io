@@ -43,6 +43,17 @@
             const videoElement = document.getElementsByClassName('input_video')[0];
             const canvasElement = document.getElementsByClassName('output_canvas')[0];
             const canvasCtx = canvasElement.getContext('2d');
+
+            const windowWidth = window.innerWidth
+            const windowHeight = window.innerHeight
+
+            const viewPortScale = 0.8
+
+            const videoWidth = (windowWidth > 600) ? 640 : 360;
+            const videoHeight = (windowWidth > 600) ? 480 : 640;
+            alert(`Video Width: ${videoWidth}`)
+            alert(`Video Height: ${videoHeight}`)
+
             const htmlImageElement = new Image(640, 480);
 
             const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
@@ -73,6 +84,8 @@
                 minDetectionConfidence: 0.5,
                 minTrackingConfidence: 0.5
             });
+
+            
             
             //when there are updated results, the onResults function will be ran 
             pose.onResults(onResults);
@@ -90,7 +103,7 @@
             camera.start();
         
         </script>
-        <h5> Version: 1</h5> 
+        <h5> Version: 2</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

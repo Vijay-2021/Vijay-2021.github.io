@@ -91,6 +91,7 @@
                         alert(`Old Image Height: ${htmlImageElement.height}`)
                         htmlImageElement.width=videoElement.videoWidth
                         htmlImageElement.height=videoElement.videoHeight
+                        resizeCanvasToDisplaySize(canvasElement,videoElement)
                         alert(`New Image Width: ${htmlImageElement.width}`)
                         alert(`New Image Height: ${htmlImageElement.height}`)
                     }

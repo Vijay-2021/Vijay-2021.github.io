@@ -459,3 +459,17 @@ function calculateAverageArray(array){
   }
   return total/array.length; 
 }
+
+function resizeCanvasToDisplaySize(canvas,video) {
+    // look up the size the canvas is being displayed
+    const width = canvas.width;
+    const height = canvas.height;
+    // If it's resolution does not match change it
+    if (video.videoWidth !== width || video.videoHeight !== height) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        return true;
+    }
+
+    return false;
+}

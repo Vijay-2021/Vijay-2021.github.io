@@ -55,7 +55,7 @@
     <body>
         <div class="row">
             <div class="overlay">
-                <h5 class="overlay_contents"> Version: 1</h5> 
+                <h5 class="overlay_contents"> Version: 2</h5> 
                 <p class="overlay_contents" id="fps"> FPS: Just updated code Average FPS:</p>
             </div>
             <video class="input_video" playsinline autoplay></video>
@@ -75,10 +75,10 @@
             
             window.addEventListener("changeSkeleton", (event) => {
                 console.log(`Event: ${event}`)
-                console.log(`Event Skeleton Type: ${event.pose_info.skeleton_type}`)
-                console.log(JSON.stringify(event.pose_info));
+                console.log(`Event Skeleton Type: ${event.detail.skeleton_type}`)
+                console.log(JSON.stringify(event.detail));
                 console.log(JSON.stringify(event));
-                setSkeletonType(event.pose_info.skeleton_type)
+                setSkeletonType(event.detail.skeleton_type)
             }, false);
 
             window.addEventListener("message", (event) => {

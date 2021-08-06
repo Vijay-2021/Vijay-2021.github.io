@@ -84,7 +84,7 @@
                     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
                     canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
                    
-                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.5); 
+                    var strDataURI = canvasElement.toDataURL('image/jpeg', 0.75); 
                     htmlImageElement.src = strDataURI
                     if(videoElement.videoWidth!=null&&videoElement.videoWidth>0&&videoElement.videoWidth!=htmlImageElement.width){
                         htmlImageElement.width=videoElement.videoWidth

@@ -75,7 +75,9 @@
             
             window.addEventListener("changeSkeleton", (event) => {
                 console.log(`Event: ${event}`)
-                console.log(`Event Skeleton Type: ${event.skeleton_type}`)
+                console.log(`Event Skeleton Type: ${event.detail.skeleton_type}`)
+                console.log(JSON.stringify(event.detail));
+                console.log(JSON.stringify(event));
                 setSkeletonType(event.skeleton_type)
             }, false);
 

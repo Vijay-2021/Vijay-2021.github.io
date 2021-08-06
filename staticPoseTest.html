@@ -22,8 +22,8 @@
             }
 
             .output_canvas {
-                width: 80vw;
-                height: 80vh;
+                width: 90vw;
+                height: 90vh;
             }
             }
 
@@ -32,8 +32,8 @@
                 display: none
             }
             .output_canvas {
-                width: 80vw;
-                height: 80vh;
+                width: 90vw;
+                height: 90vh;
             }
             }
         </style>
@@ -43,7 +43,7 @@
             const videoElement = document.getElementsByClassName('input_video')[0];
             const canvasElement = document.getElementsByClassName('output_canvas')[0];
             const canvasCtx = canvasElement.getContext('2d');
-            const htmlImageElement = new Image(640, 360);
+            const htmlImageElement = new Image(640, 480);
 
             const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
@@ -90,7 +90,7 @@
             camera.start();
         
         </script>
-        
+        <h5> Version: 1</h5> 
         <p id="fps"> FPS: Just updated code Average FPS:</p>
         
         <div class="row">

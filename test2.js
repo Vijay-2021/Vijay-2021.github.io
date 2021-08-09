@@ -14,15 +14,17 @@ var updateFPS = false
 
 var sentResizedMessage = false;
 
-const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
+const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
 var using_mediapipe = false
 
 var landmarks = {}
 
-const pose = new Pose({locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
-  }});
+const pose = new Pose({
+    locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.2/${file}`;
+    }
+});
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -30,15 +32,15 @@ function resizeCanvasToDisplaySize(canvas) {
     const height = canvas.height;
     // If it's resolution does not match change it
     if (videoElement.width !== width || videoElement.height !== height) {
-      canvas.width = videoElement.videoWidth;
-      canvas.height = videoElement.videoHeight;
-      return true;
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        return true;
     }
- 
+
     return false;
 }
 
-function updateScreen(results){
+function updateScreen(results) {
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
@@ -49,36 +51,36 @@ function updateScreen(results){
     runFPSUpdate()
 }
 
-async function tfjsSetLandmarks(poses){
+async function tfjsSetLandmarks(poses) {
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
 
-    if(poses != null && poses[0] != null){
-        if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length>0) {
+    if (poses != null && poses[0] != null) {
+        if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length > 0) {
             await updateScreen(poses[0]['keypoints'])
         }
     }
     return false;
 }
 
-async function updateVideo(){
-    if(using_mediapipe){
-        await pose.send({image: videoElement});
-    }else{
+async function updateVideo() {
+    if (using_mediapipe) {
+        await pose.send({ image: videoElement });
+    } else {
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
         tfjsSetLandmarks(poses)
     }
     window.requestAnimationFrame(updateVideo);
 }
 
-const estimationConfig = {flipHorizontal: true};
+const estimationConfig = { flipHorizontal: true };
 const timestamp = performance.now();
 
-async function loadCamera(){
+async function loadCamera() {
     setupCamera()
-    videoElement.onloadeddata = async function() {
+    videoElement.onloadeddata = async function () {
         updateVideo()
-        if(!sentResizedMessage){
+        if (!sentResizedMessage) {
             console.log("Message: resize video");
             sentResizedMessage = true;
         }
@@ -94,31 +96,31 @@ async function loadCamera(){
  * the reason I did this is because I found that android detected poses extremely poorly using the loop that I setup to run the 
  * video code(updateVideo) even though it was getting 9-10fps on average. The med
  */
-async function setupApp(){
+async function setupApp() {
 
     var WEBGL_VERSION = 2
     var WASM_HAS_SIMD_SUPPORT = false
-    var WASM_HAS_MULTITHREAD_SUPPORT= false
-    var WEBGL_CPU_FORWARD=true
-    var WEBGL_PACK= true
-    var WEBGL_FORCE_F16_TEXTURES= false
-    var WEBGL_RENDER_FLOAT32_CAPABLE= true
-    var WEBGL_FLUSH_THRESHOLD= -1
-    var CHECK_COMPUTATION_FOR_ERRORS= false
+    var WASM_HAS_MULTITHREAD_SUPPORT = false
+    var WEBGL_CPU_FORWARD = true
+    var WEBGL_PACK = true
+    var WEBGL_FORCE_F16_TEXTURES = false
+    var WEBGL_RENDER_FLOAT32_CAPABLE = true
+    var WEBGL_FLUSH_THRESHOLD = -1
+    var CHECK_COMPUTATION_FOR_ERRORS = false
 
-    wasmFeatureDetect.simd().then(simdSupported=>{
-        if(simdSupported){
+    wasmFeatureDetect.simd().then(simdSupported => {
+        if (simdSupported) {
             WASM_HAS_SIMD_SUPPORT = true
-        }else{
+        } else {
         }
     });
-    wasmFeatureDetect.threads().then(threadsSupported=>{
-        if(threadsSupported){
+    wasmFeatureDetect.threads().then(threadsSupported => {
+        if (threadsSupported) {
             WASM_HAS_MULTITHREAD_SUPPORT = true;
-        }else{
+        } else {
         }
     });
-    switch(getOS()){
+    switch (getOS()) {
         case 'Mac OS':
             WEBGL_VERSION = 1
             break;
@@ -126,10 +128,10 @@ async function setupApp(){
         case 'Linux':
             using_mediapipe = true
             break;
-        case 'Android': 
+        case 'Android':
             await loadAndroid()
             return;
-        default: 
+        default:
             WEBGL_VERSION = 1 //use the lowest possible features if no types are detected, just incase
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
@@ -147,16 +149,16 @@ async function setupApp(){
         WEBGL_FLUSH_THRESHOLD: WEBGL_FLUSH_THRESHOLD,
         CHECK_COMPUTATION_FOR_ERRORS: CHECK_COMPUTATION_FOR_ERRORS,
     }
-    
-    if(using_mediapipe){
+
+    if (using_mediapipe) {
         await loadAndroid()
         //loadCamera();
-    }else{
+    } else {
         await loadIOS(flagConfig)
         loadCamera();
     }
 }
-async function loadApp(){    
-    await setupApp();    
+async function loadApp() {
+    await setupApp();
 }
 loadApp();

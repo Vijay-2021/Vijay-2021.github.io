@@ -11,14 +11,14 @@ const score_threshold = 0.5
 const default_radius = 2
 var updateFPS = false
 const detectorConfig = {
-  runtime: 'tfjs',
-  enableSmoothing: true,
-  modelType: 'full'
+    runtime: 'tfjs',
+    enableSmoothing: true,
+    modelType: 'full'
 };
 
 var sentResizedMessage = false;
 
-const intervalId = window.setInterval(function(){updateFPS = true;}, 1000);
+const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
 
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
@@ -26,24 +26,24 @@ function resizeCanvasToDisplaySize(canvas) {
     const height = canvas.height;
     // If it's resolution does not match change it
     if (videoElement.width !== width || videoElement.height !== height) {
-      canvas.width = videoElement.videoWidth;
-      canvas.height = videoElement.videoHeight;
-      return true;
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        return true;
     }
- 
+
     return false;
 }
 
 function drawResults(poses) {
-    if(poses != null && poses[0] != null){
-        if (poses[0]['keypoints'] != null ) {
+    if (poses != null && poses[0] != null) {
+        if (poses[0]['keypoints'] != null) {
             drawKeypoints(poses[0]['keypoints']);
             drawSkeleton(poses[0]['keypoints']);
         }
-        else{
+        else {
             //alert("no keypoints")
         }
-    }else{
+    } else {
         return;
     }
 }
@@ -54,13 +54,13 @@ function drawResults(poses) {
 */
 
 function drawKeypoints(keypoints) {
-    
+
     const keypointInd = poseDetection.util.getKeypointIndexBySide(model);
     canvasCtx.fillStyle = 'Green';
     canvasCtx.strokeStyle = 'White';
     canvasCtx.lineWidth = line_width;
 
-    for (var i =0; i < keypoints.length;i++){
+    for (var i = 0; i < keypoints.length; i++) {
         drawKeypoint(keypoints[i])
     }
 }
@@ -103,39 +103,39 @@ function drawSkeleton(keypoints) {
     });
 }
 
-var FPS, avgFPS, currentTime,lastTime =0;
+var FPS, avgFPS, currentTime, lastTime = 0;
 var updateFPS = false;
-var timesOnResultsRan = 0; 
-var FPSTotal =0;
+var timesOnResultsRan = 0;
+var FPSTotal = 0;
 
-function updateScreen(poses){
+function updateScreen(poses) {
     currentTime = performance.now();
-    FPS = Math.round(1000*(1/(currentTime-lastTime)));
-    timesOnResultsRan++; 
-    FPSTotal += FPS; 
-    avgFPS = Math.round(FPSTotal/timesOnResultsRan);
-    if(updateFPS){
+    FPS = Math.round(1000 * (1 / (currentTime - lastTime)));
+    timesOnResultsRan++;
+    FPSTotal += FPS;
+    avgFPS = Math.round(FPSTotal / timesOnResultsRan);
+    if (updateFPS) {
         FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
     }
     lastTime = currentTime;
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    if(poses != null && poses[0] != null){
-        if (poses[0]['keypoints'] != null ) {
+    if (poses != null && poses[0] != null) {
+        if (poses[0]['keypoints'] != null) {
             console.log(JSON.stringify(poses[0]['keypoints']))
             drawResults(poses)
         }
     }
-   
+
 }
 
-async function updateVideo(){
+async function updateVideo() {
     const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
     updateScreen(poses)
     window.requestAnimationFrame(updateVideo);
 }
 
-async function loadModel(flagConfig){  
+async function loadModel(flagConfig) {
     await setFlags(flagConfig);
     detector = await poseDetection.createDetector(model, detectorConfig);
     //alert("model built sucessfully")
@@ -144,35 +144,35 @@ async function loadModel(flagConfig){
 }
 
 async function setEnvFlags(flagConfig) {
-    
+
     if (flagConfig == null) {
-      return;
+        return;
     } else if (typeof flagConfig !== 'object') {
-      throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
+        throw new Error(`An object is expected, while a(n) ${typeof flagConfig} is found.`);
     } // Check the validation of flags and values.
-    
+
     tf.env().setFlags(flagConfig);
 
 }
 
-const estimationConfig = {flipHorizontal: true};
+const estimationConfig = { flipHorizontal: true };
 const timestamp = performance.now();
 
-async function loadCamera(){
+async function loadCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error(
-          'Browser API navigator.mediaDevices.getUserMedia not available');
+        throw new Error(
+            'Browser API navigator.mediaDevices.getUserMedia not available');
     }
     const videoConfig = {
-      'audio': false,
-      'video': {
-        facingMode: 'user',
-        width: 640,
-        height: 480,
-        frameRate: {
-          ideal: 30,
+        'audio': false,
+        'video': {
+            facingMode: 'user',
+            width: 640,
+            height: 480,
+            frameRate: {
+                ideal: 30,
+            }
         }
-      }
     };
 
     const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
@@ -180,9 +180,9 @@ async function loadCamera(){
     videoElement.srcObject = stream;
 
     await new Promise((resolve) => {
-      videoElement.onloadedmetadata = () => {
-        resolve(videoElement);
-      };
+        videoElement.onloadedmetadata = () => {
+            resolve(videoElement);
+        };
     });
 
     videoElement.play();
@@ -194,8 +194,8 @@ async function loadCamera(){
     videoElement.width = videoWidth;
     videoElement.height = videoHeight;
 
-    videoElement.onloadeddata = async function() {
-        if(!sentResizedMessage){
+    videoElement.onloadeddata = async function () {
+        if (!sentResizedMessage) {
             console.log("Message: resize video");
             sentResizedMessage = true;
         }
@@ -211,71 +211,71 @@ function getOS() {
         windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
         iosPlatforms = ['iPhone', 'iPad', 'iPod'],
         os = null;
-  
+
     if (macosPlatforms.indexOf(platform) !== -1) {
-      os = 'Mac OS';
+        os = 'Mac OS';
     } else if (iosPlatforms.indexOf(platform) !== -1) {
-      os = 'iOS';
+        os = 'iOS';
     } else if (windowsPlatforms.indexOf(platform) !== -1) {
-      os = 'Windows';
+        os = 'Windows';
     } else if (/Android/.test(userAgent)) {
-      os = 'Android';
+        os = 'Android';
     } else if (!os && /Linux/.test(platform)) {
-      os = 'Linux';
+        os = 'Linux';
     }
-  
+
     return os;
 }
 
-function setFlags(){
+function setFlags() {
 
     var WEBGL_VERSION = 2
     var WASM_HAS_SIMD_SUPPORT = false
-    var WASM_HAS_MULTITHREAD_SUPPORT= false
-    var WEBGL_CPU_FORWARD=true
-    var WEBGL_PACK= true
-    var WEBGL_FORCE_F16_TEXTURES= false
-    var WEBGL_RENDER_FLOAT32_CAPABLE= true
-    var WEBGL_FLUSH_THRESHOLD= -1
-    var CHECK_COMPUTATION_FOR_ERRORS= false
+    var WASM_HAS_MULTITHREAD_SUPPORT = false
+    var WEBGL_CPU_FORWARD = true
+    var WEBGL_PACK = true
+    var WEBGL_FORCE_F16_TEXTURES = false
+    var WEBGL_RENDER_FLOAT32_CAPABLE = true
+    var WEBGL_FLUSH_THRESHOLD = -1
+    var CHECK_COMPUTATION_FOR_ERRORS = false
 
-    wasmFeatureDetect.simd().then(simdSupported=>{
-        if(simdSupported){
-          //  alert("simd supported")
+    wasmFeatureDetect.simd().then(simdSupported => {
+        if (simdSupported) {
+            //  alert("simd supported")
             WASM_HAS_SIMD_SUPPORT = true
-        }else{
-           // alert("no simd")
+        } else {
+            // alert("no simd")
         }
     });
-    wasmFeatureDetect.threads().then(threadsSupported=>{
-        if(threadsSupported){
-           // alert("multi thread supported")
+    wasmFeatureDetect.threads().then(threadsSupported => {
+        if (threadsSupported) {
+            // alert("multi thread supported")
             WASM_HAS_MULTITHREAD_SUPPORT = true;
-        }else{
-           // alert("no multi thread")
+        } else {
+            // alert("no multi thread")
         }
     });
-    switch(getOS()){
+    switch (getOS()) {
         case 'Mac OS':
-           // alert('Mac detected')
+            // alert('Mac detected')
             WEBGL_VERSION = 1
             break;
-        case 'Linux': 
-           // alert('linux detected')
+        case 'Linux':
+            // alert('linux detected')
             break;
-        case 'iOS': 
-           // alert('ios detected')
+        case 'iOS':
+            // alert('ios detected')
             WEBGL_VERSION = 1
             WEBGL_FORCE_F16_TEXTURES = true //use float 16s on mobile just incase 
             WEBGL_RENDER_FLOAT32_CAPABLE = false
             break;
-        case 'Android': 
+        case 'Android':
             WEBGL_FORCE_F16_TEXTURES = true
             WEBGL_RENDER_FLOAT32_CAPABLE = false
-           // alert('android detected')
+            // alert('android detected')
             break;
-        default: 
-           // alert('windows detected')
+        default:
+            // alert('windows detected')
             break;
 
     }
@@ -291,11 +291,11 @@ function setFlags(){
         WEBGL_FLUSH_THRESHOLD: WEBGL_FLUSH_THRESHOLD,
         CHECK_COMPUTATION_FOR_ERRORS: CHECK_COMPUTATION_FOR_ERRORS,
     }
-    
+
     setEnvFlags(flagConfig)
 
 }
-async function loadApp(){    
+async function loadApp() {
     await loadModel();
     loadCamera();
 }

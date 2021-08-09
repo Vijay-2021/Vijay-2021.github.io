@@ -1,98 +1,98 @@
 function getOS() {
-    let userAgent = window.navigator.userAgent,
-        platform = window.navigator.platform,
-        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
-        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
-        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
-        os = null;
-  
-    if (macosPlatforms.indexOf(platform) !== -1) {
-      os = 'Mac OS';
-    } else if (iosPlatforms.indexOf(platform) !== -1) {
-      os = 'iOS';
-    } else if (windowsPlatforms.indexOf(platform) !== -1) {
-      os = 'Windows';
-    } else if (/Android/.test(userAgent)) {
-      os = 'Android';
-    } else if (!os && /Linux/.test(platform)) {
-      os = 'Linux';
-    }
-  
-    return os;
+  let userAgent = window.navigator.userAgent,
+    platform = window.navigator.platform,
+    macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+    windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+    iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+    os = null;
+
+  if (macosPlatforms.indexOf(platform) !== -1) {
+    os = 'Mac OS';
+  } else if (iosPlatforms.indexOf(platform) !== -1) {
+    os = 'iOS';
+  } else if (windowsPlatforms.indexOf(platform) !== -1) {
+    os = 'Windows';
+  } else if (/Android/.test(userAgent)) {
+    os = 'Android';
+  } else if (!os && /Linux/.test(platform)) {
+    os = 'Linux';
+  }
+
+  return os;
 }
 
-var FPS, avgFPS, currentTime,lastTime =0;
+var FPS, avgFPS, currentTime, lastTime = 0;
 var updateFPS = false;
-var timesOnResultsRan = 0; 
-var FPSTotal =0;
+var timesOnResultsRan = 0;
+var FPSTotal = 0;
 
-function runFPSUpdate(){
-    currentTime = performance.now();
-    FPS = Math.round(1000*(1/(currentTime-lastTime)));
-    timesOnResultsRan++; 
-    FPSTotal += FPS; 
-    avgFPS = Math.round(FPSTotal/timesOnResultsRan);
-    if(updateFPS){
-        FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
-    }
-    lastTime = currentTime;
+function runFPSUpdate() {
+  currentTime = performance.now();
+  FPS = Math.round(1000 * (1 / (currentTime - lastTime)));
+  timesOnResultsRan++;
+  FPSTotal += FPS;
+  avgFPS = Math.round(FPSTotal / timesOnResultsRan);
+  if (updateFPS) {
+    FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
+  }
+  lastTime = currentTime;
 }
 
 function createAdditionalJoints(poselandmarks) {
   let mid_shoulder = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_torso = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_left_torso = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_right_torso = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_hip = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_knee = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_ankle = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   let mid_ear = {
-      visibility: 1,
-      x: null,
-      y: null,
-      z: null,
+    visibility: 1,
+    x: null,
+    y: null,
+    z: null,
   };
 
   // MID EAR
@@ -142,8 +142,8 @@ function createAdditionalJoints(poselandmarks) {
 
   mid_shoulder.x = (rightshoulderx + leftshoulderx) / 2;
   mid_shoulder.y =
-      (rightshouldery + leftshouldery) / 2 -
-      (rightshouldery + leftshouldery) * 0.03;
+    (rightshouldery + leftshouldery) / 2 -
+    (rightshouldery + leftshouldery) * 0.03;
   mid_shoulder.z = (rightshoulderz + leftshoulderz) / 2;
 
   mid_hip.x = (righthipx + lefthipx) / 2;
@@ -193,101 +193,101 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
 
 
   let fullbody = [
-      poses[11],
-      poses[12],
-      poses[13],
-      poses[14],
-      poses[15],
-      poses[16],
-      poses[23],
-      poses[24],
-      poses[25],
-      poses[26],
-      poses[27],
-      poses[28],
-      poses[32],
-      poses[31],
-      poses[33],
-      poses[34],
-      poses[35],
+    poses[11],
+    poses[12],
+    poses[13],
+    poses[14],
+    poses[15],
+    poses[16],
+    poses[23],
+    poses[24],
+    poses[25],
+    poses[26],
+    poses[27],
+    poses[28],
+    poses[32],
+    poses[31],
+    poses[33],
+    poses[34],
+    poses[35],
   ];
 
   let bodyjoints = [
-      poses[40],
-      poses[11],
-      poses[12],
-      poses[13],
-      poses[14],
-      poses[15],
-      poses[16],
-      poses[23],
-      poses[24],
-      poses[25],
-      poses[26],
-      poses[27],
-      poses[28],
-      poses[31],
-      poses[32],
-      poses[33],
-      poses[34],
-      poses[35],
-      poses[36],
-      poses[37],
-      poses[38],
-      poses[39],
+    poses[40],
+    poses[11],
+    poses[12],
+    poses[13],
+    poses[14],
+    poses[15],
+    poses[16],
+    poses[23],
+    poses[24],
+    poses[25],
+    poses[26],
+    poses[27],
+    poses[28],
+    poses[31],
+    poses[32],
+    poses[33],
+    poses[34],
+    poses[35],
+    poses[36],
+    poses[37],
+    poses[38],
+    poses[39],
   ];
 
   let upperbody = [
-      poses[11],
-      poses[12],
-      poses[13],
-      poses[14],
-      poses[15],
-      poses[16],
-      poses[23],
-      poses[24],
-      poses[33],
-      poses[34],
-      poses[35],
+    poses[11],
+    poses[12],
+    poses[13],
+    poses[14],
+    poses[15],
+    poses[16],
+    poses[23],
+    poses[24],
+    poses[33],
+    poses[34],
+    poses[35],
   ];
 
   let lowerbody = [
-      poses[23],
-      poses[24],
-      poses[25],
-      poses[26],
-      poses[27],
-      poses[28],
-      poses[31],
-      poses[32],
-      poses[35],
+    poses[23],
+    poses[24],
+    poses[25],
+    poses[26],
+    poses[27],
+    poses[28],
+    poses[31],
+    poses[32],
+    poses[35],
   ];
 
   let sidebody = [
-      poses[23],
-      poses[24],
-      poses[25],
-      poses[26],
-      poses[27],
-      poses[28],
-      poses[31],
-      poses[32],
-      poses[33],
-      poses[34],
-      poses[35],
+    poses[23],
+    poses[24],
+    poses[25],
+    poses[26],
+    poses[27],
+    poses[28],
+    poses[31],
+    poses[32],
+    poses[33],
+    poses[34],
+    poses[35],
   ];
 
   let bodypart = fullbody;
 
   for (let i = 0; i < bodypart.length; i++) {
-      canvasCtx.beginPath();
-      canvasCtx.strokeStyle = "#01FD0C";
-      canvasCtx.fillStyle = "#01FD0C";
-      canvasCtx.lineWidth = 2;
-      let g = new Path2D();
-      g.arc(bodypart[i].x , bodypart[i].y , 2.0, 0, 2 * Math.PI);
-      canvasCtx.fill(g);
-      canvasCtx.stroke(g);
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "#01FD0C";
+    canvasCtx.fillStyle = "#01FD0C";
+    canvasCtx.lineWidth = 2;
+    let g = new Path2D();
+    g.arc(bodypart[i].x, bodypart[i].y, 2.0, 0, 2 * Math.PI);
+    canvasCtx.fill(g);
+    canvasCtx.stroke(g);
   }
   canvasCtx.restore();
 }
@@ -314,48 +314,46 @@ function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
   canvasCtx.lineWidth = 3;
 
   //Shoulder Segment
-  canvasCtx.moveTo(shoulder[0].x , shoulder[0].y );
-  canvasCtx.lineTo(shoulder[1].x , shoulder[1].y );
-  canvasCtx.lineTo(shoulder[2].x , shoulder[2].y );
+  canvasCtx.moveTo(shoulder[0].x, shoulder[0].y);
+  canvasCtx.lineTo(shoulder[1].x, shoulder[1].y);
+  canvasCtx.lineTo(shoulder[2].x, shoulder[2].y);
 
   //Right Hand Segment
-  canvasCtx.moveTo(righthand[0].x , righthand[0].y );
-  canvasCtx.lineTo(righthand[1].x , righthand[1].y );
-  canvasCtx.lineTo(righthand[2].x , righthand[2].y );
+  canvasCtx.moveTo(righthand[0].x, righthand[0].y);
+  canvasCtx.lineTo(righthand[1].x, righthand[1].y);
+  canvasCtx.lineTo(righthand[2].x, righthand[2].y);
 
   //Left Hand Segment
-  canvasCtx.moveTo(lefthand[0].x , lefthand[0].y );
-  canvasCtx.lineTo(lefthand[1].x , lefthand[1].y );
-  canvasCtx.lineTo(lefthand[2].x , lefthand[2].y );
+  canvasCtx.moveTo(lefthand[0].x, lefthand[0].y);
+  canvasCtx.lineTo(lefthand[1].x, lefthand[1].y);
+  canvasCtx.lineTo(lefthand[2].x, lefthand[2].y);
 
   //Middle Torso Segment
-  canvasCtx.moveTo(middletorso[0].x , middletorso[0].y );
-  canvasCtx.lineTo(middletorso[1].x , middletorso[1].y );
-  canvasCtx.lineTo(middletorso[2].x , middletorso[2].y );
+  canvasCtx.moveTo(middletorso[0].x, middletorso[0].y);
+  canvasCtx.lineTo(middletorso[1].x, middletorso[1].y);
+  canvasCtx.lineTo(middletorso[2].x, middletorso[2].y);
 
   //Hip Segment
-  canvasCtx.moveTo(hip[0].x , hip[0].y );
-  canvasCtx.lineTo(hip[1].x , hip[1].y );
-  canvasCtx.lineTo(hip[2].x , hip[2].y );
+  canvasCtx.moveTo(hip[0].x, hip[0].y);
+  canvasCtx.lineTo(hip[1].x, hip[1].y);
+  canvasCtx.lineTo(hip[2].x, hip[2].y);
 
   //Left Foot Segment
-  canvasCtx.moveTo(leftLeg[0].x , leftLeg[0].y );
-  canvasCtx.lineTo(leftLeg[1].x , leftLeg[1].y );
-  canvasCtx.lineTo(leftLeg[2].x , leftLeg[2].y );
-  canvasCtx.lineTo(leftLeg[3].x , leftLeg[3].y );
+  canvasCtx.moveTo(leftLeg[0].x, leftLeg[0].y);
+  canvasCtx.lineTo(leftLeg[1].x, leftLeg[1].y);
+  canvasCtx.lineTo(leftLeg[2].x, leftLeg[2].y);
+  canvasCtx.lineTo(leftLeg[3].x, leftLeg[3].y);
 
   //Right Foot Segment
-  canvasCtx.moveTo(rightLeg[0].x , rightLeg[0].y );
-  canvasCtx.lineTo(rightLeg[1].x , rightLeg[1].y );
-  canvasCtx.lineTo(rightLeg[2].x , rightLeg[2].y );
-  canvasCtx.lineTo(rightLeg[3].x , rightLeg[3].y );
+  canvasCtx.moveTo(rightLeg[0].x, rightLeg[0].y);
+  canvasCtx.lineTo(rightLeg[1].x, rightLeg[1].y);
+  canvasCtx.lineTo(rightLeg[2].x, rightLeg[2].y);
+  canvasCtx.lineTo(rightLeg[3].x, rightLeg[3].y);
 
   canvasCtx.stroke();
   canvasCtx.restore();
 }
 
-async function setupCamera(){
-  console.log("setting up camera")
 /**
  * @license
  * Copyright 2021 Google LLC. All Rights Reserved.
@@ -372,88 +370,92 @@ async function setupCamera(){
  * limitations under the License.
  * =============================================================================
  */
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error(
-            'Browser API navigator.mediaDevices.getUserMedia not available');
-      }
-      const videoConfig = {
-        'audio': false,
-        'video': {
-          facingMode: 'user',
-          width: {ideal: 640},
-          height: {ideal: 480}
-        }
-      };
-  
-      const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
-  
-      videoElement.srcObject = stream;
-  
-      await new Promise((resolve) => {
-        videoElement.onloadedmetadata = () => {
-          resolve(videoElement);
-        };
-      });
-      videoElement.play();
-      resizeCanvasToDisplaySize(canvasElement)
-      const videoWidth = videoElement.videoWidth;
-      const videoHeight = videoElement.videoHeight;
-      // Must set below two lines, otherwise video element doesn't show.
-      videoElement.width = videoWidth;
-      videoElement.height = videoHeight;
+
+async function setupCamera() {
+  console.log("setting up camera")
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    throw new Error(
+      'Browser API navigator.mediaDevices.getUserMedia not available');
+  }
+  const videoConfig = {
+    'audio': false,
+    'video': {
+      facingMode: 'user',
+      width: { ideal: 640 },
+      height: { ideal: 480 }
+    }
+  };
+
+  const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
+
+  videoElement.srcObject = stream;
+
+  await new Promise((resolve) => {
+    videoElement.onloadedmetadata = () => {
+      resolve(videoElement);
+    };
+  });
+  videoElement.play();
+  resizeCanvasToDisplaySize(canvasElement)
+  const videoWidth = videoElement.videoWidth;
+  const videoHeight = videoElement.videoHeight;
+  // Must set below two lines, otherwise video element doesn't show.
+  videoElement.width = videoWidth;
+  videoElement.height = videoHeight;
 }
 
 /**
  * Calculate the angle C w/ Law of Cosines based on this picture https://images.app.goo.gl/AWhopMcNj85L4de77 and where a,b,c correspond to the points, not the lines
 */
 
-function calcAngles(a, b, c){
-                
+function calcAngles(a, b, c) {
+
   let aX = a['x'];
-  let aY = a['y']; 
+  let aY = a['y'];
   let bX = b['x'];
   let bY = b['y'];
   let cX = c['x'];
   let cY = c['y'];
 
-  let sideC = Math.sqrt(Math.pow((aX-bX),2) + Math.pow((aY-bY),2)); //use distance formula to get sides for Law of Cosines
-  let sideA = Math.sqrt(Math.pow((bX-cX),2) + Math.pow((bY-cY),2));
-  let sideB = Math.sqrt(Math.pow((aX-cX),2) + Math.pow((aY-cY),2)); 
+  let sideC = Math.sqrt(Math.pow((aX - bX), 2) + Math.pow((aY - bY), 2)); //use distance formula to get sides for Law of Cosines
+  let sideA = Math.sqrt(Math.pow((bX - cX), 2) + Math.pow((bY - cY), 2));
+  let sideB = Math.sqrt(Math.pow((aX - cX), 2) + Math.pow((aY - cY), 2));
   console.log("aX: " + aX + " aY: " + aY + " bX: " + bX + " bY: " + bY + " cX: " + cX + " cY: " + cY + " sideA: " + sideA + " sideB: " + sideB + " sideC: " + sideC);
-  
-  let angle = Math.acos((Math.pow(sideA,2)+Math.pow(sideB,2) - Math.pow(sideC,2))/(2*sideA*sideB)); // Law of Cosines
-  let angleDeg = (180*angle)/Math.PI;
-  return angleDeg; 
+
+  let angle = Math.acos((Math.pow(sideA, 2) + Math.pow(sideB, 2) - Math.pow(sideC, 2)) / (2 * sideA * sideB)); // Law of Cosines
+  let angleDeg = (180 * angle) / Math.PI;
+  return angleDeg;
 }
 /***
  * Calculates distance between two keypoints
  */
-function calcDistance(a,b){
+function calcDistance(a, b) {
   let aX = a['x'];
-  let aY = a['y']; 
+  let aY = a['y'];
   let bX = b['x'];
   let bY = b['y'];
-  return Math.sqrt(Math.pow((aX-bX),2) + Math.pow((aY-bY),2));
+  return Math.sqrt(Math.pow((aX - bX), 2) + Math.pow((aY - bY), 2));
 }
 
 /***
  * Calculates the average value of an array 
  */
-function calculateAverageArray(array){
+function calculateAverageArray(array) {
   let total = 0;
-  for(let i =0; i < array.length;i++){
+  for (let i = 0; i < array.length; i++) {
     total += array[i]
   }
-  return total/array.length; 
+  return total / array.length;
 }
 
 /***
  * Calculates the average value of elements 
  */
- function calculateAverageElements(...array){
+function calculateAverageElements(...array) {
   let total = 0;
-  for(let i =0; i < array.length;i++){
+  for (let i = 0; i < array.length; i++) {
     total += array[i]
   }
-  return total/array.length; 
+  return total / array.length;
 }

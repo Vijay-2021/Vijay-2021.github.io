@@ -22,8 +22,8 @@ var landmarks = {}
 
 const mpPose = window;
 
-var lastFrameTime = 0 
-var counter = 0 
+var lastFrameTime = 0
+var counter = 0
 
 const poseOptions = {
     locateFile: (file) => {
@@ -73,9 +73,9 @@ async function tfjsSetLandmarks(poses) {
 //var lastFrameT = 0
 
 async function updateVideo() {
-    
+
     if (using_mediapipe) {
-        console.log("using mediapipe")
+        //console.log("using mediapipe")
         await pose.send({ image: videoElement });
     } else {
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);

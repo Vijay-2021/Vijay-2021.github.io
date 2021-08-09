@@ -134,7 +134,7 @@
                         from: f
                     });
                     var g = new Path2D;
-                    g.arc(f.x , f.y , y(b.radius, {
+                    g.arc(f.x, f.y, y(b.radius, {
                         index: e,
                         from: f
                     }), 0, 2 * Math.PI);
@@ -164,7 +164,7 @@
                     index: f,
                     from: g,
                     to: k
-                }), a.moveTo(g.x , g.y), a.lineTo(k.x , k.y));
+                }), a.moveTo(g.x, g.y), a.lineTo(k.x, k.y));
                 ++f;
                 a.stroke()
             }

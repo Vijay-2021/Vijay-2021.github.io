@@ -1,9 +1,7 @@
-const videoElement = document.getElementsByClassName('input_video')[0];
+const videoElement = document.getElementsByClassName('input_video')[0]; 
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
-
-
 
 const model = poseDetection.SupportedModels.BlazePose;
 const line_width = 1
@@ -14,22 +12,29 @@ var updateFPS = false
 
 var sentResizedMessage = false;
 
-const intervalId = window.setInterval(function () { updateFPS = true; }, 1000);
+const intervalId = window.setInterval(function () { updateFPS = true; }, 1000); //update the current and average fps once / second
 
-var using_mediapipe = false
+var using_normal_mediapipe = false 
 
-var landmarks = {}
+var landmarks = {} //use this to store our landmarks in a common format for both TFJS and Mediapipe if necessary
 
 const mpPose = window;
 
 const poseOptions = {
     locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`;
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`; //https://emscripten.org/docs/porting/files/packaging_files.html
     }
 };
 
 const pose = new mpPose.Pose(poseOptions);
 
+const htmlImageElement = new Image(canvasElement.width, canvasElement.height);
+
+var skeleton_type = "full" //start with the generic mediapipe skeleton from their drawing utils class 
+
+/***
+ * Sets the canvas's internal size to the videoElements native size 
+ */
 function resizeCanvasToDisplaySize(canvas) {
     // look up the size the canvas is being displayed
     const width = canvas.width;
@@ -44,30 +49,71 @@ function resizeCanvasToDisplaySize(canvas) {
     return false;
 }
 
+window.addEventListener("changeSkeleton", (event) => {
+    console.log(`Event: ${event}`)
+    console.log(`Event Skeleton Type: ${event.detail.skeleton_type}`)
+    console.log(JSON.stringify(event.detail));
+    console.log(JSON.stringify(event));
+    setSkeletonType(event.detail.skeleton_type)
+}, false);
+
+function setSkeletonType(type) {
+    if (typeof type === 'string' && type.length > 0) {
+        skeleton_type = type
+    }
+    else {
+        skeleton_type = String(type)
+    }
+}
+
+/***
+ * This is the function where the landmarks are drawn and the fps counter is updated
+ */
 function updateScreen(results) {
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
-    drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
-    drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
+    switch (skeleton_type) { //chose what skeleton to draw based on skeleton type 
+        case "full":
+            drawConnectors(canvasCtx, results, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2.0 });
+            drawLandmarks(canvasCtx, results, { color: '#FF0000', lineWidth: 1.0 });
+            break;
+        case "lumbar":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
+            drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
+            break;
+        default:
+            //draw nothing
+            break;
+    }
     console.log(JSON.stringify(results))
     runFPSUpdate()
 }
 
+/***
+ * This is the drawing function for IOS/Mac. It seems like it needs to be async for this to run on IOS, I'm not sure if this is 
+ * a configuration issue or something else
+ */
 async function tfjsSetLandmarks(poses) {
     canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
     canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
 
     if (poses != null && poses[0] != null) {
         if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length > 0) {
-            await updateScreen(poses[0]['keypoints'])
+            await updateScreen(createAdditionalJoints(poses[0]['keypoints']))
         }
     }
     return false;
 }
 
+const estimationConfig = { flipHorizontal: true };
+const timestamp = performance.now();
+
+/***
+ * The update loop for ios/windows/linux/mac. I have not tested timestamp checking with these, might be worth a try
+ */
 async function updateVideo() {
-    if (using_mediapipe) {
+    if (using_normal_mediapipe) {
         await pose.send({ image: videoElement });
     } else {
         const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
@@ -76,9 +122,11 @@ async function updateVideo() {
     window.requestAnimationFrame(updateVideo);
 }
 
-const estimationConfig = { flipHorizontal: true };
-const timestamp = performance.now();
 
+/***
+ * Sets up the camera, then starts the update video loop once the onloadeddata event(aka once the video has loaded its first frame)
+ * has started
+ */
 async function loadCamera() {
     setupCamera()
     videoElement.onloadeddata = async function () {
@@ -110,26 +158,28 @@ async function setupApp() {
     var WEBGL_RENDER_FLOAT32_CAPABLE = true
     var WEBGL_FLUSH_THRESHOLD = -1
     var CHECK_COMPUTATION_FOR_ERRORS = false
-
+    //if simd support is available then enable it 
     wasmFeatureDetect.simd().then(simdSupported => {
         if (simdSupported) {
             WASM_HAS_SIMD_SUPPORT = true
         } else {
         }
     });
+    //if wasm support is available then enable it 
     wasmFeatureDetect.threads().then(threadsSupported => {
         if (threadsSupported) {
             WASM_HAS_MULTITHREAD_SUPPORT = true;
         } else {
         }
     });
+
     switch (getOS()) {
         case 'Mac OS':
             WEBGL_VERSION = 1
             break;
         case 'Windows':
         case 'Linux':
-            using_mediapipe = true
+            using_normal_mediapipe = true;
             break;
         case 'Android':
             await loadAndroid()
@@ -153,15 +203,22 @@ async function setupApp() {
         CHECK_COMPUTATION_FOR_ERRORS: CHECK_COMPUTATION_FOR_ERRORS,
     }
 
-    if (using_mediapipe) {
+    if (using_normal_mediapipe) {
         await loadWindows()
         loadCamera();
     } else {
         await loadIOS(flagConfig)
         loadCamera();
+        skeleton_type = "lumbar"
     }
 }
+
+/***
+ * Loads everything necessary to start the app, currently just setup app
+ */
 async function loadApp() {
     await setupApp();
 }
+
+//start the app
 loadApp();

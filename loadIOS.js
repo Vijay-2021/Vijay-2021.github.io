@@ -5,6 +5,10 @@ const detectorConfig = {
 };
 
 async function loadIOS(flagConfig) {
+  window.onerror = function(msg, url, linenumber) {
+    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+    return true;
+  }
   await setEnvFlags(flagConfig)
   await loadModel()
 }

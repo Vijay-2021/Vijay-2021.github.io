@@ -1,55 +1,41 @@
-
-function setLandMarksAndroid(results) {
-    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
-    canvasCtx.drawImage(results.image, 0, 0, videoElement.width, videoElement.height);
-    console.log("pose landmarks below: ")
-    console.log(results.poseLandmarks)
-    var pixelData = canvasCtx.getImageData(100, 100, 1, 1).data;
-    console.log(pixelData)
-    alert(results.poseLandmarks.length)
-    //updateScreen(results)
-}
-function clearAndRedrawScreen() {
-    canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
-    canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-}
-
-async function updateVideoAndroid() {
-    alert("frames are being processed")
-
-    await pose.send({ image: videoElement });
-    window.requestAnimationFrame(updateVideoAndroid())
-}
-
-function nextFrame() {
-    console.log(videoElement.currentTime)
-    if (videoElement.currentTime != lastFrameTime) {
-        lastFrameTime = videoElement.currentTime;
-        onFrameAndroid().then(function () { updateVideoAndroid() })
-    } //so  if b exists, then use b.then, else just do q(a). and b is the onframe method, so we run b, then we call the funciton again! okay!
-}
-
-async function onFrameAndroid() {
-    await pose.send({ image: videoElement });
-}
-async function loadAndroid() {
-
+function loadAndroid(){
     pose.setOptions({
         modelComplexity: 1,
         smoothLandmarks: true,
         minDetectionConfidence: 0.5,
         minTrackingConfidence: 0.5
     });
-    alert("pose has been loaded")
-    await setupCamera()
-    alert("camera has been setup")
-    videoElement.onloadeddata = async function () {
-        updateVideoAndroid()
-        if (!sentResizedMessage) {
-            console.log("Message: resize video");
-            sentResizedMessage = true;
-        }
-    }
-    pose.onResults(setLandMarksAndroid);
 
+
+    let counter = 0
+    //when there are updated results, the onResults function will be ran 
+    pose.onResults(onResultsMediapipe);
+    const camera = new Camera(videoElement, {
+        onFrame: async () => {
+            if (counter == 1) {
+                console.log("pose estimation has begun")
+            }
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            canvasCtx.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height); //draw the current video frame on the canvas
+
+            var strDataURI = canvasElement.toDataURL('image/jpeg', 0.9); 
+            htmlImageElement.src = strDataURI //set our image to the current video frame 
+
+            /**
+             * If the video width isn't null, then the video has started playing, and if the htmlImageElement isn't the same size
+             * as the videoElement, then resize the htmlImageElement and make sure the canvas is the same size as the video 
+             * element as well. Without this the pose does not draw properly/the pose predictions are not correct 
+             */
+            if (videoElement.videoWidth != null && videoElement.videoWidth > 0 && videoElement.videoWidth != htmlImageElement.width) {
+                htmlImageElement.width = videoElement.videoWidth
+                htmlImageElement.height = videoElement.videoHeight
+                resizeCanvasToDisplaySize(canvasElement, videoElement)
+            }
+            await pose.send({ image: htmlImageElement });
+            counter += 1
+        },
+        width: 640,
+        height: 360
+    });
+    camera.start();
 }

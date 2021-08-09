@@ -9,9 +9,6 @@
     crossorigin="anonymous"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
                 crossorigin="anonymous"></script> -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.5/control_utils.js"
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/pose.js" crossorigin="anonymous"></script>
@@ -29,6 +26,7 @@
   <script src="https://unpkg.com/wasm-feature-detect/dist/umd/index.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <style>
     .input_video {
       display: none
@@ -69,14 +67,17 @@
   <div class="container" style="text-align:center;">
     <p id="fps"> FPS: Average FPS:</p>
     <video playsinline autoplay class="input_video"></video>
-    <canvas class="output_canvas" id="canvas"></canvas>
+    <canvas class="output_canvas"></canvas>
   </div>
+  
   <script src="./utilities.js" crossorigin="anonymous"></script>
   <script src="./drawing_utilities_un_normalized.js" crossorigin="anonymous"></script>
   <script src="./loadAndroidTest.js" crossorigin="anonymous"></script>
   <script src="./loadIOS.js" crossorigin="anonymous"></script>
   <script src="./loadWindows.js" crossorigin="anonymous"></script>
+  
   <script src="./test.js" crossorigin="anonymous"></script>
+  
 
 </body>
 

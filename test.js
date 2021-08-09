@@ -100,11 +100,14 @@ async function tfjsSetLandmarks(poses) {
 
     if (poses != null && poses[0] != null) {
         if (poses[0]['keypoints'] != null && poses[0]['keypoints'].length > 0) {
-            await updateScreen(poses[0]['keypoints'])
+            await updateScreen(createAdditionalJoints(poses[0]['keypoints']))
         }
     }
     return false;
 }
+
+const estimationConfig = { flipHorizontal: true };
+const timestamp = performance.now();
 
 /***
  * The update loop for ios/windows/linux/mac. I have not tested timestamp checking with these, might be worth a try
@@ -119,8 +122,6 @@ async function updateVideo() {
     window.requestAnimationFrame(updateVideo);
 }
 
-const estimationConfig = { flipHorizontal: true };
-const timestamp = performance.now();
 
 /***
  * Sets up the camera, then starts the update video loop once the onloadeddata event(aka once the video has loaded its first frame)

@@ -1,3 +1,8 @@
+/***
+ * This function is used to get the operating system that we are running. It is accurate most of the time according to its 
+ * creator. In-case it fails perhaps there should be some sort of fallback, e.g. using a less efficient configuration but 
+ * one that would be supported on all operating systems 
+ */
 function getOS() {
   let userAgent = window.navigator.userAgent,
     platform = window.navigator.platform,
@@ -25,7 +30,14 @@ var FPS, avgFPS, currentTime, lastTime = 0;
 var updateFPS = false;
 var timesOnResultsRan = 0;
 var FPSTotal = 0;
-
+/***
+ * This function measures the time between when it was last called and the current time, thus as long as it is only called once 
+ * per loop, it can accurately measure the time between loops. We use performance.now() instead of date.now() as it is supposed 
+ * to be more accurate. performance.now() returns the time in milliseconds since Jan 1st 1970 so we scale the frequency of frames
+ * (eg.g 1/(currentTime - lastTime)) by 1000 to get it in seconds. Then we update the average fps, and update the display. Finally
+ * the lastTime is set to the currentTime variable (this ensures that the time taken to run the fps update itself is taken 
+ * into account)
+ */
 function runFPSUpdate() {
   currentTime = performance.now();
   FPS = Math.round(1000 * (1 / (currentTime - lastTime)));
@@ -38,6 +50,9 @@ function runFPSUpdate() {
   lastTime = currentTime;
 }
 
+/***
+ * This function creates the extra landmarks for the lumbar skeleton 
+ */
 function createAdditionalJoints(poselandmarks) {
   let mid_shoulder = {
     visibility: 1,
@@ -187,6 +202,10 @@ function createAdditionalJoints(poselandmarks) {
   return poselandmarks;
 }
 
+
+/***
+ * This function draws the joints for different skeletons. Currently we are using it to draw the full skeleton
+ */
 function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
   let width = ctxwidth;
   let height = ctxheight;
@@ -294,6 +313,9 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
 
 //33-mid-shoulder, 34: mid-torse, 35: mid-hip, 36: mid_knee, 
 //37: mid_ankle, 38: mid_left_torse, 39: mid_right_torso
+/***
+ * This function draws connections for the lumbar skeleton 
+ */
 function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
   let width = ctxwidth;
   let height = ctxheight;
@@ -370,7 +392,12 @@ function drawConnections(canvasCtx, poses, ctxwidth, ctxheight) {
  * limitations under the License.
  * =============================================================================
  */
-
+/***
+ * This function was taken from googles camera class, it was necessary to follow these steps in the camera class to get the 
+ * tfjs backend to run. If the webcam is not configured in this way, then the tfjs backend does not run correctly. This 
+ * camera setup is also used for windows, for although windows could use the mediapipe camera class, this provides more 
+ * customizability 
+ */
 async function setupCamera() {
   console.log("setting up camera")
 
@@ -389,7 +416,7 @@ async function setupCamera() {
 
   const stream = await navigator.mediaDevices.getUserMedia(videoConfig);
 
-  videoElement.srcObject = stream;
+  videoElement.srcObject = stream; //create a stream and make it video source 
 
   await new Promise((resolve) => {
     videoElement.onloadedmetadata = () => {
@@ -397,7 +424,7 @@ async function setupCamera() {
     };
   });
   videoElement.play();
-  resizeCanvasToDisplaySize(canvasElement)
+  resizeCanvasToDisplaySize(canvasElement) //resize the canvas to be the videoElement.videoWidth /videoElement.videoHeight after onloadedmetadata has finished
   const videoWidth = videoElement.videoWidth;
   const videoHeight = videoElement.videoHeight;
   // Must set below two lines, otherwise video element doesn't show.
@@ -427,6 +454,7 @@ function calcAngles(a, b, c) {
   let angleDeg = (180 * angle) / Math.PI;
   return angleDeg;
 }
+
 /***
  * Calculates distance between two keypoints
  */
@@ -461,22 +489,22 @@ function calculateAverageElements(...array) {
 }
 
 /***
- * 
+ * This function serves as the on results function for anything using mediapipe. Currently only Windows/Linux/Android use Mediapipe
+ * so this function corresponds to those platforms, but if IOS and Mac are moved to mediapipe, this function will work for them
+ * as well and perhaps the "un-normalization or conversion to pixel coordinates can be taken out". The reason I do un-normalization
+ * now is because the tfjs landmarks are "un-normalized" and handling that correclty seemed like it could be more complex. 
  */
  function onResultsMediapipe(results) {
 
   canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
   canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-  console.log("android set landmarks is running")
   if (results != null) {
-      console.log("results is not null")
       if (results.poseLandmarks != null && results.poseLandmarks.length > 0) {
           results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
           for (var i = 0; i < results.poseLandmarks.length; i++) {
               results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
               results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
           }
-          
           updateScreen(results.poseLandmarks)
       }
       else {

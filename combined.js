@@ -123,6 +123,9 @@ const timestamp = performance.now(); // I think you can use this to do internal 
 
 /***
  * The update loop for ios/windows/linux/mac. I have not formally tested timestamp checking with these, might be worth a try
+ * for Windows/Linux we just have to send the pose the next frame, and the onResults function(which in this case, is defined as 
+ * onResultsMediapipe) will run automatically. For IOS/Mac, we have to send the pose the image, but also call the handler function
+ * ourselves afterwards(tfjsSetLandmarks(poses) in this case)
  */
 async function updateVideo() {
     if (using_normal_mediapipe) {
@@ -157,19 +160,20 @@ async function loadCamera() {
  * IoS also uses float_16 textures incase float 32 operations are not supported. 
  * Both Android and Windows use the mediapipe version of the code. However, Android runs the code through the Mediapipe camera class, 
  * the reason I did this is because I found that android detected poses extremely poorly using the loop that I setup to run the 
- * video code(updateVideo) even though it was getting 9-10fps on average. The med
+ * video code(updateVideo) even though it was getting 9-10fps on average. I have labelled the flags I've tested for performance
+ * with how much I've tested them for their necessity/impacts on peformance. 
  */
 async function setupApp() {
 
-    var WEBGL_VERSION = 2
-    var WASM_HAS_SIMD_SUPPORT = false
-    var WASM_HAS_MULTITHREAD_SUPPORT = false
-    var WEBGL_CPU_FORWARD = true
-    var WEBGL_PACK = true
-    var WEBGL_FORCE_F16_TEXTURES = false
-    var WEBGL_RENDER_FLOAT32_CAPABLE = true
-    var WEBGL_FLUSH_THRESHOLD = -1
-    var CHECK_COMPUTATION_FOR_ERRORS = false
+    var WEBGL_VERSION = 2 //tested 
+    var WASM_HAS_SIMD_SUPPORT = false //not quantitatively tested 
+    var WASM_HAS_MULTITHREAD_SUPPORT = false //not quantitatively tested 
+    var WEBGL_CPU_FORWARD = true // not tested
+    var WEBGL_PACK = true //not tested 
+    var WEBGL_FORCE_F16_TEXTURES = false //not quantitatively tested 
+    var WEBGL_RENDER_FLOAT32_CAPABLE = true //not quantitatively tested 
+    var WEBGL_FLUSH_THRESHOLD = -1 // not tested 
+    var CHECK_COMPUTATION_FOR_ERRORS = false // not tested 
     //if simd support is available then enable it 
     wasmFeatureDetect.simd().then(simdSupported => {
         if (simdSupported) {

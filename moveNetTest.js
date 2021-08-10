@@ -58,9 +58,29 @@ function drawResults(poses) {
 * @param keypoints A list of keypoints.
 */
 
+
+/**
+ * @license
+ * Copyright 2021 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+/***
+ * Draw keypoints, drawKeypoint and drawSkeleton were taken from googles mediapipe camera class, for which the liscense is above
+ * DrawKeypoints sets up the canvas and calls drawKeypoint for each individual keypoint
+ */
 function drawKeypoints(keypoints) {
 
-    const keypointInd = poseDetection.util.getKeypointIndexBySide(model);
     canvasCtx.fillStyle = 'Green';
     canvasCtx.strokeStyle = 'White';
     canvasCtx.lineWidth = line_width;
@@ -71,9 +91,9 @@ function drawKeypoints(keypoints) {
 }
 
 function drawKeypoint(keypoint) {
-    // If score is null, just show the keypoint.
-    const score = keypoint.score != null ? keypoint.score : 1;
-    const scoreThreshold = score_threshold || 0;
+
+    const score = keypoint.score != null ? keypoint.score : 1; // If score is null, just show the keypoint.
+    const scoreThreshold = score_threshold || 0; // if there is no score threshold then set it to 0 
     if (score >= scoreThreshold) {
         const circle = new Path2D();
         circle.arc(keypoint.x, keypoint.y, radius, 0, 2 * Math.PI);
@@ -82,7 +102,7 @@ function drawKeypoint(keypoint) {
     }
 }
 /**
-* Draw the skeleton of a body on the videoElement.
+* Draw the skeleton of a body on the canvas.
 * @param keypoints A list of keypoints.
 */
 function drawSkeleton(keypoints) {
@@ -90,7 +110,7 @@ function drawSkeleton(keypoints) {
     canvasCtx.strokeStyle = 'White';
     canvasCtx.lineWidth = line_width;
 
-    poseDetection.util.getAdjacentPairs(model).forEach(([i, j]) => {
+    poseDetection.util.getAdjacentPairs(model).forEach(([i, j]) => { //gets the keypoint pairs for the generic skeleton and draws them if they are over the threshold
         const kp1 = keypoints[i];
         const kp2 = keypoints[j];
 
@@ -113,6 +133,13 @@ var updateFPS = false;
 var timesOnResultsRan = 0;
 var FPSTotal = 0;
 
+/***
+ * Unlike combined, the entirety of the screen update is done in here. First we update the fps, then we clear and re-draw the lastest
+ * video frame on the canvas. After this we make sure the poses, pose, and keypoints array are not null(because poseNet can output
+ * multiple poses for different people, the tfjs poses api returns an array of poses. Since we are using movenet, we can assume
+ * that if poses is not null, then we only have to worry about the first pose as only one pose will be returned from movenet, hence
+ * why poses[0] is hardcoded in)
+ */
 function updateScreen(poses) {
     currentTime = performance.now();
     FPS = Math.round(1000 * (1 / (currentTime - lastTime)));
@@ -138,12 +165,18 @@ function updateScreen(poses) {
     }
 }
 
+/***
+ * Using request animation frame to handle the loop, no timestamp check here, perhaps that can be implemeneted 
+ */
 async function updateVideo() {
     const poses = await detector.estimatePoses(videoElement, estimationConfig, timestamp);
     updateScreen(poses)
     window.requestAnimationFrame(updateVideo);
 }
 
+/***
+ * This next set of functions is the same as the loadModel functions in loadIOS.js
+ */
 async function loadModel(flagConfig) {
     await setFlags(flagConfig);
     detector = await poseDetection.createDetector(model, detectorConfig);
@@ -167,6 +200,29 @@ async function setEnvFlags(flagConfig) {
 const estimationConfig = { flipHorizontal: true };
 const timestamp = performance.now();
 
+/**
+ * @license
+ * Copyright 2021 Google LLC. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+ */
+
+/***
+ * This sets up the camera, in essence it does the same thing as loadCamera in combined.js, except the setupCamera() 
+ * function is nested inside this function. So here we setup the camera, and handle the onloadeddata(aka first frame has 
+ * been loaded) event in the same function. Here we also don't send the resize message onloadeddata for it was causing sizing 
+ * issues, instead we just start the updateVideo loop
+ */
 async function loadCamera() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error(
@@ -236,6 +292,13 @@ function getOS() {
     return os;
 }
 
+/***
+ * First we check for WASM features as we do in combined.js. However, here all platforms are using tfjs backend, so the configuration
+ * is slightly different then the combined.js equivalent of this function(setupApp). For linux and windows(windows
+ * is the default case) we use the default flag configuration, webgl_2, float_32 textures, etc. For MAC everything is 
+ * default except WEB_GL version is 1. Both Android and IOS have float 32 textures turned off and float 16 textures turned on. 
+ * Android also has an increased line_width and radius. 
+ */
 function setFlags() {
 
     var WEBGL_VERSION = 2
@@ -306,6 +369,9 @@ function setFlags() {
     setEnvFlags(flagConfig)
 
 }
+/***
+ * Load the model first then setup the camera 
+ */
 async function loadApp() {
     await loadModel();
     loadCamera();

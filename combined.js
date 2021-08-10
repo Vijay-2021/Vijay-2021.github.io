@@ -49,6 +49,13 @@ function resizeCanvasToDisplaySize(canvas) {
     return false;
 }
 
+/***
+ * Note: We can't access local functions from flutter or local variables. We only have access to the DOM and the Window, atleast
+ * thats what it seemed like from the testing I did, thus we have to send a message to an event listener which will call the 
+ * function we need instead of directly calling a function/manipulating variables
+ * 
+ * A custom event listener that listens for skeleton change events sent from the flutter backend. 
+ */
 window.addEventListener("changeSkeleton", (event) => {
     console.log(`Event: ${event}`)
     console.log(`Event Skeleton Type: ${event.detail.skeleton_type}`)
@@ -56,7 +63,10 @@ window.addEventListener("changeSkeleton", (event) => {
     console.log(JSON.stringify(event));
     setSkeletonType(event.detail.skeleton_type)
 }, false);
-
+/***
+ * This function changes the skeleton type. I'm not sure if the else statment is needed but I put it there incase there are some 
+ * type issues from the flutter side. 
+ */
 function setSkeletonType(type) {
     if (typeof type === 'string' && type.length > 0) {
         skeleton_type = type
@@ -68,15 +78,17 @@ function setSkeletonType(type) {
 
 /***
  * This is the function where the landmarks are drawn and the fps counter is updated
+ * First draw the requested skeleton, then print the pose to console for flutter to access, then run fps update
  */
 function updateScreen(results) {
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    
     switch (skeleton_type) { //chose what skeleton to draw based on skeleton type 
         case "full":
-            drawConnectors(canvasCtx, results, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: 2.0 });
-            drawLandmarks(canvasCtx, results, { color: '#FF0000', lineWidth: 1.0 });
+            drawConnectors(canvasCtx, results, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: line_width });
+            drawLandmarks(canvasCtx, results, { color: '#FF0000', lineWidth: line_width });
             break;
         case "lumbar":
             drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
@@ -107,10 +119,10 @@ async function tfjsSetLandmarks(poses) {
 }
 
 const estimationConfig = { flipHorizontal: true };
-const timestamp = performance.now();
+const timestamp = performance.now(); // I think you can use this to do internal fps calculations 
 
 /***
- * The update loop for ios/windows/linux/mac. I have not tested timestamp checking with these, might be worth a try
+ * The update loop for ios/windows/linux/mac. I have not formally tested timestamp checking with these, might be worth a try
  */
 async function updateVideo() {
     if (using_normal_mediapipe) {

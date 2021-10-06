@@ -494,22 +494,22 @@ function calculateAverageElements(...array) {
  * as well and perhaps the "un-normalization or conversion to pixel coordinates can be taken out". The reason I do un-normalization
  * now is because the tfjs landmarks are "un-normalized" and handling that correclty seemed like it could be more complex. 
  */
- function onResultsMediapipe(results) {
+function onResultsMediapipe(results) {
 
   canvasCtx.clearRect(0, 0, videoElement.width, videoElement.height);
   canvasCtx.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
   if (results != null) {
-      if (results.poseLandmarks != null && results.poseLandmarks.length > 0) {
-          results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
-          for (var i = 0; i < results.poseLandmarks.length; i++) {
-              results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
-              results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
-          }
-          updateScreen(results.poseLandmarks)
+    if (results.poseLandmarks != null && results.poseLandmarks.length > 0) {
+      results.poseLandmarks = createAdditionalJoints(results.poseLandmarks);
+      for (var i = 0; i < results.poseLandmarks.length; i++) {
+        results.poseLandmarks[i].x = results.poseLandmarks[i].x * canvasElement.width;
+        results.poseLandmarks[i].y = results.poseLandmarks[i].y * canvasElement.height;
       }
-      else {
-          console.log("there are no pose landmarks")
-          return; 
-      }
+      updateScreen(results.poseLandmarks)
+    }
+    else {
+      console.log("there are no pose landmarks")
+      return;
+    }
   }
 }

@@ -212,6 +212,7 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
 
 
   let fullbody = [
+    poses[0],
     poses[11],
     poses[12],
     poses[13],
@@ -294,6 +295,14 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
     poses[33],
     poses[34],
     poses[35],
+  ];
+
+
+//1: Nose, 40: Mid_ear, 33: Mid_Shoulder 
+  let cervical = [
+    poses[0],
+    poses[40],
+    poses[33]
   ];
 
   let bodypart = fullbody;

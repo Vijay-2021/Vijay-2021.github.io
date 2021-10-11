@@ -94,6 +94,9 @@ function updateScreen(results) {
             drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
             drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
             break;
+        case "cervical":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
+            break;
         default:
             //draw nothing
             break;

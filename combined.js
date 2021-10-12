@@ -102,7 +102,7 @@ function updateScreen(results) {
             //draw nothing
             break;
     }
-    console.log(results)
+    console.log(JSON.stringify(results))
     runFPSUpdate()
 }
 

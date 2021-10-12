@@ -44,9 +44,9 @@ function runFPSUpdate() {
   timesOnResultsRan++;
   FPSTotal += FPS;
   avgFPS = Math.round(FPSTotal / timesOnResultsRan);
-  if (updateFPS) {
-    FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
-  }
+  // if (updateFPS) {
+  //   FPSElement.innerHTML = "FPS: " + FPS + " Average FPS: " + avgFPS; updateFPS = false;
+  // }
   lastTime = currentTime;
 }
 
@@ -209,7 +209,7 @@ function createAdditionalJoints(poselandmarks) {
 function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   let width = ctxwidth;
   let height = ctxheight;
-
+  let bodypart;
 
   let fullbody = [
     poses[11],
@@ -304,13 +304,13 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     poses[33]
   ];
 
-  let bodypart = null;
-
   if (parttype == "cervical") {
     bodypart = cervical
   } else {
     bodypart = fullbody
   }
+
+  console.log("bodypart", bodypart)
 
   for (let i = 0; i < bodypart.length; i++) {
     canvasCtx.beginPath();

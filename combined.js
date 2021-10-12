@@ -1,4 +1,4 @@
-const videoElement = document.getElementsByClassName('input_video')[0]; 
+const videoElement = document.getElementsByClassName('input_video')[0];
 const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const FPSElement = document.getElementById('fps');
@@ -14,7 +14,7 @@ var sentResizedMessage = false;
 
 const intervalId = window.setInterval(function () { updateFPS = true; }, 1000); //update the current and average fps once / second
 
-var using_normal_mediapipe = false 
+var using_normal_mediapipe = false
 
 var landmarks = {} //use this to store our landmarks in a common format for both TFJS and Mediapipe if necessary
 
@@ -84,24 +84,25 @@ function updateScreen(results) {
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
-    
-    switch (skeleton_type) { //chose what skeleton to draw based on skeleton type 
+    switch (skeleton_type) {
+        //chose what skeleton to draw based on skeleton type
+
         case "full":
-            drawConnectors(canvasCtx, results, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: line_width });
-            drawLandmarks(canvasCtx, results, { color: '#FF0000', lineWidth: line_width });
+            drawJoints(canvasCtx, results, POSE_CONNECTIONS, { color: '#00FF00', lineWidth: line_width }, "full");
+            drawLandmarks(canvasCtx, results, { color: '#FF0000', lineWidth: line_width }, "full");
             break;
         case "lumbar":
-            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
-            drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height);
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "lumbar");
+            drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height, "lumbar");
             break;
         case "cervical":
-            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height);
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical");
             break;
         default:
             //draw nothing
             break;
     }
-    console.log(JSON.stringify(results))
+    console.log(results)
     runFPSUpdate()
 }
 

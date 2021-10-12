@@ -206,13 +206,12 @@ function createAdditionalJoints(poselandmarks) {
 /***
  * This function draws the joints for different skeletons. Currently we are using it to draw the full skeleton
  */
-function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
+function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   let width = ctxwidth;
   let height = ctxheight;
 
 
   let fullbody = [
-    poses[0],
     poses[11],
     poses[12],
     poses[13],
@@ -298,14 +297,20 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight) {
   ];
 
 
-//1: Nose, 40: Mid_ear, 33: Mid_Shoulder 
+  //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
   let cervical = [
     poses[0],
     poses[40],
     poses[33]
   ];
 
-  let bodypart = fullbody;
+  let bodypart = null;
+
+  if (parttype == "cervical") {
+    bodypart = cervical
+  } else {
+    bodypart = fullbody
+  }
 
   for (let i = 0; i < bodypart.length; i++) {
     canvasCtx.beginPath();

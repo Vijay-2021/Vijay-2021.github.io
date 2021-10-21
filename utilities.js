@@ -55,6 +55,7 @@ function runFPSUpdate() {
  */
 function createAdditionalJoints(poselandmarks) {
   let mid_shoulder = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -62,6 +63,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -69,6 +71,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_left_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -76,6 +79,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_right_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -83,6 +87,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_hip = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -90,6 +95,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_knee = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -97,6 +103,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_ankle = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -104,6 +111,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_ear = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,

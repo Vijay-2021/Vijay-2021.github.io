@@ -55,6 +55,7 @@ function runFPSUpdate() {
  */
 function createAdditionalJoints(poselandmarks) {
   let mid_shoulder = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -62,6 +63,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -69,6 +71,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_left_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -76,6 +79,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_right_torso = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -83,6 +87,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_hip = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -90,6 +95,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_knee = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -97,6 +103,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_ankle = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -104,6 +111,7 @@ function createAdditionalJoints(poselandmarks) {
   };
 
   let mid_ear = {
+    score: 1,
     visibility: 1,
     x: null,
     y: null,
@@ -202,6 +210,39 @@ function createAdditionalJoints(poselandmarks) {
   return poselandmarks;
 }
 
+/***
+ * This function draws the bounding box for cervical selection. 
+ */
+function drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart) {
+  //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
+  //a = middle_ear;
+  //b = mid_shoulder;
+  let ax = bodypart[2].x;
+  let ay = bodypart[2].y;
+  let bx = bodypart[3].x;
+  let by = bodypart[3].y;
+
+  let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
+
+  let mid_head_x = bx;
+  let mid_head_y = ay - mid_head;
+
+
+  canvasCtx.beginPath();
+  //Right Line
+  canvasCtx.moveTo(bodypart[2].x * 0.80, mid_head_y);
+  canvasCtx.lineTo(bodypart[2].x * 0.70, mid_head_y);
+  canvasCtx.lineTo(bodypart[2].x * 0.70, bodypart[4].y);
+  canvasCtx.lineTo(bodypart[2].x * 0.80, bodypart[4].y);
+
+  //Left Line
+  canvasCtx.moveTo(bodypart[2].x + (bodypart[2].x * 0.20), mid_head_y);
+  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), mid_head_y);
+  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), bodypart[3].y);
+  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.20), bodypart[3].y);
+
+  canvasCtx.stroke();
+}
 
 /***
  * This function draws the joints for different skeletons. Currently we are using it to draw the full skeleton
@@ -305,7 +346,8 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   ];
 
   if (parttype == "cervical") {
-    bodypart = cervical
+    bodypart = cervical;
+    drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart);
   } else {
     bodypart = fullbody
   }

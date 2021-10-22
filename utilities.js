@@ -347,7 +347,7 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
 
   if (parttype == "cervical") {
     bodypart = cervical;
-    drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart);
+    //drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart);
   } else {
     bodypart = fullbody
   }

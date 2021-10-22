@@ -240,14 +240,6 @@ function drawFacialBox(canvasCtx, bodypart) {
 
   // canvasCtx.stroke();
 
-  canvasCtx.beginPath();
-  canvasCtx.strokeStyle = "pink";
-  canvasCtx.fillStyle = "pink";
-  canvasCtx.lineWidth = 2;
-  let g = new Path2D();
-  g.arc(mid_head_x, mid_head_y, 5.0, 0, 2 * Math.PI);
-  canvasCtx.fill(g);
-  canvasCtx.stroke(g);
 }
 
 /***
@@ -358,7 +350,30 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   }
 
   if (parttype == "cervical") {
-    drawFacialBox(canvasCtx, bodypart);
+    let ax = bodypart[2].x;
+    let ay = bodypart[2].y;
+    let bx = bodypart[3].x;
+    let by = bodypart[3].y;
+
+    let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
+    let mid_head_x = bx;
+    let mid_head_y = ay - mid_head;
+
+
+    canvasCtx.beginPath();
+    //Right Line
+    canvasCtx.moveTo(bodypart[2].x * 0.80, mid_head_y);
+    canvasCtx.lineTo(bodypart[2].x * 0.70, mid_head_y);
+    canvasCtx.lineTo(bodypart[2].x * 0.70, bodypart[3].y);
+    canvasCtx.lineTo(bodypart[2].x * 0.80, bodypart[3].y);
+
+    //Left Line
+    canvasCtx.moveTo(bodypart[2].x + (bodypart[2].x * 0.20), mid_head_y);
+    canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), mid_head_y);
+    canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), bodypart[3].y);
+    canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.20), bodypart[3].y);
+
+    canvasCtx.stroke();
   }
 
   console.log("bodypart", bodypart)

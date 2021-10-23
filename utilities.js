@@ -363,7 +363,13 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
 
   //Face Box Code 
   if (parttype == "cervical") {
-    drawFacialBox(canvasCtx, bodypart)
+    canvasCtx.beginPath();
+    canvasCtx.moveTo(bodypart[1].x * 0.80, 50);
+    canvasCtx.lineTo(bodypart[1].x * 0.70, 50);
+    canvasCtx.lineTo(bodypart[1].x * 0.70, bodypart[2].y);
+    canvasCtx.lineTo(bodypart[1].x * 0.80, bodypart[2].y);
+    canvasCtx.stroke();
+    canvasCtx.restore();
   }
 
 

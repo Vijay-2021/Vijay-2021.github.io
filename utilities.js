@@ -215,29 +215,29 @@ function createAdditionalJoints(poselandmarks) {
  */
 function drawFacialBox(canvasCtx, bodypart) {
   //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
-  let ax = bodypart[2].x;
-  let ay = bodypart[2].y;
-  let bx = bodypart[3].x;
-  let by = bodypart[3].y;
+  // let ax = bodypart[2].x;
+  // let ay = bodypart[2].y;
+  // let bx = bodypart[3].x;
+  // let by = bodypart[3].y;
 
-  let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
+  // let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
 
-  let mid_head_x = bx;
-  let mid_head_y = ay - mid_head;
+  // let mid_head_x = bx;
+  // let mid_head_y = ay - mid_head;
 
 
   canvasCtx.beginPath();
   //Right Line
-  canvasCtx.moveTo(bodypart[1].x * 0.80, mid_head_y);
-  canvasCtx.lineTo(bodypart[1].x * 0.70, mid_head_y);
+  canvasCtx.moveTo(bodypart[1].x * 0.80, 100);
+  canvasCtx.lineTo(bodypart[1].x * 0.70, 100);
   canvasCtx.lineTo(bodypart[1].x * 0.70, bodypart[2].y);
   canvasCtx.lineTo(bodypart[1].x * 0.80, bodypart[2].y);
 
-  //Left Line
-  canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), mid_head_y);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), mid_head_y);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
+  // //Left Line
+  // canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), 300);
+  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), 300);
+  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
+  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
 
   canvasCtx.stroke();
   canvasCtx.restore();

@@ -214,6 +214,7 @@ function createAdditionalJoints(poselandmarks) {
  * This function draws the bounding box for cervical selection. 
  */
 function drawFacialBox(canvasCtx, bodypart) {
+  //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
   let ax = bodypart[2].x;
   let ay = bodypart[2].y;
   let bx = bodypart[3].x;
@@ -225,20 +226,20 @@ function drawFacialBox(canvasCtx, bodypart) {
   let mid_head_y = ay - mid_head;
 
 
-  // canvasCtx.beginPath();
-  // //Right Line
-  // canvasCtx.moveTo(bodypart[2].x * 0.80, mid_head_y);
-  // canvasCtx.lineTo(bodypart[2].x * 0.70, mid_head_y);
-  // canvasCtx.lineTo(bodypart[2].x * 0.70, bodypart[4].y);
-  // canvasCtx.lineTo(bodypart[2].x * 0.80, bodypart[4].y);
+  canvasCtx.beginPath();
+  //Right Line
+  canvasCtx.moveTo(bodypart[1].x * 0.80, mid_head_y);
+  canvasCtx.lineTo(bodypart[1].x * 0.70, mid_head_y);
+  canvasCtx.lineTo(bodypart[1].x * 0.70, bodypart[2].y);
+  canvasCtx.lineTo(bodypart[1].x * 0.80, bodypart[2].y);
 
-  // //Left Line
-  // canvasCtx.moveTo(bodypart[2].x + (bodypart[2].x * 0.20), mid_head_y);
-  // canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), mid_head_y);
-  // canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), bodypart[3].y);
-  // canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.20), bodypart[3].y);
+  //Left Line
+  canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), mid_head_y);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), mid_head_y);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
 
-  // canvasCtx.stroke();
+  canvasCtx.stroke();
 
 }
 
@@ -349,8 +350,6 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     bodypart = fullbody
   }
 
-  console.log("bodypart", bodypart)
-
   for (let i = 0; i < bodypart.length; i++) {
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "#01FD0C";
@@ -361,7 +360,23 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     canvasCtx.fill(g);
     canvasCtx.stroke(g);
   }
+
+  //Face Box Code 
+  if (parttype == "cervical") {
+    drawFacialBox(canvasCtx, bodypart)
+  }
+
+
+
+
+
+
+
+
   canvasCtx.restore();
+
+
+
 }
 
 //33-mid-shoulder, 34: mid-torse, 35: mid-hip, 36: mid_knee, 

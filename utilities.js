@@ -234,10 +234,10 @@ function drawFacialBox(canvasCtx, bodypart) {
   canvasCtx.lineTo(bodypart[1].x * 0.80, bodypart[2].y);
 
   // //Left Line
-  // canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), 300);
-  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), 300);
-  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
-  // canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
+  canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), 100);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), 100);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
+  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
 
   canvasCtx.stroke();
   canvasCtx.restore();

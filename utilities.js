@@ -220,8 +220,9 @@ function drawForwardFacingMarker(canvasCtx, bodypart) {
   canvasCtx.beginPath();
   canvasCtx.strokeStyle = "white";
   canvasCtx.lineWidth = 2;
+
   canvasCtx.moveTo(bodypart[2].x, bodypart[2].y);
-  canvasCtx.lineTo(bodypart[4].x, bodypart[4].y);
+  canvasCtx.lineTo(bodypart[4].x, bodypart[2].y);
 
   canvasCtx.stroke();
   canvasCtx.restore();

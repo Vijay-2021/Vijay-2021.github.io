@@ -219,12 +219,20 @@ function drawForwardFacingMarker(canvasCtx, bodypart) {
 
   canvasCtx.beginPath();
   canvasCtx.strokeStyle = "white";
-  canvasCtx.lineWidth = 2;
+  canvasCtx.lineWidth = 1;
 
-  canvasCtx.moveTo(bodypart[2].x, bodypart[2].y);
+  //Create a line 
+  canvasCtx.moveTo(bodypart[3].x, bodypart[2].y);
+  canvasCtx.lineTo(bodypart[2].x, bodypart[2].y);
   canvasCtx.lineTo(bodypart[4].x, bodypart[2].y);
 
-  canvasCtx.stroke();
+  //Create Circle at 0'
+  canvasCtx.strokeStyle = "#01FD0C";
+  canvasCtx.lineWidth = 1;
+  let g = new Path2D();
+  g.arc(bodypart[2].x, bodypart[2].y, 2.0, 0, 2 * Math.PI);
+  canvasCtx.stroke(g);
+
   canvasCtx.restore();
 
 }
@@ -337,15 +345,17 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     bodypart = fullbody
   }
 
-  for (let i = 0; i < bodypart.length; i++) {
-    canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "#01FD0C";
-    canvasCtx.fillStyle = "#01FD0C";
-    canvasCtx.lineWidth = 2;
-    let g = new Path2D();
-    g.arc(bodypart[i].x, bodypart[i].y, 2.0, 0, 2 * Math.PI);
-    canvasCtx.fill(g);
-    canvasCtx.stroke(g);
+  if (parttype !== "cervical") {
+    for (let i = 0; i < bodypart.length; i++) {
+      canvasCtx.beginPath();
+      canvasCtx.strokeStyle = "#01FD0C";
+      canvasCtx.fillStyle = "#01FD0C";
+      canvasCtx.lineWidth = 2;
+      let g = new Path2D();
+      g.arc(bodypart[i].x, bodypart[i].y, 2.0, 0, 2 * Math.PI);
+      canvasCtx.fill(g);
+      canvasCtx.stroke(g);
+    }
   }
 
   //Face Box Code 

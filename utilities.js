@@ -213,36 +213,20 @@ function createAdditionalJoints(poselandmarks) {
 /***
  * This function draws the bounding box for cervical selection. 
  */
-function drawFacialBox(canvasCtx, bodypart) {
-  //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
-  // let ax = bodypart[2].x;
-  // let ay = bodypart[2].y;
-  // let bx = bodypart[3].x;
-  // let by = bodypart[3].y;
 
-  // let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
-
-  // let mid_head_x = bx;
-  // let mid_head_y = ay - mid_head;
-
+function drawForwardFacingMarker(canvasCtx, bodypart) {
+  //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
 
   canvasCtx.beginPath();
-  //Right Line
-  canvasCtx.moveTo(bodypart[1].x * 0.80, 100);
-  canvasCtx.lineTo(bodypart[1].x * 0.70, 100);
-  canvasCtx.lineTo(bodypart[1].x * 0.70, bodypart[2].y);
-  canvasCtx.lineTo(bodypart[1].x * 0.80, bodypart[2].y);
-
-  // //Left Line
-  canvasCtx.moveTo(bodypart[1].x + (bodypart[1].x * 0.20), 100);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), 100);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.30), bodypart[2].y);
-  canvasCtx.lineTo(bodypart[1].x + (bodypart[1].x * 0.20), bodypart[2].y);
+  canvasCtx.strokeStyle = "white";
+  canvasCtx.lineWidth = 2;
+  canvasCtx.moveTo(bodypart[2].x, bodypart[2].y);
+  canvasCtx.lineTo(bodypart[4].x, bodypart[4].y);
 
   canvasCtx.stroke();
   canvasCtx.restore();
-}
 
+}
 /***
  * This function draws the joints for different skeletons. Currently we are using it to draw the full skeleton
  */
@@ -341,7 +325,9 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   let cervical = [
     poses[0],
     poses[40],
-    poses[33]
+    poses[33],
+    poses[11],
+    poses[12]
   ];
 
   if (parttype == "cervical") {
@@ -363,7 +349,7 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
 
   //Face Box Code 
   if (parttype == "cervical") {
-    drawFacialBox(canvasCtx, bodypart)
+    drawForwardFacingMarker(canvasCtx, bodypart)
   }
 
   canvasCtx.restore();

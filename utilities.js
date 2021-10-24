@@ -229,10 +229,8 @@ function drawForwardFacingMarker(canvasCtx, bodypart) {
   //Create Circle at 0'
   canvasCtx.strokeStyle = "#01FD0C";
   canvasCtx.lineWidth = 1;
-  let g = new Path2D();
-  g.arc(bodypart[2].x, bodypart[2].y, 2.0, 0, 2 * Math.PI);
-  canvasCtx.stroke(g);
-
+  canvasCtx.arc(bodypart[2].x, bodypart[2].y, 10, 0, 2 * Math.PI);
+  canvasCtx.stroke();
   canvasCtx.restore();
 
 }

@@ -228,15 +228,15 @@ function drawForwardFacingMarker(canvasCtx, bodypart) {
 
   //Create Circle at 0'
   canvasCtx.beginPath();
-  canvasCtx.strokeStyle = "#01FD0C";
-  canvasCtx.arc(bodypart[2].x, bodypart[2].y, 10, 0, 2 * Math.PI);
+  canvasCtx.strokeStyle = "white";
+  canvasCtx.arc(bodypart[2].x, bodypart[2].y, 8, 0, 2 * Math.PI);
   canvasCtx.stroke();
 
   //Create Inside Circle at 0'
   canvasCtx.beginPath();
-  canvasCtx.strokeStyle = "blue";
-  canvasCtx.fillStyle = "blue";
-  canvasCtx.arc(bodypart[1].x, bodypart[2].y, 5, 0, 2 * Math.PI);
+  canvasCtx.strokeStyle = "#01FD0C";
+  canvasCtx.fillStyle = "#01FD0C";
+  canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
   canvasCtx.fill();
   canvasCtx.stroke();
 

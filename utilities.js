@@ -216,11 +216,9 @@ function createAdditionalJoints(poselandmarks) {
 
 function drawForwardFacingMarker(canvasCtx, bodypart) {
   //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
-
   canvasCtx.beginPath();
   canvasCtx.strokeStyle = "white";
   canvasCtx.lineWidth = 1;
-
   //Create a line 
   canvasCtx.moveTo(bodypart[3].x, bodypart[2].y);
   canvasCtx.lineTo(bodypart[2].x, bodypart[2].y);
@@ -232,6 +230,14 @@ function drawForwardFacingMarker(canvasCtx, bodypart) {
   canvasCtx.beginPath();
   canvasCtx.strokeStyle = "#01FD0C";
   canvasCtx.arc(bodypart[2].x, bodypart[2].y, 10, 0, 2 * Math.PI);
+  canvasCtx.stroke();
+
+  //Create Inside Circle at 0'
+  canvasCtx.beginPath();
+  canvasCtx.strokeStyle = "blue";
+  canvasCtx.fillStyle = "blue";
+  canvasCtx.arc(bodypart[1].x, bodypart[2].y, 5, 0, 2 * Math.PI);
+  canvasCtx.fill();
   canvasCtx.stroke();
 
   canvasCtx.restore();

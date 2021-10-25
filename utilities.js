@@ -291,6 +291,21 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
     canvasCtx.strokeStyle = "blue";
     canvasCtx.arc(linex, bodypart[1].y, 8, 0, 2 * Math.PI);
     canvasCtx.stroke();
+
+
+    //CERVICAL-ROTATE-LEFT & RIGHT
+    if (parttype == "cervical-side-up") {
+      if (bodypart[0].y > bodypart[1].x) {
+        bodypart[0].y = bodypart[1].y
+      }
+      canvasCtx.arc(linex, bodypart[0].y, 4, 0, 2 * Math.PI);
+    }
+
+    canvasCtx.fill();
+    canvasCtx.stroke();
+
+
+
   }
 
   canvasCtx.restore();

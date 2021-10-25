@@ -384,13 +384,19 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     poses[12]
   ];
 
-  if (parttype == "cervical-front-left" || parttype == "cervical-front-left") {
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+  ) {
     bodypart = cervical;
   } else {
     bodypart = fullbody
   }
 
-  if (parttype !== "cervical-front-left" || parttype !== "cervical-front-left") {
+  if (
+    parttype !== "cervical-front-left" && parttype !== "cervical-front-right" &&
+    parttype !== "cervical-rotate-left" && parttype !== "cervical-rotate-right"
+  ) {
     for (let i = 0; i < bodypart.length; i++) {
       canvasCtx.beginPath();
       canvasCtx.strokeStyle = "#01FD0C";
@@ -404,7 +410,10 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   }
 
   //Face Box Code 
-  if (parttype == "cervical-front-left" || parttype == "cervical-front-left") {
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+  ) {
     drawCervicalMarker(canvasCtx, bodypart, parttype)
   }
 

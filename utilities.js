@@ -275,7 +275,7 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
 
   if (parttype == "cervical-side-up" || parttype == "cervical-side-down") {
 
-    var linex = bodypart[1].x - (bodypart[1].x * 0.25);
+    var linex = bodypart[1].x + (bodypart[1].x * 0.75);
     var liney = bodypart[2].y;
 
     //Create a front facing marker line 

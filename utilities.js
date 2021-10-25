@@ -229,7 +229,6 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
     canvasCtx.lineTo(bodypart[4].x, bodypart[2].y);
     canvasCtx.stroke();
 
-
     //Create Circle at 0'
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "white";
@@ -270,21 +269,23 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
       }
       canvasCtx.arc(bodypart[0].x, bodypart[2].y, 4, 0, 2 * Math.PI);
     }
-
-
     canvasCtx.fill();
     canvasCtx.stroke();
   }
 
-
-  //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
   if (parttype == "cervical-side-up" || parttype == "cervical-side-down") {
+
+    var linex = bodypart[1].x * 0.75;
+    var liney = bodypart[2].y;
+
     //Create a front facing marker line 
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "white";
     canvasCtx.lineWidth = 1;
-    canvasCtx.moveTo(bodypart[2].x * 0.50, bodypart[2].y);
-    canvasCtx.lineTo(bodypart[2].x * 0.50, bodypart[1].y);
+
+    canvasCtx.moveTo(linex, liney);
+    canvasCtx.lineTo(linex, liney * 0.15);
+
     canvasCtx.stroke();
   }
 

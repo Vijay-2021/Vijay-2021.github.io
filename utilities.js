@@ -275,17 +275,21 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
 
   if (parttype == "cervical-side-up" || parttype == "cervical-side-down") {
 
-    var linex = bodypart[1].x + (bodypart[1].x * 0.75);
+    var linex = bodypart[1].x + (bodypart[1].x * 0.85);
     var liney = bodypart[2].y;
 
     //Create a front facing marker line 
     canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "white";
+    canvasCtx.strokeStyle = "blue";
     canvasCtx.lineWidth = 1;
-
     canvasCtx.moveTo(linex, liney);
     canvasCtx.lineTo(linex, liney * 0.25);
+    canvasCtx.stroke();
 
+    //Create Circle at 0'
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "blue";
+    canvasCtx.arc(linex, bodypart[1].y, 8, 0, 2 * Math.PI);
     canvasCtx.stroke();
   }
 

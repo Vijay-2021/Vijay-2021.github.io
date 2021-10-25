@@ -215,8 +215,6 @@ function createAdditionalJoints(poselandmarks) {
  */
 function drawCervicalMarker(canvasCtx, bodypart, parttype) {
   //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
-
-
   if (
     parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
     parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
@@ -275,6 +273,18 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
 
 
     canvasCtx.fill();
+    canvasCtx.stroke();
+  }
+
+
+  //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
+  if (parttype == "cervical-side-up" || parttype == "cervical-side-down") {
+    //Create a front facing marker line 
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "white";
+    canvasCtx.lineWidth = 1;
+    canvasCtx.moveTo(bodypart[2].x * 0.50, bodypart[2].y);
+    canvasCtx.lineTo(bodypart[2].x * 0.50, bodypart[1].y);
     canvasCtx.stroke();
   }
 
@@ -386,7 +396,8 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
 
   if (
     parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
-    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right" ||
+    parttype == "cervical-side-up" || parttype == "cervical-side-down"
   ) {
     bodypart = cervical;
   } else {
@@ -395,7 +406,8 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
 
   if (
     parttype !== "cervical-front-left" && parttype !== "cervical-front-right" &&
-    parttype !== "cervical-rotate-left" && parttype !== "cervical-rotate-right"
+    parttype !== "cervical-rotate-left" && parttype !== "cervical-rotate-right" &&
+    parttype !== "cervical-side-up" && parttype !== "cervical-side-down"
   ) {
     for (let i = 0; i < bodypart.length; i++) {
       canvasCtx.beginPath();
@@ -409,10 +421,11 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
     }
   }
 
-  //Face Box Code 
+  //Cervical Marker Code
   if (
     parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
-    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right" ||
+    parttype == "cervical-side-up" || parttype == "cervical-side-down"
   ) {
     drawCervicalMarker(canvasCtx, bodypart, parttype)
   }

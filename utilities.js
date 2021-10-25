@@ -239,7 +239,7 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "#01FD0C";
     canvasCtx.fillStyle = "#01FD0C";
-    if (bodypart[1].x > bodypart[2].x) {
+    if (bodypart[1].x < bodypart[2].x) {
       bodypart[1].x = bodypart[2].x
     }
     canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
@@ -269,7 +269,7 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "#01FD0C";
     canvasCtx.fillStyle = "#01FD0C";
-    if (bodypart[1].x < bodypart[2].x) {
+    if (bodypart[1].x > bodypart[2].x) {
       bodypart[1].x = bodypart[2].x
     }
     canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);

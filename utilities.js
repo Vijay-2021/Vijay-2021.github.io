@@ -217,7 +217,10 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
   //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
 
 
-  if (parttype == "cervical-front-left") {
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+  ) {
 
     //Create a shoulder line 
     canvasCtx.beginPath();
@@ -239,44 +242,41 @@ function drawCervicalMarker(canvasCtx, bodypart, parttype) {
     canvasCtx.beginPath();
     canvasCtx.strokeStyle = "#01FD0C";
     canvasCtx.fillStyle = "#01FD0C";
-    if (bodypart[1].x < bodypart[2].x) {
-      bodypart[1].x = bodypart[2].x
+
+    //CERVICAL-SIDE-LEFT & RIGHT
+    if (parttype == "cervical-front-left") {
+      if (bodypart[1].x < bodypart[2].x) {
+        bodypart[1].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
     }
-    canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+
+    if (parttype == "cervical-front-right") {
+      if (bodypart[1].x > bodypart[2].x) {
+        bodypart[1].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+    //CERVICAL-ROTATE-LEFT & RIGHT
+    if (parttype == "cervical-rotate-left") {
+      if (bodypart[0].x < bodypart[2].x) {
+        bodypart[0].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[0].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+    if (parttype == "cervical-rotate-right") {
+      if (bodypart[0].x > bodypart[2].x) {
+        bodypart[0].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[0].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+
     canvasCtx.fill();
     canvasCtx.stroke();
   }
-
-  if (parttype == "cervical-front-right") {
-
-    //Create a shoulder line 
-    canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "white";
-    canvasCtx.lineWidth = 1;
-    canvasCtx.moveTo(bodypart[3].x, bodypart[2].y);
-    canvasCtx.lineTo(bodypart[2].x, bodypart[2].y);
-    canvasCtx.lineTo(bodypart[4].x, bodypart[2].y);
-    canvasCtx.stroke();
-
-
-    //Create Circle at 0'
-    canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "white";
-    canvasCtx.arc(bodypart[2].x, bodypart[2].y, 8, 0, 2 * Math.PI);
-    canvasCtx.stroke();
-
-    //Create Inside Circle at 0'
-    canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "#01FD0C";
-    canvasCtx.fillStyle = "#01FD0C";
-    if (bodypart[1].x > bodypart[2].x) {
-      bodypart[1].x = bodypart[2].x
-    }
-    canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
-    canvasCtx.fill();
-    canvasCtx.stroke();
-  }
-
 
   canvasCtx.restore();
 

@@ -95,8 +95,23 @@ function updateScreen(results) {
             drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "lumbar");
             drawConnections(canvasCtx, results, canvasElement.width, canvasElement.height, "lumbar");
             break;
-        case "cervical":
-            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical");
+        case "cervical-front-left":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-front-left");
+            break;
+        case "cervical-front-right":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-front-right");
+            break;
+        case "cervical-side-up":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-side-up");
+            break;
+        case "cervical-side-down":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-side-down");
+            break;
+        case "cervical-rotate-left":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-rotate-left");
+            break;
+        case "cervical-rotate-right":
+            drawJoints(canvasCtx, results, canvasElement.width, canvasElement.height, "cervical-rotate-right");
             break;
         default:
             //draw nothing

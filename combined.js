@@ -22,7 +22,7 @@ const mpPose = window;
 
 const poseOptions = {
     locateFile: (file) => {
-        return `pose/${file}`; //https://emscripten.org/docs/porting/files/packaging_files.html
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.4.1624666670/${file}`; //https://emscripten.org/docs/porting/files/packaging_files.html
     }
 };
 
@@ -183,6 +183,7 @@ async function loadCamera() {
  * with how much I've tested them for their necessity/impacts on peformance. 
  */
 async function setupApp() {
+
     var WEBGL_VERSION = 2 //tested 
     var WASM_HAS_SIMD_SUPPORT = false //not quantitatively tested 
     var WASM_HAS_MULTITHREAD_SUPPORT = false //not quantitatively tested 

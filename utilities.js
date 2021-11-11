@@ -213,37 +213,104 @@ function createAdditionalJoints(poselandmarks) {
 /***
  * This function draws the bounding box for cervical selection. 
  */
-function drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart) {
-  //0: Nose, 40: Mid_ear, 33: Mid_Shoulder 
-  //a = middle_ear;
-  //b = mid_shoulder;
-  let ax = bodypart[2].x;
-  let ay = bodypart[2].y;
-  let bx = bodypart[3].x;
-  let by = bodypart[3].y;
+function drawCervicalMarker(canvasCtx, bodypart, parttype) {
+  //0: Nose, 1: Mid_ear, 2: Mid_Shoulder, 3: Left_Shoulder, 4: Right_Shoulder
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right"
+  ) {
 
-  let mid_head = Math.sqrt(Math.pow((ax - bx), 2) + Math.pow((ay - by), 2));
+    //Create a shoulder line 
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "white";
+    canvasCtx.lineWidth = 1;
+    canvasCtx.moveTo(bodypart[3].x, bodypart[2].y);
+    canvasCtx.lineTo(bodypart[2].x, bodypart[2].y);
+    canvasCtx.lineTo(bodypart[4].x, bodypart[2].y);
+    canvasCtx.stroke();
 
-  let mid_head_x = bx;
-  let mid_head_y = ay - mid_head;
+    //Create Circle at 0'
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "white";
+    canvasCtx.arc(bodypart[2].x, bodypart[2].y, 8, 0, 2 * Math.PI);
+    canvasCtx.stroke();
+
+    //Create Inside Circle at 0'
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "#01FD0C";
+    canvasCtx.fillStyle = "#01FD0C";
+
+    //CERVICAL-SIDE-LEFT & RIGHT
+    if (parttype == "cervical-front-left") {
+      if (bodypart[1].x < bodypart[2].x) {
+        bodypart[1].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+    if (parttype == "cervical-front-right") {
+      if (bodypart[1].x > bodypart[2].x) {
+        bodypart[1].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[1].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+    //CERVICAL-ROTATE-LEFT & RIGHT
+    if (parttype == "cervical-rotate-left") {
+      if (bodypart[0].x < bodypart[2].x) {
+        bodypart[0].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[0].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+
+    if (parttype == "cervical-rotate-right") {
+      if (bodypart[0].x > bodypart[2].x) {
+        bodypart[0].x = bodypart[2].x
+      }
+      canvasCtx.arc(bodypart[0].x, bodypart[2].y, 4, 0, 2 * Math.PI);
+    }
+    canvasCtx.fill();
+    canvasCtx.stroke();
+  }
+
+  if (parttype == "cervical-side-up" || parttype == "cervical-side-down") {
+
+    var linex = bodypart[1].x + (bodypart[1].x * 0.85);
+    var liney = bodypart[2].y;
+
+    //Create a front facing marker line 
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "blue";
+    canvasCtx.lineWidth = 1;
+    canvasCtx.moveTo(linex, liney);
+    canvasCtx.lineTo(linex, liney * 0.25);
+    canvasCtx.stroke();
+
+    //Create Circle at 0'
+    canvasCtx.beginPath();
+    canvasCtx.strokeStyle = "blue";
+    canvasCtx.arc(linex, bodypart[1].y, 8, 0, 2 * Math.PI);
+    canvasCtx.stroke();
 
 
-  canvasCtx.beginPath();
-  //Right Line
-  canvasCtx.moveTo(bodypart[2].x * 0.80, mid_head_y);
-  canvasCtx.lineTo(bodypart[2].x * 0.70, mid_head_y);
-  canvasCtx.lineTo(bodypart[2].x * 0.70, bodypart[4].y);
-  canvasCtx.lineTo(bodypart[2].x * 0.80, bodypart[4].y);
+    //CERVICAL-ROTATE-LEFT & RIGHT
+    if (parttype == "cervical-side-up") {
+      if (bodypart[0].y > bodypart[1].x) {
+        bodypart[0].y = bodypart[1].y
+      }
+      canvasCtx.arc(linex, bodypart[0].y, 4, 0, 2 * Math.PI);
+    }
 
-  //Left Line
-  canvasCtx.moveTo(bodypart[2].x + (bodypart[2].x * 0.20), mid_head_y);
-  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), mid_head_y);
-  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.30), bodypart[3].y);
-  canvasCtx.lineTo(bodypart[2].x + (bodypart[2].x * 0.20), bodypart[3].y);
+    canvasCtx.fill();
+    canvasCtx.stroke();
 
-  canvasCtx.stroke();
+
+
+  }
+
+  canvasCtx.restore();
+
 }
-
 /***
  * This function draws the joints for different skeletons. Currently we are using it to draw the full skeleton
  */
@@ -342,29 +409,49 @@ function drawJoints(canvasCtx, poses, ctxwidth, ctxheight, parttype) {
   let cervical = [
     poses[0],
     poses[40],
-    poses[33]
+    poses[33],
+    poses[11],
+    poses[12]
   ];
 
-  if (parttype == "cervical") {
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right" ||
+    parttype == "cervical-side-up" || parttype == "cervical-side-down"
+  ) {
     bodypart = cervical;
-    //drawFacialBox(canvasCtx, ctxwidth, ctxheight, bodypart);
   } else {
     bodypart = fullbody
   }
 
-  console.log("bodypart", bodypart)
-
-  for (let i = 0; i < bodypart.length; i++) {
-    canvasCtx.beginPath();
-    canvasCtx.strokeStyle = "#01FD0C";
-    canvasCtx.fillStyle = "#01FD0C";
-    canvasCtx.lineWidth = 2;
-    let g = new Path2D();
-    g.arc(bodypart[i].x, bodypart[i].y, 2.0, 0, 2 * Math.PI);
-    canvasCtx.fill(g);
-    canvasCtx.stroke(g);
+  if (
+    parttype !== "cervical-front-left" && parttype !== "cervical-front-right" &&
+    parttype !== "cervical-rotate-left" && parttype !== "cervical-rotate-right" &&
+    parttype !== "cervical-side-up" && parttype !== "cervical-side-down"
+  ) {
+    for (let i = 0; i < bodypart.length; i++) {
+      canvasCtx.beginPath();
+      canvasCtx.strokeStyle = "#01FD0C";
+      canvasCtx.fillStyle = "#01FD0C";
+      canvasCtx.lineWidth = 2;
+      let g = new Path2D();
+      g.arc(bodypart[i].x, bodypart[i].y, 2.0, 0, 2 * Math.PI);
+      canvasCtx.fill(g);
+      canvasCtx.stroke(g);
+    }
   }
+
+  //Cervical Marker Code
+  if (
+    parttype == "cervical-front-left" || parttype == "cervical-front-right" ||
+    parttype == "cervical-rotate-left" || parttype == "cervical-rotate-right" ||
+    parttype == "cervical-side-up" || parttype == "cervical-side-down"
+  ) {
+    drawCervicalMarker(canvasCtx, bodypart, parttype)
+  }
+
   canvasCtx.restore();
+
 }
 
 //33-mid-shoulder, 34: mid-torse, 35: mid-hip, 36: mid_knee, 

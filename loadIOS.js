@@ -13,9 +13,8 @@ const detectorConfig = {
  * This function sets the environment flags and loads the model 
  */
 async function loadIOS(flagConfig) {
-  alert("version 1")
-  window.onerror = function(msg, url, linenumber) {
-    alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+  window.onerror = function (msg, url, linenumber) {
+    alert('Error message: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber);
     return true;
   }
   await setEnvFlags(flagConfig)

@@ -84,6 +84,15 @@ function updateScreen(results) {
     //landmarks = results; //if we need a results variable
     //drawConnectors(canvasCtx, results, POSE_CONNECTIONS,{ color: '#00FF00', lineWidth: 2.0 });
     //drawLandmarks(canvasCtx, results,{ color: '#FF0000', lineWidth: 1.0 });
+    let data = {
+        pose: null,
+        exercise: {
+            name: null,
+            rom: null,
+            disp: null,
+            reps: null,
+        }
+    };
     switch (skeleton_type) {
         //chose what skeleton to draw based on skeleton type
 
@@ -117,7 +126,9 @@ function updateScreen(results) {
             //draw nothing
             break;
     }
-    console.log(JSON.stringify(results))
+    data.pose = results;
+    //console.log(JSON.stringify(results))
+    console.log(JSON.stringify(data))
     runFPSUpdate()
 }
 
